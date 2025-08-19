@@ -4,15 +4,17 @@
 #'
 #' @returns A dataframe
 #' @export
-#' @import dplyr tibble
+#' @import dplyr
 #' @importFrom stats cor
+#' @importFrom tibble column_to_rownames
 #' @examples
 #' get_dri_ic(data)
 get_dri_ic <- function(data) {
-
   # create separate dataframes for C and P columns
-  df_c <- data %>% select(pnum, matches("^C\\d+$") & where(~!all(is.na(.))))
-  df_p <- data %>% select(pnum, matches("^P\\d+$") & where(~!all(is.na(.))))
+  df_c <- data %>% select(pnum, matches("^C\\d+$") &
+                            where( ~ !all(is.na(.))))
+  df_p <- data %>% select(pnum, matches("^P\\d+$") &
+                            where( ~ !all(is.na(.))))
 
   # transpose the data and make pnum the row names for correlation calculation
   df_c_t <- df_c %>% column_to_rownames("pnum") %>% t()
