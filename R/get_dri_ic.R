@@ -11,6 +11,9 @@
 #' @examples
 #' get_dri_ic(data)
 get_dri_ic <- function(data) {
+
+  cat("test")
+
   # create separate dataframes for C and P columns
   df_c <- data %>% select(pnum, matches("^C\\d+$") &
                             where( ~ !all(is.na(.))))
