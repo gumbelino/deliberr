@@ -7,6 +7,7 @@
 #' @import dplyr
 #' @importFrom stats cor
 #' @importFrom tibble column_to_rownames
+#' @importFrom tidyr pivot_longer
 #' @examples
 #' get_dri_ic(data)
 get_dri_ic <- function(data) {

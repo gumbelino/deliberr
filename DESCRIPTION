@@ -17,9 +17,16 @@ LazyData: true
 Imports:
     stats,
     dplyr,
-    tibble
+    tibble,
+    tidyr,
+    rlang,
+    lifecycle,
+    cli,
+    glue,
+    withr
 RoxygenNote: 7.3.2
 Suggests: 
     knitr,
     rmarkdown
 VignetteBuilder: knitr
+Roxygen: list(markdown = TRUE)

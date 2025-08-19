@@ -2,5 +2,9 @@
 
 export(get_dri_ic)
 import(dplyr)
+import(rlang)
+importFrom(glue,glue)
+importFrom(lifecycle,deprecated)
 importFrom(stats,cor)
 importFrom(tibble,column_to_rownames)
+importFrom(tidyr,pivot_longer)
