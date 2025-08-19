@@ -4,12 +4,11 @@
 #'
 #' @returns A dataframe
 #' @export
-#'
+#' @import dplyr
+#' @importFrom stats cor
 #' @examples
 #' get_dri_ic(data)
 get_dri_ic <- function(data) {
-
-
 
   # create separate dataframes for C and P columns
   df_c <- data %>% select(pnum, matches("^C\\d+$") & where(~!all(is.na(.))))

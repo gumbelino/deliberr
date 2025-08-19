@@ -15,9 +15,9 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports:
+    stats,
     dplyr,
-    ggplot2,
-    ggpubr
+    tibble
 RoxygenNote: 7.3.2
 Suggests: 
     knitr,
