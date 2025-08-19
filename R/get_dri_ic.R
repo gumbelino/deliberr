@@ -4,7 +4,7 @@
 #'
 #' @returns A dataframe
 #' @export
-#' @import dplyr
+#' @import dplyr tibble
 #' @importFrom stats cor
 #' @examples
 #' get_dri_ic(data)

@@ -2,5 +2,5 @@
 
 export(get_dri_ic)
 import(dplyr)
-importFrom(dplyr,select)
+import(tibble)
 importFrom(stats,cor)
