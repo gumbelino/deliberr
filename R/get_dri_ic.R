@@ -12,8 +12,6 @@
 #' get_dri_ic(data)
 get_dri_ic <- function(data) {
 
-  cat("test")
-
   # create separate dataframes for C and P columns
   df_c <- data %>% select(pnum, matches("^C\\d+$") &
                             where( ~ !all(is.na(.))))
@@ -37,7 +35,7 @@ get_dri_ic <- function(data) {
 
   # reshape from wide to long format
   long_corr_c <- df_corr_c %>%
-    tidyr::pivot_longer(
+    pivot_longer(
       cols = -pnum1,
       names_to = "pnum2",
       values_to = "ccor",
@@ -45,7 +43,7 @@ get_dri_ic <- function(data) {
     )
 
   long_corr_p <- df_corr_p %>%
-    tidyr::pivot_longer(
+    pivot_longer(
       cols = -pnum1,
       names_to = "pnum2",
       values_to = "pcor",
