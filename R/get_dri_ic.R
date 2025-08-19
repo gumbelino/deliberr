@@ -34,7 +34,7 @@ get_dri_ic <- function(data) {
 
   # reshape from wide to long format
   long_corr_c <- df_corr_c %>%
-    pivot_longer(
+    tidyr::pivot_longer(
       cols = -pnum1,
       names_to = "pnum2",
       values_to = "ccor",
@@ -42,7 +42,7 @@ get_dri_ic <- function(data) {
     )
 
   long_corr_p <- df_corr_p %>%
-    pivot_longer(
+    tidyr::pivot_longer(
       cols = -pnum1,
       names_to = "pnum2",
       values_to = "pcor",
