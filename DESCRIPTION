@@ -18,6 +18,8 @@ Imports:
     stats,
     dplyr,
     tibble,
+    ggplot2,
+    grid,
     tidyr,
     rlang,
     lifecycle,
