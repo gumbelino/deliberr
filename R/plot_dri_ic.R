@@ -34,7 +34,7 @@ plot_dri_ic <- function(ic,
   ))
 
   plot <-
-    ggplot(ic, aes(x = "ccor", y = "pcor")) +
+    ggplot(ic, aes(x = ccor, y = pcor)) +
     geom_jitter(
       width = 0.02,
       height = 0.02,
