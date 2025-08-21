@@ -15,7 +15,7 @@ get_dri <- function(ic, adjusted = TRUE){
   if (adjusted) {
     max_cor <- pmax(abs(ic$ccor), abs(ic$pcor))
     penalty <- ifelse(max_cor <= 0.2, max_cor / 0.2, 1)
-    dist <- mean((1 - ic$dj) * penalty)
+    dist <- 1 - mean((1 - ic$dj) * penalty)
   } else {
     dist <- mean(ic$dj)
   }
