@@ -11,12 +11,11 @@
 #' @examples
 #' get_dri_ic(data)
 get_dri_ic <- function(data) {
-
   # create separate dataframes for C and P columns
   df_c <- data %>% select(pnum, matches("^C\\d+$") &
-                            where( ~ !all(is.na(.))))
+                            where(~ !all(is.na(.))))
   df_p <- data %>% select(pnum, matches("^P\\d+$") &
-                            where( ~ !all(is.na(.))))
+                            where(~ !all(is.na(.))))
 
   # transpose the data and make pnum the row names for correlation calculation
   df_c_t <- df_c %>% column_to_rownames("pnum") %>% t()
@@ -51,12 +50,15 @@ get_dri_ic <- function(data) {
     )
 
   # join the two dataframes, filter for unique pairs, and create the final output
-  final_df <- long_corr_c %>%
+  ic <- long_corr_c %>%
     inner_join(long_corr_p, join_by(pnum1, pnum2)) %>%
     filter(pnum1 < pnum2) %>% # filter out duplicate pairs and self-correlations
-    mutate(pnums = paste0(pnum1, "-", pnum2)) %>%
-    select(pnums, pnum1, pnum2, ccor, pcor)
+    mutate(
+      pnums = paste0(pnum1, "-", pnum2),
+      dj = abs(ccor - pcor) / sqrt(2) # calculate modal orthogonal distance
+    ) %>%
+    select(pnums, pnum1, pnum2, ccor, pcor, dj)
 
-  return(final_df)
+  return(ic)
 
 }

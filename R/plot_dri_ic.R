@@ -1,8 +1,8 @@
 #' Plot DRI IC
 #'
 #' @param data IC
-#' @param x name of x variable
-#' @param y name of y variable
+#' @param x name of x variable (default = "ccor")
+#' @param y name of y variable (default = "pcor")
 #' @param title title of the plot (default = NA)
 #' @param suffix string pre, post (default = NA)
 #' @param DRI numeric value (default = NA)
@@ -12,14 +12,13 @@
 #' @export
 #'
 #' @examples
-#' dri_plot(data, x, y)
-dri_plot <- function(data,
-                     x,
-                     y,
+#' plot_dri_ic(data, x, y)
+plot_dri_ic <- function(data,
+                     x = "ccor",
+                     y = "pcor",
                      title = NA,
                      suffix = NA,
                      DRI = NA) {
-
   # create a grid
   grob <- grobTree(textGrob(
     paste0("DRI = ", DRI),
