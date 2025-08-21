@@ -17,8 +17,8 @@ plot_dri_ic <- function(ic,
                      DRI = NA) {
 
   # create title
-  plot_title <- if (title) title else "IC Plot"
-  plot_title <- if (suffix) paste0(plot_title, ": ", suffix) else plot_title
+  plot_title <- if (!is.na(title)) title else "IC Plot"
+  plot_title <- if (!is.na(suffix)) paste0(plot_title, ": ", suffix) else plot_title
 
   # create a DRI annotation
   grob <- grobTree(textGrob(
