@@ -19,14 +19,13 @@ Imports:
     dplyr,
     tibble,
     ggplot2,
+    rstatix,
     grid,
     psych,
     tidyr,
     rlang,
-    lifecycle,
-    cli,
     glue,
-    withr
+    lifecycle,
 RoxygenNote: 7.3.2
 Suggests: 
     knitr,

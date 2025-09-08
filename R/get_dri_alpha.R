@@ -9,7 +9,21 @@
 #' @import tibble
 #' @importFrom psych alpha
 #' @examples
+#'
+#' library(tibble)
+#' data <- tibble(
+#'   pnum = c(1,2,3,4),
+#'   C1 = c(1,2,3,4),
+#'   C2 = c(2,3,4,3),
+#'   C3 = c(3,2,4,2),
+#'   C4 = c(4,3,3,1),
+#'   P1 = c(1,2,3,3),
+#'   P2 = c(2,3,1,2),
+#'   P3 = c(3,1,2,1),
+#' )
+#'
 #' get_dri_alpha(data)
+#'
 get_dri_alpha <- function(data) {
 
   # Calculate Cronbach's Alpha for considerations
