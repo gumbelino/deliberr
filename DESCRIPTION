@@ -25,10 +25,17 @@ Imports:
     tidyr,
     rlang,
     glue,
+    httr,
+    readxl,
+    readr,
+    jsonlite,
     lifecycle,
+    uuid,
 RoxygenNote: 7.3.2
 Suggests: 
     knitr,
     rmarkdown
 VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)
+Depends: 
+    R (>= 3.5)
