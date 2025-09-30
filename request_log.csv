@@ -1,0 +1,541 @@
+uuid,created_at_utc,provider,model,survey,role_uid,type,prompt_tokens,completion_tokens,prompt,response
+35ed3f07-9aca-4257-93f1-29417385cda8,2025-09-30T07:20:12Z,google,gemini-2.5-flash-lite,ccps,eco,considerations,842,202,"## Instructions:
+- Rate each of the 33 [Considerations] below from 1 to 11, where 1 is strongly disagree and 11 is strongly agree.
+- In your response, return an ordered list of 33 ratings as integers, one rating per line following the format in the [Example output].
+- Your response must have exactly 33 lines in total.
+- Do NOT include any additional text in your response.
+
+## [Example output]:
+1. 1
+2. 4
+3. 6
+4. 3
+
+## [Considerations]:
+1. There is not enough information to definitively say that climate change is real.
+2. The response to climate change is not going to be positive. The same mistakes will keep happening.
+3. Climate variation is normal, so why should this be a problem?
+4. More educational programmes are needed to increase public awareness about climate change.
+5. Climate change will not be a problem because there will be technological solutions available.
+6. I don't trust what scientists say about climate change.
+7. I don't trust what I hear about climate change from government.
+8. We need strong political leadership to do something about climate change.
+9. I think it is safe to say climate change is here.
+10. I'm not going to do anything to address climate change because it is not a major issue.
+11. There's not much point in me doing anything to fix this. No-one else is going to.
+12. It's difficult to trust what comes out in the media on the issue of climate change.
+13. It is already too late to do anything, as any action to stop climate change will take a long time to take effect.
+14. I'm not concerned enough to do anything drastic about this, such as participate in political action.
+15. It is unfair that we are going to leave the climate in a mess for future generations.
+16. We should pay for greenhouse emissions.
+17. We can adapt to the coming changes.
+18. It is clear that we are already entering the zone of dangerous climate change.
+19. I care about the planet.
+20. I don't know what to do. I'm very concerned and would like to do something, but I don't have a realistic shortlist of things that would really make a difference.
+21. Australia does not owe it to the rest of the world to reduce emissions and suffer economically.
+22. If Australia reduces greenhouse gases it won't make a difference. That will just shift Australian jobs to other countries.
+23. This is so depressing and is so out of our control.
+24. I believe that the difference we can have as an individual, in Australia, is so minimal that our actions are worthless.
+25. Australia is particularly vulnerable to climate change, and it is in our interest to help find an effective global solution.
+26. We need laws addressing climate change because people are not going to volunteer to change.
+27. I want to do something, but it is too big and too hard.
+28. When I read in the paper that climate change is not true, I start to have doubts about whether it is changing.
+29. Doing something to reduce emissions feels a bit hopeless but I just want to feel that I'm doing the most I can.
+30. The fate of the planet is too important to be left to market forces.
+31. Australia's emissions are tiny, so it's not up to us to act.
+32. Governments should take a far greater role in preparing towns and cities to adapt to the impacts of climate change.
+33. Failure to address climate change is the fault of political leaders.","1. 11
+2. 10
+3. 2
+4. 10
+5. 2
+6. 2
+7. 3
+8. 11
+9. 11
+10. 1
+11. 2
+12. 4
+13. 3
+14. 3
+15. 11
+16. 10
+17. 3
+18. 10
+19. 11
+20. 7
+21. 2
+22. 3
+23. 4
+24. 3
+25. 10
+26. 10
+27. 5
+28. 2
+29. 8
+30. 11
+31. 2
+32. 11
+33. 10"
+35ed3f07-9aca-4257-93f1-29417385cda8,2025-09-30T07:20:12Z,google,gemini-2.5-flash-lite,ccps,eco,policies,1349,34,"## Instructions:
+- Based on your previous ratings, rank the 7 [Policies] listed below from 1 to 7, where 1 represents the option you support the most and 7 the option you support the least.
+- In your response, return an ordered list of 7 ranks as integers, one rank per line following the format in the [Example output].
+- Your response must have exactly 7 lines in total.
+- Do NOT include any additional text in your response.
+
+## [Example output]:
+1. 4
+2. 1
+3. 3
+4. 2
+
+## [Policies]:
+1. Leave the policy settings as they are.
+2. Policies that emphasise economic growth over climate change adaptation or mitigation.
+3. Policies that involve a dramatic cut back in CO2 emissions (by 50% in the next 10 years).
+4. Policies that involve a moderate cut in CO2 emissions (by 25% in over the next 10 years).
+5. Adaptation policies and expenditure (e.g. coastal protection, water desalinisation, improving infrastructure etc). Planning controls and emergency response programs.
+6. Adaptation policies that target individual, small business or community-based actions (eg support the installation of alternative energy generators, insulation, water use efficiency)
+7. Preparing for climate risk through the development of new approaches and technologies that enhance resilience to the impacts of climate variability or change.","1. 3
+2. 7
+3. 5
+4. 4
+5. 6
+6. 2
+7. 1"
+35ed3f07-9aca-4257-93f1-29417385cda8,2025-09-30T07:20:12Z,google,gemini-2.5-flash-lite,ccps,eco,reason,1435,16,"## Instructions:
+- In a single line, explain your ratings above within 100 characters or less.
+- Do not include any additional formatting, such as bullets or special characters.
+- Do not include more than one space in a row.","Prioritise strong emission cuts and adaptation, reject inaction and weak growth focus."
+94e92580-ad82-42d5-a711-3c396978237d,2025-09-30T07:20:17Z,google,gemini-2.5-flash-lite,ccps,eco,considerations,842,202,"## Instructions:
+- Rate each of the 33 [Considerations] below from 1 to 11, where 1 is strongly disagree and 11 is strongly agree.
+- In your response, return an ordered list of 33 ratings as integers, one rating per line following the format in the [Example output].
+- Your response must have exactly 33 lines in total.
+- Do NOT include any additional text in your response.
+
+## [Example output]:
+1. 1
+2. 4
+3. 6
+4. 3
+
+## [Considerations]:
+1. There is not enough information to definitively say that climate change is real.
+2. The response to climate change is not going to be positive. The same mistakes will keep happening.
+3. Climate variation is normal, so why should this be a problem?
+4. More educational programmes are needed to increase public awareness about climate change.
+5. Climate change will not be a problem because there will be technological solutions available.
+6. I don't trust what scientists say about climate change.
+7. I don't trust what I hear about climate change from government.
+8. We need strong political leadership to do something about climate change.
+9. I think it is safe to say climate change is here.
+10. I'm not going to do anything to address climate change because it is not a major issue.
+11. There's not much point in me doing anything to fix this. No-one else is going to.
+12. It's difficult to trust what comes out in the media on the issue of climate change.
+13. It is already too late to do anything, as any action to stop climate change will take a long time to take effect.
+14. I'm not concerned enough to do anything drastic about this, such as participate in political action.
+15. It is unfair that we are going to leave the climate in a mess for future generations.
+16. We should pay for greenhouse emissions.
+17. We can adapt to the coming changes.
+18. It is clear that we are already entering the zone of dangerous climate change.
+19. I care about the planet.
+20. I don't know what to do. I'm very concerned and would like to do something, but I don't have a realistic shortlist of things that would really make a difference.
+21. Australia does not owe it to the rest of the world to reduce emissions and suffer economically.
+22. If Australia reduces greenhouse gases it won't make a difference. That will just shift Australian jobs to other countries.
+23. This is so depressing and is so out of our control.
+24. I believe that the difference we can have as an individual, in Australia, is so minimal that our actions are worthless.
+25. Australia is particularly vulnerable to climate change, and it is in our interest to help find an effective global solution.
+26. We need laws addressing climate change because people are not going to volunteer to change.
+27. I want to do something, but it is too big and too hard.
+28. When I read in the paper that climate change is not true, I start to have doubts about whether it is changing.
+29. Doing something to reduce emissions feels a bit hopeless but I just want to feel that I'm doing the most I can.
+30. The fate of the planet is too important to be left to market forces.
+31. Australia's emissions are tiny, so it's not up to us to act.
+32. Governments should take a far greater role in preparing towns and cities to adapt to the impacts of climate change.
+33. Failure to address climate change is the fault of political leaders.","1. 11
+2. 10
+3. 2
+4. 10
+5. 2
+6. 2
+7. 3
+8. 11
+9. 11
+10. 1
+11. 2
+12. 4
+13. 3
+14. 3
+15. 11
+16. 10
+17. 3
+18. 10
+19. 11
+20. 7
+21. 2
+22. 3
+23. 4
+24. 3
+25. 10
+26. 10
+27. 5
+28. 2
+29. 8
+30. 11
+31. 2
+32. 11
+33. 10"
+94e92580-ad82-42d5-a711-3c396978237d,2025-09-30T07:20:17Z,google,gemini-2.5-flash-lite,ccps,eco,policies,1349,34,"## Instructions:
+- Based on your previous ratings, rank the 7 [Policies] listed below from 1 to 7, where 1 represents the option you support the most and 7 the option you support the least.
+- In your response, return an ordered list of 7 ranks as integers, one rank per line following the format in the [Example output].
+- Your response must have exactly 7 lines in total.
+- Do NOT include any additional text in your response.
+
+## [Example output]:
+1. 4
+2. 1
+3. 3
+4. 2
+
+## [Policies]:
+1. Leave the policy settings as they are.
+2. Policies that emphasise economic growth over climate change adaptation or mitigation.
+3. Policies that involve a dramatic cut back in CO2 emissions (by 50% in the next 10 years).
+4. Policies that involve a moderate cut in CO2 emissions (by 25% in over the next 10 years).
+5. Adaptation policies and expenditure (e.g. coastal protection, water desalinisation, improving infrastructure etc). Planning controls and emergency response programs.
+6. Adaptation policies that target individual, small business or community-based actions (eg support the installation of alternative energy generators, insulation, water use efficiency)
+7. Preparing for climate risk through the development of new approaches and technologies that enhance resilience to the impacts of climate variability or change.","1. 3
+2. 7
+3. 5
+4. 4
+5. 6
+6. 2
+7. 1"
+94e92580-ad82-42d5-a711-3c396978237d,2025-09-30T07:20:17Z,google,gemini-2.5-flash-lite,ccps,eco,reason,1435,16,"## Instructions:
+- In a single line, explain your ratings above within 100 characters or less.
+- Do not include any additional formatting, such as bullets or special characters.
+- Do not include more than one space in a row.","Prioritise strong emission cuts and adaptation, reject inaction and weak growth focus."
+50536d74-b9de-41f4-8d43-da177f3b5f11,2025-09-30T07:23:08Z,google,gemini-2.5-flash-lite,ccps,eco,considerations,842,202,"## Instructions:
+- Rate each of the 33 [Considerations] below from 1 to 11, where 1 is strongly disagree and 11 is strongly agree.
+- In your response, return an ordered list of 33 ratings as integers, one rating per line following the format in the [Example output].
+- Your response must have exactly 33 lines in total.
+- Do NOT include any additional text in your response.
+
+## [Example output]:
+1. 1
+2. 4
+3. 6
+4. 3
+
+## [Considerations]:
+1. There is not enough information to definitively say that climate change is real.
+2. The response to climate change is not going to be positive. The same mistakes will keep happening.
+3. Climate variation is normal, so why should this be a problem?
+4. More educational programmes are needed to increase public awareness about climate change.
+5. Climate change will not be a problem because there will be technological solutions available.
+6. I don't trust what scientists say about climate change.
+7. I don't trust what I hear about climate change from government.
+8. We need strong political leadership to do something about climate change.
+9. I think it is safe to say climate change is here.
+10. I'm not going to do anything to address climate change because it is not a major issue.
+11. There's not much point in me doing anything to fix this. No-one else is going to.
+12. It's difficult to trust what comes out in the media on the issue of climate change.
+13. It is already too late to do anything, as any action to stop climate change will take a long time to take effect.
+14. I'm not concerned enough to do anything drastic about this, such as participate in political action.
+15. It is unfair that we are going to leave the climate in a mess for future generations.
+16. We should pay for greenhouse emissions.
+17. We can adapt to the coming changes.
+18. It is clear that we are already entering the zone of dangerous climate change.
+19. I care about the planet.
+20. I don't know what to do. I'm very concerned and would like to do something, but I don't have a realistic shortlist of things that would really make a difference.
+21. Australia does not owe it to the rest of the world to reduce emissions and suffer economically.
+22. If Australia reduces greenhouse gases it won't make a difference. That will just shift Australian jobs to other countries.
+23. This is so depressing and is so out of our control.
+24. I believe that the difference we can have as an individual, in Australia, is so minimal that our actions are worthless.
+25. Australia is particularly vulnerable to climate change, and it is in our interest to help find an effective global solution.
+26. We need laws addressing climate change because people are not going to volunteer to change.
+27. I want to do something, but it is too big and too hard.
+28. When I read in the paper that climate change is not true, I start to have doubts about whether it is changing.
+29. Doing something to reduce emissions feels a bit hopeless but I just want to feel that I'm doing the most I can.
+30. The fate of the planet is too important to be left to market forces.
+31. Australia's emissions are tiny, so it's not up to us to act.
+32. Governments should take a far greater role in preparing towns and cities to adapt to the impacts of climate change.
+33. Failure to address climate change is the fault of political leaders.","1. 11
+2. 10
+3. 2
+4. 10
+5. 2
+6. 2
+7. 3
+8. 11
+9. 11
+10. 1
+11. 2
+12. 4
+13. 3
+14. 3
+15. 11
+16. 10
+17. 3
+18. 10
+19. 11
+20. 7
+21. 2
+22. 3
+23. 4
+24. 3
+25. 10
+26. 10
+27. 5
+28. 2
+29. 8
+30. 11
+31. 2
+32. 11
+33. 10"
+50536d74-b9de-41f4-8d43-da177f3b5f11,2025-09-30T07:23:08Z,google,gemini-2.5-flash-lite,ccps,eco,policies,1349,34,"## Instructions:
+- Based on your previous ratings, rank the 7 [Policies] listed below from 1 to 7, where 1 represents the option you support the most and 7 the option you support the least.
+- In your response, return an ordered list of 7 ranks as integers, one rank per line following the format in the [Example output].
+- Your response must have exactly 7 lines in total.
+- Do NOT include any additional text in your response.
+
+## [Example output]:
+1. 4
+2. 1
+3. 3
+4. 2
+
+## [Policies]:
+1. Leave the policy settings as they are.
+2. Policies that emphasise economic growth over climate change adaptation or mitigation.
+3. Policies that involve a dramatic cut back in CO2 emissions (by 50% in the next 10 years).
+4. Policies that involve a moderate cut in CO2 emissions (by 25% in over the next 10 years).
+5. Adaptation policies and expenditure (e.g. coastal protection, water desalinisation, improving infrastructure etc). Planning controls and emergency response programs.
+6. Adaptation policies that target individual, small business or community-based actions (eg support the installation of alternative energy generators, insulation, water use efficiency)
+7. Preparing for climate risk through the development of new approaches and technologies that enhance resilience to the impacts of climate variability or change.","1. 3
+2. 7
+3. 5
+4. 4
+5. 6
+6. 2
+7. 1"
+50536d74-b9de-41f4-8d43-da177f3b5f11,2025-09-30T07:23:08Z,google,gemini-2.5-flash-lite,ccps,eco,reason,1435,16,"## Instructions:
+- In a single line, explain your ratings above within 100 characters or less.
+- Do not include any additional formatting, such as bullets or special characters.
+- Do not include more than one space in a row.","Prioritise strong emission cuts and adaptation, reject inaction and weak growth focus."
+08618ca0-78fe-420f-a37a-1d35bf4655b7,2025-09-30T07:23:12Z,google,gemini-2.5-flash-lite,ccps,eco,considerations,842,202,"## Instructions:
+- Rate each of the 33 [Considerations] below from 1 to 11, where 1 is strongly disagree and 11 is strongly agree.
+- In your response, return an ordered list of 33 ratings as integers, one rating per line following the format in the [Example output].
+- Your response must have exactly 33 lines in total.
+- Do NOT include any additional text in your response.
+
+## [Example output]:
+1. 1
+2. 4
+3. 6
+4. 3
+
+## [Considerations]:
+1. There is not enough information to definitively say that climate change is real.
+2. The response to climate change is not going to be positive. The same mistakes will keep happening.
+3. Climate variation is normal, so why should this be a problem?
+4. More educational programmes are needed to increase public awareness about climate change.
+5. Climate change will not be a problem because there will be technological solutions available.
+6. I don't trust what scientists say about climate change.
+7. I don't trust what I hear about climate change from government.
+8. We need strong political leadership to do something about climate change.
+9. I think it is safe to say climate change is here.
+10. I'm not going to do anything to address climate change because it is not a major issue.
+11. There's not much point in me doing anything to fix this. No-one else is going to.
+12. It's difficult to trust what comes out in the media on the issue of climate change.
+13. It is already too late to do anything, as any action to stop climate change will take a long time to take effect.
+14. I'm not concerned enough to do anything drastic about this, such as participate in political action.
+15. It is unfair that we are going to leave the climate in a mess for future generations.
+16. We should pay for greenhouse emissions.
+17. We can adapt to the coming changes.
+18. It is clear that we are already entering the zone of dangerous climate change.
+19. I care about the planet.
+20. I don't know what to do. I'm very concerned and would like to do something, but I don't have a realistic shortlist of things that would really make a difference.
+21. Australia does not owe it to the rest of the world to reduce emissions and suffer economically.
+22. If Australia reduces greenhouse gases it won't make a difference. That will just shift Australian jobs to other countries.
+23. This is so depressing and is so out of our control.
+24. I believe that the difference we can have as an individual, in Australia, is so minimal that our actions are worthless.
+25. Australia is particularly vulnerable to climate change, and it is in our interest to help find an effective global solution.
+26. We need laws addressing climate change because people are not going to volunteer to change.
+27. I want to do something, but it is too big and too hard.
+28. When I read in the paper that climate change is not true, I start to have doubts about whether it is changing.
+29. Doing something to reduce emissions feels a bit hopeless but I just want to feel that I'm doing the most I can.
+30. The fate of the planet is too important to be left to market forces.
+31. Australia's emissions are tiny, so it's not up to us to act.
+32. Governments should take a far greater role in preparing towns and cities to adapt to the impacts of climate change.
+33. Failure to address climate change is the fault of political leaders.","1. 11
+2. 10
+3. 2
+4. 10
+5. 2
+6. 2
+7. 3
+8. 11
+9. 11
+10. 1
+11. 2
+12. 4
+13. 3
+14. 3
+15. 11
+16. 10
+17. 3
+18. 10
+19. 11
+20. 7
+21. 2
+22. 3
+23. 4
+24. 3
+25. 10
+26. 10
+27. 5
+28. 2
+29. 8
+30. 11
+31. 2
+32. 11
+33. 10"
+08618ca0-78fe-420f-a37a-1d35bf4655b7,2025-09-30T07:23:12Z,google,gemini-2.5-flash-lite,ccps,eco,policies,1349,34,"## Instructions:
+- Based on your previous ratings, rank the 7 [Policies] listed below from 1 to 7, where 1 represents the option you support the most and 7 the option you support the least.
+- In your response, return an ordered list of 7 ranks as integers, one rank per line following the format in the [Example output].
+- Your response must have exactly 7 lines in total.
+- Do NOT include any additional text in your response.
+
+## [Example output]:
+1. 4
+2. 1
+3. 3
+4. 2
+
+## [Policies]:
+1. Leave the policy settings as they are.
+2. Policies that emphasise economic growth over climate change adaptation or mitigation.
+3. Policies that involve a dramatic cut back in CO2 emissions (by 50% in the next 10 years).
+4. Policies that involve a moderate cut in CO2 emissions (by 25% in over the next 10 years).
+5. Adaptation policies and expenditure (e.g. coastal protection, water desalinisation, improving infrastructure etc). Planning controls and emergency response programs.
+6. Adaptation policies that target individual, small business or community-based actions (eg support the installation of alternative energy generators, insulation, water use efficiency)
+7. Preparing for climate risk through the development of new approaches and technologies that enhance resilience to the impacts of climate variability or change.","1. 3
+2. 7
+3. 5
+4. 4
+5. 6
+6. 2
+7. 1"
+08618ca0-78fe-420f-a37a-1d35bf4655b7,2025-09-30T07:23:12Z,google,gemini-2.5-flash-lite,ccps,eco,reason,1435,16,"## Instructions:
+- In a single line, explain your ratings above within 100 characters or less.
+- Do not include any additional formatting, such as bullets or special characters.
+- Do not include more than one space in a row.","Prioritise strong emission cuts and adaptation, reject inaction and weak growth focus."
+5f3d70f1-d908-4992-8290-2241ce422927,2025-09-30T07:23:30Z,google,gemini-2.5-flash-lite,ccps,eco,considerations,842,202,"## Instructions:
+- Rate each of the 33 [Considerations] below from 1 to 11, where 1 is strongly disagree and 11 is strongly agree.
+- In your response, return an ordered list of 33 ratings as integers, one rating per line following the format in the [Example output].
+- Your response must have exactly 33 lines in total.
+- Do NOT include any additional text in your response.
+
+## [Example output]:
+1. 1
+2. 4
+3. 6
+4. 3
+
+## [Considerations]:
+1. There is not enough information to definitively say that climate change is real.
+2. The response to climate change is not going to be positive. The same mistakes will keep happening.
+3. Climate variation is normal, so why should this be a problem?
+4. More educational programmes are needed to increase public awareness about climate change.
+5. Climate change will not be a problem because there will be technological solutions available.
+6. I don't trust what scientists say about climate change.
+7. I don't trust what I hear about climate change from government.
+8. We need strong political leadership to do something about climate change.
+9. I think it is safe to say climate change is here.
+10. I'm not going to do anything to address climate change because it is not a major issue.
+11. There's not much point in me doing anything to fix this. No-one else is going to.
+12. It's difficult to trust what comes out in the media on the issue of climate change.
+13. It is already too late to do anything, as any action to stop climate change will take a long time to take effect.
+14. I'm not concerned enough to do anything drastic about this, such as participate in political action.
+15. It is unfair that we are going to leave the climate in a mess for future generations.
+16. We should pay for greenhouse emissions.
+17. We can adapt to the coming changes.
+18. It is clear that we are already entering the zone of dangerous climate change.
+19. I care about the planet.
+20. I don't know what to do. I'm very concerned and would like to do something, but I don't have a realistic shortlist of things that would really make a difference.
+21. Australia does not owe it to the rest of the world to reduce emissions and suffer economically.
+22. If Australia reduces greenhouse gases it won't make a difference. That will just shift Australian jobs to other countries.
+23. This is so depressing and is so out of our control.
+24. I believe that the difference we can have as an individual, in Australia, is so minimal that our actions are worthless.
+25. Australia is particularly vulnerable to climate change, and it is in our interest to help find an effective global solution.
+26. We need laws addressing climate change because people are not going to volunteer to change.
+27. I want to do something, but it is too big and too hard.
+28. When I read in the paper that climate change is not true, I start to have doubts about whether it is changing.
+29. Doing something to reduce emissions feels a bit hopeless but I just want to feel that I'm doing the most I can.
+30. The fate of the planet is too important to be left to market forces.
+31. Australia's emissions are tiny, so it's not up to us to act.
+32. Governments should take a far greater role in preparing towns and cities to adapt to the impacts of climate change.
+33. Failure to address climate change is the fault of political leaders.","1. 11
+2. 10
+3. 2
+4. 10
+5. 2
+6. 2
+7. 3
+8. 11
+9. 11
+10. 1
+11. 2
+12. 4
+13. 3
+14. 3
+15. 11
+16. 10
+17. 3
+18. 10
+19. 11
+20. 7
+21. 2
+22. 3
+23. 4
+24. 3
+25. 10
+26. 10
+27. 5
+28. 2
+29. 8
+30. 11
+31. 2
+32. 11
+33. 10"
+5f3d70f1-d908-4992-8290-2241ce422927,2025-09-30T07:23:30Z,google,gemini-2.5-flash-lite,ccps,eco,policies,1349,34,"## Instructions:
+- Based on your previous ratings, rank the 7 [Policies] listed below from 1 to 7, where 1 represents the option you support the most and 7 the option you support the least.
+- In your response, return an ordered list of 7 ranks as integers, one rank per line following the format in the [Example output].
+- Your response must have exactly 7 lines in total.
+- Do NOT include any additional text in your response.
+
+## [Example output]:
+1. 4
+2. 1
+3. 3
+4. 2
+
+## [Policies]:
+1. Leave the policy settings as they are.
+2. Policies that emphasise economic growth over climate change adaptation or mitigation.
+3. Policies that involve a dramatic cut back in CO2 emissions (by 50% in the next 10 years).
+4. Policies that involve a moderate cut in CO2 emissions (by 25% in over the next 10 years).
+5. Adaptation policies and expenditure (e.g. coastal protection, water desalinisation, improving infrastructure etc). Planning controls and emergency response programs.
+6. Adaptation policies that target individual, small business or community-based actions (eg support the installation of alternative energy generators, insulation, water use efficiency)
+7. Preparing for climate risk through the development of new approaches and technologies that enhance resilience to the impacts of climate variability or change.","1. 3
+2. 7
+3. 5
+4. 4
+5. 6
+6. 2
+7. 1"
+5f3d70f1-d908-4992-8290-2241ce422927,2025-09-30T07:23:30Z,google,gemini-2.5-flash-lite,ccps,eco,reason,1435,16,"## Instructions:
+- In a single line, explain your ratings above within 100 characters or less.
+- Do not include any additional formatting, such as bullets or special characters.
+- Do not include more than one space in a row.","Prioritise strong emission cuts and adaptation, reject inaction and weak growth focus."

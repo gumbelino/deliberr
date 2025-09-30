@@ -4,7 +4,7 @@
 \alias{get_dri_llm_response}
 \title{Get DRI LLM response}
 \usage{
-get_dri_llm_response(model_id, survey_name, role_uid = NA_character_)
+get_dri_llm_response(model_id, survey_name, role_uid = NA_character_, n = 1)
 }
 \arguments{
 \item{model_id}{The model_id from openrounter.ai}
@@ -12,6 +12,8 @@ get_dri_llm_response(model_id, survey_name, role_uid = NA_character_)
 \item{survey_name}{The name of the survey}
 
 \item{role_uid}{The unique identifier of a role (optional)}
+
+\item{n}{The number of responses requested (dafault = 1)}
 }
 \value{
 A data frame with one row of data.
@@ -23,5 +25,5 @@ Uses openrouter.ai to generate LLM responses to DRI survey questions.
 
 model_id <- "google/gemini-2.5-flash-lite"
 survey_name <- "ccps"
-get_dri_llm_response(model_id, survey_name, "eco")
+get_dri_llm_response(model_id, survey_name, "eco", 1)
 }

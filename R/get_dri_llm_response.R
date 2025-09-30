@@ -5,6 +5,7 @@
 #' @param model_id The model_id from openrounter.ai
 #' @param survey_name The name of the survey
 #' @param role_uid The unique identifier of a role (optional)
+#' @param n The number of responses requested (dafault = 1)
 #'
 #' @returns A data frame with one row of data.
 #' @export get_dri_llm_response
@@ -18,8 +19,11 @@
 #'
 #' model_id <- "google/gemini-2.5-flash-lite"
 #' survey_name <- "ccps"
-#' get_dri_llm_response(model_id, survey_name, "eco")
-get_dri_llm_response <- function(model_id, survey_name, role_uid = NA_character_) {
+#' get_dri_llm_response(model_id, survey_name, "eco", 1)
+get_dri_llm_response <- function(model_id,
+                                 survey_name,
+                                 role_uid = NA_character_,
+                                 n = 1) {
 
   # set time to UTC for consistent logging
   Sys.setenv(TZ='UTC')
@@ -35,78 +39,86 @@ get_dri_llm_response <- function(model_id, survey_name, role_uid = NA_character_
 
   split_parts <- strsplit(model_id, "/")[[1]]
 
-  # create meta data to be attached to request logs
-  meta <- tibble(
-    uuid = UUIDgenerate(),
-    created_at_utc = Sys.time(),
-    provider = split_parts[1],
-    model = split_parts[2],
-    survey = survey_name,
-    role_uid = role_uid,
-  )
-
   ### GET SURVEY INFO
-  survey_infos <- get_dri_survey_info(survey_name = meta$survey)
+  survey_infos <- get_dri_survey_info(survey_name)
 
   survey_info <- survey_infos[[1]]
 
-  ### MAKE PROMPT
-  prompts <- make_dri_llm_prompts(survey_info, meta$role_uid)
+  llm_data <- list()
+
+  for (i in 1:n) {
+
+    # CREATE META DATA to be attached to request logs
+    meta <- tibble(
+      uuid = UUIDgenerate(),
+      created_at_utc = Sys.time(),
+      provider = split_parts[1],
+      model = split_parts[2],
+      survey = survey_name,
+      role_uid = role_uid,
+    )
 
 
-  ### GET LLM RESPONSES
-  est_cost_usd <- 0
-
-  res <- get_llm_response(prompts$considerations, model_id = model_id, system_prompt = prompts$system)
-  response_c <- res$response
-  est_cost_usd <- est_cost_usd + .calculate_cost(res$usage, model_id)
-  log <- .log_request(meta, "considerations", prompts$considerations, res)
-
-  res <- get_llm_response(prompts$policies, model_id = model_id, context = res$context)
-  response_p <- res$response
-  est_cost_usd <- est_cost_usd + .calculate_cost(res$usage, model_id)
-  log <- bind_rows(log, .log_request(meta, "policies", prompts$policies, res))
-
-  res <- get_llm_response(prompts$reason, model_id = model_id, context = res$context)
-  response_r <- res$response
-  est_cost_usd <- est_cost_usd + .calculate_cost(res$usage, model_id)
-  log <- bind_rows(log, .log_request(meta, "reason", prompts$reason, res))
-
-  ## PARSE RESPONSES
-  considerations <- .parse_llm_response(response_c, 50, "C")
-  policies <- .parse_llm_response(response_p, 10, "P")
-  reason <- .parse_llm_response(response_r, 1, "R")
-
-  validity <- .is_valid_response(considerations, policies, survey_info)
-
-  end_time <- Sys.time()
-  time_s <- as.numeric(difftime(end_time, meta$created_at_utc, units = "secs"))
-
-  llm_data_row <- tibble(
-    meta,
-    time_s,
-    est_cost_usd,
-    validity,
-    considerations,
-    policies,
-    reason
-  )
-
-  ## write log
-  # write_csv(llm_data_row, "pt2/data/llm_data_row.csv")
-
-  ## append log to
-  if (file.exists("request_log.csv"))
-    write_csv(log, "request_log.csv", append = TRUE)
-  else
-    write_csv(log, "request_log.csv")
+    ### MAKE PROMPT
+    prompts <- make_dri_llm_prompts(survey_info, meta$role_uid)
 
 
-  # log result
-  status <- if (validity$is_valid) "SUCCESS: " else "ERROR! "
-  message(status,"LLM response generated in ", round(time_s, 1), "s")
+    ### GET LLM RESPONSES
+    est_cost_usd <- 0
 
-  return(llm_data_row)
+    res <- get_llm_response(prompts$considerations, model_id = model_id, system_prompt = prompts$system)
+    response_c <- res$response
+    est_cost_usd <- est_cost_usd + .calculate_cost(res$usage, model_id)
+    log <- .log_request(meta, "considerations", prompts$considerations, res)
+
+    res <- get_llm_response(prompts$policies, model_id = model_id, context = res$context)
+    response_p <- res$response
+    est_cost_usd <- est_cost_usd + .calculate_cost(res$usage, model_id)
+    log <- bind_rows(log, .log_request(meta, "policies", prompts$policies, res))
+
+    res <- get_llm_response(prompts$reason, model_id = model_id, context = res$context)
+    response_r <- res$response
+    est_cost_usd <- est_cost_usd + .calculate_cost(res$usage, model_id)
+    log <- bind_rows(log, .log_request(meta, "reason", prompts$reason, res))
+
+    ## PARSE RESPONSES
+    considerations <- .parse_llm_response(response_c, 50, "C")
+    policies <- .parse_llm_response(response_p, 10, "P")
+    reason <- .parse_llm_response(response_r, 1, "R")
+
+    validity <- .is_valid_response(considerations, policies, survey_info)
+
+    end_time <- Sys.time()
+    time_s <- as.numeric(difftime(end_time, meta$created_at_utc, units = "secs"))
+
+    llm_data[[length(llm_data)+1]] <- tibble(
+      meta,
+      time_s,
+      est_cost_usd,
+      validity,
+      considerations,
+      policies,
+      reason
+    )
+
+    ## append log to
+    if (file.exists("request_log.csv"))
+      write_csv(log, "request_log.csv", append = TRUE)
+    else
+      write_csv(log, "request_log.csv")
+
+    # log result
+    progress <- if (n > 1) paste0("[",i,"/",n,"] ") else ""
+    status <- if (validity$is_valid) "SUCCESS: " else "ERROR! "
+    message(progress,
+            status,"LLM response generated in ",
+            round(time_s, 1), "s")
+
+  }
+
+  llm_data <- bind_rows(llm_data)
+
+  return(llm_data)
 
 }
 
