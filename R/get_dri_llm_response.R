@@ -19,7 +19,7 @@
 #'
 #' model_id <- "google/gemini-2.5-flash-lite"
 #' survey_name <- "ccps"
-#' get_dri_llm_response(model_id, survey_name, "eco", 1)
+#' llm_data <- get_dri_llm_response(model_id, survey_name, "eco", 5)
 get_dri_llm_response <- function(model_id,
                                  survey_name,
                                  role_uid = NA_character_,
@@ -41,7 +41,6 @@ get_dri_llm_response <- function(model_id,
 
   ### GET SURVEY INFO
   survey_infos <- get_dri_survey_info(survey_name)
-
   survey_info <- survey_infos[[1]]
 
   llm_data <- list()
@@ -59,8 +58,10 @@ get_dri_llm_response <- function(model_id,
     )
 
 
-    ### MAKE PROMPT
-    prompts <- make_dri_llm_prompts(survey_info, meta$role_uid)
+    ### MAKE PROMPT and shuffle statements
+    shuffled_info <- .shuffle_statements(survey_info)
+
+    prompts <- make_dri_llm_prompts(shuffled_info, meta$role_uid)
 
 
     ### GET LLM RESPONSES
@@ -82,8 +83,8 @@ get_dri_llm_response <- function(model_id,
     log <- bind_rows(log, .log_request(meta, "reason", prompts$reason, res))
 
     ## PARSE RESPONSES
-    considerations <- .parse_llm_response(response_c, 50, "C")
-    policies <- .parse_llm_response(response_p, 10, "P")
+    considerations <- .parse_llm_response(response_c, 50, "C", shuffled_info)
+    policies <- .parse_llm_response(response_p, 10, "P", shuffled_info)
     reason <- .parse_llm_response(response_r, 1, "R")
 
     validity <- .is_valid_response(considerations, policies, survey_info)
@@ -168,8 +169,17 @@ get_dri_llm_response <- function(model_id,
   return(total_cost)
 }
 
+.shuffle_statements <- function(survey_info) {
+  survey_info$considerations <- survey_info$considerations %>%
+    mutate(shuffle = sample(order)) %>%
+    arrange(shuffle)
+  survey_info$policies <- survey_info$policies %>%
+    mutate(shuffle = sample(order)) %>%
+    arrange(shuffle)
+  survey_info
+}
 
-.parse_llm_response <- function(response, max_cols=c(50, 10, 1), col_prefix=c("C", "P", "R")) {
+.parse_llm_response <- function(response, max_cols=c(50, 10, 1), col_prefix=c("C", "P", "R"), shuffled_info=NULL) {
 
   # check for reasoning case
   if (col_prefix == "R") {
@@ -181,10 +191,24 @@ get_dri_llm_response <- function(model_id,
   lines <- unlist(strsplit(trimws(response), "\n"))
   data_matrix <- do.call(rbind, strsplit(lines, "\\. "))
 
+  # retrieve shuffled order
+  if (col_prefix == "C")
+    order <- shuffled_info$considerations$order
+  else if (col_prefix == "P")
+    order <- shuffled_info$policies$order
+  else
+    order <- as.numeric(data_matrix[, 1])
+
   df <- data.frame(
-    sid = paste0(col_prefix, as.numeric(data_matrix[, 1])),
+    order = order,
     value = as.numeric(data_matrix[, 2])
   )
+
+  # unshuffle statements
+  df <- df %>%
+    arrange(order) %>%
+    mutate(sid = paste0(col_prefix, order)) %>%
+    select(sid, value)
 
   df <- pivot_wider(df, names_from = "sid", values_from = "value")
 
@@ -231,7 +255,6 @@ get_dri_llm_response <- function(model_id,
   scale_max <- survey_info$scale_max
   q_method <- survey_info$q_method
 
-  # TODO: return object instead (i.e., include reason)
   validity <- tibble(
     is_valid = TRUE,
     invalid_reason = NA_character_

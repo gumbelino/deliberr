@@ -25,6 +25,7 @@ make_dri_llm_prompts <- function(survey_info, role_uid = NA_character_) {
   scale_max <- survey_info$scale_max
   q_method <- if (survey_info$q_method) prompt_q else ""
 
+  # ensure statements are shuffled
   c_df <- survey_info$considerations
   p_df <- survey_info$policies
 
@@ -32,8 +33,8 @@ make_dri_llm_prompts <- function(survey_info, role_uid = NA_character_) {
   n_p <- nrow(p_df)
 
   ## get statements
-  c_statements <- paste(paste0(c_df$order, ". ", c_df$statement), collapse = "\n")
-  p_statements <- paste(paste0(p_df$order, ". ", p_df$statement), collapse = "\n")
+  c_statements <- paste(paste0(c_df$shuffle, ". ", c_df$statement), collapse = "\n")
+  p_statements <- paste(paste0(p_df$shuffle, ". ", p_df$statement), collapse = "\n")
 
   ## make prompts
   prompt_c <-

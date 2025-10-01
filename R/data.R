@@ -22,3 +22,13 @@
 #' \code{uid}, \code{type}, \code{article}, \code{role} and \code{description}.
 "roles"
 
+#' Human data
+#'
+#' Pre- and post-deliberation DRI survey data from 24 deliberation cases around
+#' the world. Some cases used the same survey.
+#'
+#' @format A data frame with 67 variables, including
+#' \code{survey}, \code{case}, \code{stage_id}, \code{C1...C50} and \code{P1...P10}.
+"human_data"
+
+
