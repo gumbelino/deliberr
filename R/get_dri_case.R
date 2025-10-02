@@ -7,7 +7,9 @@
 #' DRI formula
 #' @param method a character string specifying the method for statistical testing,
 #' must be one of "wilcox" (default) or "t.test"
-#' @param alternative a character string specifying the alternative hypothesis, must be one of "greater" (default), "two.sided" or "less". You can specify just the initial letter.
+#' @param alternative a character string specifying the alternative hypothesis,
+#' must be one of "greater" (default), "two.sided" or "less".
+#' You can specify just the initial letter.
 #'
 #' @returns a tibble with with the following components: \code{case}, \code{pre},
 #' \code{post}, \code{delta}, \code{p_value}, and \code{significance}.

@@ -15,7 +15,9 @@ DRI formula}
 \item{method}{a character string specifying the method for statistical testing,
 must be one of "wilcox" (default) or "t.test"}
 
-\item{alternative}{a character string specifying the alternative hypothesis, must be one of "greater" (default), "two.sided" or "less". You can specify just the initial letter.}
+\item{alternative}{a character string specifying the alternative hypothesis,
+must be one of "greater" (default), "two.sided" or "less".
+You can specify just the initial letter.}
 }
 \value{
 a tibble with with the following components: \code{case}, \code{pre},
@@ -26,7 +28,7 @@ Get the DRI of the specified case in human data
 }
 \examples{
 
-case <- "Citizen Parliamentarian"
 get_dri_case("Activate")
+
 
 }
