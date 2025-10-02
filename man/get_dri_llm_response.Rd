@@ -25,5 +25,5 @@ Uses openrouter.ai to generate LLM responses to DRI survey questions.
 
 model_id <- "google/gemini-2.5-flash-lite"
 survey_name <- "ccps"
-llm_data <- get_dri_llm_response(model_id, survey_name, "eco")
+llm_data <- get_dri_llm_response(model_id, survey_name, "eco", 5)
 }

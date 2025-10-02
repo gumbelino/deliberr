@@ -23,6 +23,12 @@
 #' )
 #' get_dri_ic(data)
 get_dri_ic <- function(data) {
+
+  # create sequential participant numbers if the original data doesn't have it
+  if (!"pnum" %in% colnames(data)) {
+    data$pnum <- rownames(data)
+  }
+
   # create separate dataframes for C and P columns
   df_c <- data %>% select(pnum, matches("^C\\d+$") &
                             where(~ !all(is.na(.))))
