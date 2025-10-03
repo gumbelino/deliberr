@@ -21,5 +21,5 @@ open_gui <- function() {
     stop("Could not find example directory. Try re-installing `deliberr`.", call. = FALSE)
   }
 
-  shiny::runApp(dir, display.mode = "normal")
+  shiny::runApp(dir, launch.browser = TRUE, display.mode = "normal")
 }
