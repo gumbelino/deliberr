@@ -11,6 +11,7 @@
 library(shiny)
 library(deliberr)
 library(dplyr)
+library(ggplot2)
 library(DT)
 library(gridExtra) # Added for grid.arrange
 
