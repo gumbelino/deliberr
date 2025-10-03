@@ -19,7 +19,9 @@
 #'
 #' model_id <- "google/gemini-2.5-flash-lite"
 #' survey_name <- "ccps"
+#' \dontrun{
 #' llm_data <- get_dri_llm_response(model_id, survey_name, "eco", 5)
+#' }
 get_dri_llm_response <- function(model_id,
                                  survey_name,
                                  role_uid = NA_character_,

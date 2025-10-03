@@ -18,8 +18,6 @@ Imports:
     stats,
     dplyr,
     shiny,
-    DT,
-    gridExtra,
     tibble,
     ggplot2,
     rstatix,
