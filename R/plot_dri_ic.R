@@ -4,7 +4,9 @@
 #' @param title title of the plot (default = NA)
 #' @param suffix string pre, post (default = NA)
 #' @param dri numeric value (default = NA)
-#' @import ggplot2 grid
+#' @import grid
+#' @rawNamespace import(ggplot2, except = alpha)
+#' @importFrom rlang .data
 #'
 #' @returns plot
 #' @export
@@ -48,12 +50,12 @@ plot_dri_ic <- function(ic,
   ))
 
   plot <-
-    ggplot(ic, aes(x = ccor, y = pcor)) +
+    ggplot(ic, aes(x = .data$ccor, y = .data$pcor)) +
     geom_jitter(
       width = 0.02,
       height = 0.02,
       show.legend = TRUE,
-      col = rgb(0.1, 0, 1, 0.6),
+      col = grDevices::rgb(0.1, 0, 1, 0.6),
       lwd = 3
     ) +
     xlim(-1.1, 1.1) + ylim(-1.1, 1.1) +

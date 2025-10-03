@@ -41,7 +41,7 @@ get_dri_alpha <- function(data) {
     if (c_all_equal) {
       alpha_considerations <- 1
     } else {
-      alpha_considerations <- alpha(
+      alpha_considerations <- psych::alpha(
         considerations_data,
         check.keys = TRUE,
         warnings = FALSE,
@@ -69,7 +69,7 @@ get_dri_alpha <- function(data) {
 
     # normal case, calculate alpha
     else {
-      alpha_policies <- alpha(
+      alpha_policies <- psych::alpha(
         policies_data,
         check.keys = TRUE,
         warnings = FALSE,

@@ -14,11 +14,10 @@
 #'        history. Defaults to NULL for a new conversation.
 #' @param temperature A numeric value between 0 and 2 that controls the randomness
 #'        of the model's output. Higher values mean more creative responses.
-#' @param context_length An integer specifying the maximum number of tokens
-#'        (words and punctuation) in the response. This is also known as `max_tokens`.
-#' @param reasoning A logical toggle (TRUE/FALSE). When set to TRUE, it hints to
+#' @param enable_reasoning A logical toggle (TRUE/FALSE). When set to TRUE, it hints to
 #'        the model that it should "think" or use reasoning steps. The exact
 #'        behavior is model-dependent. It works by setting `tool_choice` to `"auto"`.
+#' @param reasoning_effort A character string indicating the reasoning effort.
 #' @param api_key A string containing your OpenRouter.ai API key. It is strongly
 #'        recommended to use the default, which retrieves the key from an
 #'        environment variable named `OPENROUTER_API_KEY`.
@@ -41,7 +40,8 @@
 #' )
 #' cat("--- Initial Response ---\n")
 #' cat(first_turn$response)
-#' cat(paste0("\n--- Total Cost: $", format(first_turn$cost$total_cost, scientific = FALSE), " ---\n"))
+#' cat(paste0("\n--- Total Cost: $",
+#' format(first_turn$cost$total_cost, scientific = FALSE), " ---\n"))
 #'
 #' # Follow-up question using the context from the first turn
 #' second_turn <- get_llm_response(
@@ -51,7 +51,8 @@
 #' )
 #' cat("\n\n--- Follow-up Response ---\n")
 #' cat(second_turn$response)
-#' cat(paste0("\n--- Total Cost: $", format(second_turn$cost$total_cost, scientific = FALSE), " ---\n"))
+#' cat(paste0("\n--- Total Cost: $", format(second_turn$cost$total_cost,
+#' scientific = FALSE), " ---\n"))
 #' }
 get_llm_response <- function(user_prompt,
                              model_id = "x-ai/grok-3-mini",

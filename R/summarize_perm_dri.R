@@ -5,6 +5,7 @@
 #'
 #' @importFrom rstatix get_summary_stats
 #' @import dplyr
+#' @importFrom rlang .data
 #'
 #' @returns summary of permutation test
 #' @seealso [rstatix::get_summary_stats()] for values of "type".
@@ -37,13 +38,13 @@ summarize_perm_dri <- function(perms, type = "common") {
 
   # get permutation summary
   perm_summ <- perm_dri %>%
-    mutate(perm_dri = dri) %>%
+    mutate(perm_dri = .data$dri) %>%
     select(perm_dri) %>%
     get_summary_stats(type = type) %>%
-    select(-variable)
+    select(-.data$variable)
 
   # calculate p
-  p <- nrow(perm_dri %>% filter(dri >= obs_dri)) / nrow(perm_dri)
+  p <- nrow(perm_dri %>% filter(.data$dri >= obs_dri)) / nrow(perm_dri)
 
   # compile summary
   summ <- tibble(

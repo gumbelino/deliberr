@@ -1,7 +1,7 @@
 Package: deliberr
 Type: Package
 Title: Deliberation in R
-Version: 0.1.0
+Version: 0.2.1
 Authors@R: c(
     person(
       "Gustavo", "Kreia Umbelino",

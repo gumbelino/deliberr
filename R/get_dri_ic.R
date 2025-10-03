@@ -8,6 +8,7 @@
 #' @importFrom stats cor
 #' @importFrom tibble column_to_rownames
 #' @importFrom tidyr pivot_longer
+#' @importFrom rlang .data
 #' @examples
 #'
 #' library(tibble)
@@ -30,9 +31,9 @@ get_dri_ic <- function(data) {
   }
 
   # create separate dataframes for C and P columns
-  df_c <- data %>% select(pnum, matches("^C\\d+$") &
+  df_c <- data %>% select(.data$pnum, matches("^C\\d+$") &
                             where(~ !all(is.na(.))))
-  df_p <- data %>% select(pnum, matches("^P\\d+$") &
+  df_p <- data %>% select(.data$pnum, matches("^P\\d+$") &
                             where(~ !all(is.na(.))))
 
   # transpose the data and make pnum the row names for correlation calculation
@@ -53,7 +54,7 @@ get_dri_ic <- function(data) {
   # reshape from wide to long format
   long_corr_c <- df_corr_c %>%
     pivot_longer(
-      cols = -pnum1,
+      cols = -.data$pnum1,
       names_to = "pnum2",
       values_to = "ccor",
       names_transform = as.numeric
@@ -61,7 +62,7 @@ get_dri_ic <- function(data) {
 
   long_corr_p <- df_corr_p %>%
     pivot_longer(
-      cols = -pnum1,
+      cols = -.data$pnum1,
       names_to = "pnum2",
       values_to = "pcor",
       names_transform = as.numeric
@@ -70,12 +71,12 @@ get_dri_ic <- function(data) {
   # join the two dataframes, filter for unique pairs, and create the final output
   ic <- long_corr_c %>%
     inner_join(long_corr_p, join_by(pnum1, pnum2)) %>%
-    filter(pnum1 < pnum2) %>% # filter out duplicate pairs and self-correlations
+    filter(.data$pnum1 < .data$pnum2) %>% # filter out duplicate pairs and self-correlations
     mutate(
-      pnums = paste0(pnum1, "-", pnum2),
-      dj = abs(ccor - pcor) / sqrt(2) # calculate modal orthogonal distance
+      pnums = paste0(.data$pnum1, "-", .data$pnum2),
+      dj = abs(.data$ccor - .data$pcor) / sqrt(2) # calculate modal orthogonal distance
     ) %>%
-    select(pnums, pnum1, pnum2, ccor, pcor, dj)
+    select(.data$pnums, .data$pnum1, .data$pnum2, .data$ccor, .data$pcor, .data$dj)
 
   return(ic)
 

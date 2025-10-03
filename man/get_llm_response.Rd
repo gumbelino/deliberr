@@ -31,16 +31,15 @@ history. Defaults to NULL for a new conversation.}
 \item{temperature}{A numeric value between 0 and 2 that controls the randomness
 of the model's output. Higher values mean more creative responses.}
 
+\item{enable_reasoning}{A logical toggle (TRUE/FALSE). When set to TRUE, it hints to
+the model that it should "think" or use reasoning steps. The exact
+behavior is model-dependent. It works by setting \code{tool_choice} to \code{"auto"}.}
+
+\item{reasoning_effort}{A character string indicating the reasoning effort.}
+
 \item{api_key}{A string containing your OpenRouter.ai API key. It is strongly
 recommended to use the default, which retrieves the key from an
 environment variable named \code{OPENROUTER_API_KEY}.}
-
-\item{context_length}{An integer specifying the maximum number of tokens
-(words and punctuation) in the response. This is also known as \code{max_tokens}.}
-
-\item{reasoning}{A logical toggle (TRUE/FALSE). When set to TRUE, it hints to
-the model that it should "think" or use reasoning steps. The exact
-behavior is model-dependent. It works by setting \code{tool_choice} to \code{"auto"}.}
 }
 \value{
 A list containing three elements: 'response', 'context', and 'cost'.
@@ -65,7 +64,8 @@ first_turn <- get_llm_response(
 )
 cat("--- Initial Response ---\n")
 cat(first_turn$response)
-cat(paste0("\n--- Total Cost: $", format(first_turn$cost$total_cost, scientific = FALSE), " ---\n"))
+cat(paste0("\n--- Total Cost: $",
+format(first_turn$cost$total_cost, scientific = FALSE), " ---\n"))
 
 # Follow-up question using the context from the first turn
 second_turn <- get_llm_response(
@@ -75,6 +75,7 @@ second_turn <- get_llm_response(
 )
 cat("\n\n--- Follow-up Response ---\n")
 cat(second_turn$response)
-cat(paste0("\n--- Total Cost: $", format(second_turn$cost$total_cost, scientific = FALSE), " ---\n"))
+cat(paste0("\n--- Total Cost: $", format(second_turn$cost$total_cost,
+scientific = FALSE), " ---\n"))
 }
 }

@@ -19,6 +19,7 @@
 #'
 #' @importFrom stats wilcox.test t.test
 #' @import tibble dplyr
+#' @importFrom rlang .data
 #'
 #' @examples
 #'
@@ -28,8 +29,8 @@
 get_dri_case <- function(case, adjusted = TRUE, method = "wilcox", alternative = "greater") {
 
   # get pre/post data
-  data_pre <- human_data %>% filter(case == !!case, stage_id == 1)
-  data_post <- human_data %>% filter(case == !!case, stage_id == 2)
+  data_pre <- deliberr::human_data %>% filter(case == !!case, .data$stage_id == 1)
+  data_post <- deliberr::human_data %>% filter(case == !!case, .data$stage_id == 2)
 
   # get ic
   ic_pre <- get_dri_ic(data_pre)
