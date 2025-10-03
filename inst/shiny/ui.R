@@ -8,6 +8,7 @@
 #
 
 library(shiny)
+library(deliberr)
 library(DT)
 
 # --- User Interface (UI) Definition ---
