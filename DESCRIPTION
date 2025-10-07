@@ -27,6 +27,7 @@ Imports:
     rlang,
     glue,
     httr,
+    purrr,
     readxl,
     readr,
     jsonlite,

@@ -4,6 +4,7 @@
 #' @param title title of the plot (default = NA)
 #' @param suffix string pre, post (default = NA)
 #' @param dri numeric value (default = NA)
+#' @param caption a string to be displayed under the plot
 #' @import grid
 #' @rawNamespace import(ggplot2, except = alpha)
 #' @importFrom rlang .data
@@ -28,12 +29,13 @@
 #' ic <- get_dri_ic(data)
 #' plot_dri_ic(ic)
 plot_dri_ic <- function(ic,
-                     title = NA,
-                     suffix = NA,
-                     dri = NA) {
+                     title = NA_character_,
+                     suffix = NA_character_,
+                     dri = NA_real_,
+                     caption = NULL) {
 
   # create title
-  plot_title <- if (!is.na(title)) title else "IC Plot"
+  plot_title <- if (!is.na(title)) title else "Intersubjective Correlations (IC) Plot"
   plot_title <- if (!is.na(suffix)) paste0(plot_title, ": ", suffix) else plot_title
 
   # create a DRI annotation
@@ -44,40 +46,44 @@ plot_dri_ic <- function(ic,
     hjust = 0,
     gp = gpar(
       col = "red",
-      fontsize = 13,
-      fontface = "italic"
+      fontsize = 12
+      # fontface = "italic"
     )
   ))
 
+  dri <- if (is.na(dri)) get_dri(ic) else dri
+
   plot <-
     ggplot(ic, aes(x = .data$ccor, y = .data$pcor)) +
+    geom_abline(
+      intercept = 0,
+      slope = 1,
+      colour = "black"
+    ) +
+    geom_hline(yintercept = 0,
+               color = "black",
+               linetype="dashed") +
+    geom_vline(xintercept = 0,
+               color = "black",
+               linetype="dashed") +
     geom_jitter(
       width = 0.02,
       height = 0.02,
       show.legend = TRUE,
-      col = grDevices::rgb(0.1, 0, 1, 0.6),
-      lwd = 3
+      col = "black"
     ) +
     xlim(-1.1, 1.1) + ylim(-1.1, 1.1) +
-    theme(panel.grid.major = element_blank(),
-          panel.grid.minor = element_blank()) +
-    geom_abline(
-      intercept = 0,
-      slope = 1,
-      colour = "white",
-      lwd = 1
-    ) +
-    geom_hline(yintercept = 0,
-               color = "white",
-               lwd = 1) +
-    geom_vline(xintercept = 0,
-               color = "white",
-               lwd = 1) +
-    labs(x = "Intersubjective Agreement - Considerations", y = "Intersubjective Agreement - Preferences") +
+    # theme(panel.grid.major = element_blank(),
+    #       panel.grid.minor = element_blank()) +
+    labs(x = "Intersubjective Agreement - Considerations",
+         y = "Intersubjective Agreement - Preferences",
+         subtitle = paste0("DRI = ", round(dri, 3)),
+         caption = caption) +
     ggtitle(plot_title) +
-    annotation_custom(grob) +
-    geom_density_2d_filled(inherit.aes = T, alpha = 0.3) +
-    geom_density_2d(colour = "black") +
+    # annotation_custom(grob) +
+    # geom_density_2d_filled(inherit.aes = T, alpha = 0.4) +
+    geom_density_2d(colour = "#FF0000AA") +
+    theme_classic(base_size = 16) +
     theme(legend.position = "none")
 
   return(plot)
