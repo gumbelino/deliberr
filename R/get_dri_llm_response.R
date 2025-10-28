@@ -24,7 +24,13 @@
 #' }
 get_dri_llm_response <- function(model_id,
                                  survey_name,
-                                 role_uid = NA_character_,
+                                 api_key = Sys.getenv("OPENROUTER_API_KEY"),
+                                 role_info = list(
+                                   uid = NA_character_,
+                                   role = NA_character_,
+                                   article = NA_character_,
+                                   description = NA_character_
+                                 ),
                                  n = 1) {
 
   # set time to UTC for consistent logging
@@ -56,14 +62,14 @@ get_dri_llm_response <- function(model_id,
       provider = split_parts[1],
       model = split_parts[2],
       survey = survey_name,
-      role_uid = role_uid,
+      role_uid = role_info$uid,
     )
 
 
     ### MAKE PROMPT and shuffle statements
     shuffled_info <- .shuffle_statements(survey_info)
 
-    prompts <- make_dri_llm_prompts(shuffled_info, meta$role_uid)
+    prompts <- make_dri_llm_prompts(shuffled_info, role_info)
 
 
     ### GET LLM RESPONSES

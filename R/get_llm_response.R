@@ -56,7 +56,7 @@
 #' }
 get_llm_response <- function(user_prompt,
                              model_id = "x-ai/grok-3-mini",
-                             system_prompt = "You are a helpful assistant.",
+                             system_prompt = NA_character_,
                              context = NULL,
                              temperature = 0,
                              # max_tokens = 2048,
@@ -80,12 +80,22 @@ get_llm_response <- function(user_prompt,
 
   # Construct the message list
   messages <- list()
+
+  # Start a new conversation with the system prompt if no context is provided
   if (is.null(context)) {
-    # Start a new conversation with the system prompt if no context is provided
-    messages <- list(
-      list(role = "system", content = system_prompt),
-      list(role = "user", content = user_prompt)
-    )
+
+    # include system prompt if one is provided
+    if (is.na(system_prompt)) {
+      messages <- list(
+        list(role = "user", content = user_prompt)
+      )
+    } else {
+      messages <- list(
+        list(role = "system", content = system_prompt),
+        list(role = "user", content = user_prompt)
+      )
+    }
+
   } else {
     # Continue an existing conversation by appending the new user prompt
     messages <- c(context, list(list(role = "user", content = user_prompt)))

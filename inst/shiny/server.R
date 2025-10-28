@@ -44,40 +44,8 @@ function(input, output, session) {
   # 1. Reactive value to store the accumulated LLM results (POSIXct for date/time)
   llm_results <- reactiveVal(initial_llm_data_structure)
 
-  # Function to handle loading data from llm_data.csv (Reusable for startup and refresh)
-  load_llm_data <- function() {
-    if (file.exists("llm_data.csv")) {
-      tryCatch({
-        # Use read_csv for robust reading of the data frame
-        data <- read_csv("llm_data.csv", show_col_types = FALSE)
-
-        if (nrow(data) > 0) {
-          llm_results(data)
-          showNotification(paste("Loaded", nrow(data), "records from llm_data.csv."),
-                           type = "message")
-        } else {
-          llm_results(initial_llm_data_structure)
-          showNotification("llm_data.csv is empty. Starting fresh.", type = "warning")
-        }
-      }, error = function(e) {
-        llm_results(initial_llm_data_structure)
-        showNotification(
-          paste(
-            "Error loading llm_data.csv:",
-            conditionMessage(e),
-            ". Starting fresh."
-          ),
-          type = "error"
-        )
-      })
-    } else {
-      llm_results(initial_llm_data_structure)
-      showNotification("llm_data.csv not found. Starting fresh.", type = "default")
-    }
-  }
-
-  # ** INITIAL LOAD: Load existing data when the application starts **
-  load_llm_data()
+  # 2. Reactive value to store all roles (initial deliberr roles + custom roles)
+  roles_data <- reactiveVal(deliberr::roles)
 
   # Initialize the model dropdown with the prepared choices
   observe({
@@ -85,7 +53,350 @@ function(input, output, session) {
                       "model_id",
                       choices = model_choices_list,
                       selected = default_model)
+
+    # Initialize role creation dropdowns using current roles_data
+    current_roles <- roles_data()
+    updateSelectInput(session,
+                      "new_role_type",
+                      choices = sort(unique(current_roles$type)))
+    updateSelectInput(
+      session,
+      "new_role_article",
+      choices = sort(unique(current_roles$article))
+    )
   }) # Run only once on startup
+
+
+  # --- LLM Roles Management Logic (NEW) ---
+
+  # Dynamic Updates for Role Creation and LLM Data Generation Tabs
+  observe({
+    current_roles <- roles_data()
+
+    # 1. Update Role UID dropdown in the "LLM Data" tab
+    role_choices <- sort(current_roles$uid)
+    updateSelectInput(session, "role_uid", choices = role_choices)
+
+    # 2. Update Role UID filter in the "LLM Analysis" tab
+    # role_filter_choices <- c("all", role_choices)
+    # updateSelectizeInput(
+    #   session,
+    #   "llm_role_filter",
+    #   choices = role_filter_choices,
+    #   selected = input$llm_role_filter
+    # )
+  })
+
+  # Reactive expression to generate the template text preview
+  output$role_template_preview <- renderUI({
+    # Combine inputs for the template. Use placeholders if inputs are empty.
+    article <- ifelse(
+      is.null(input$new_role_article) || input$new_role_article == "",
+      "[article]",
+      input$new_role_article
+    )
+    role_name <- ifelse(
+      is.null(input$new_role_name) || input$new_role_name == "",
+      "[role]",
+      input$new_role_name
+    )
+    description <- ifelse(
+      is.null(input$new_role_description) || input$new_role_description == "",
+      "[description]",
+      input$new_role_description
+    )
+
+    # Construct the final HTML string
+    template_text <- sprintf(
+      '<span>Answer the following prompts as <b>%s</b> <b>%s</b>, who <b>%s</b>.</span>',
+      article,
+      role_name,
+      description
+    )
+
+    HTML(template_text)
+  })
+
+
+  # Render the Roles Data Table
+  output$roles_table <- DT::renderDataTable({
+    data_to_display <- roles_data()
+
+    DT::datatable(
+      data_to_display,
+      options = list(
+        pageLength = 10,
+        lengthMenu = c(5, 10, 20),
+        autoWidth = TRUE,
+        scrollX = TRUE
+      ),
+      rownames = FALSE,
+      filter = 'top',
+      class = 'cell-border stripe hover'
+    ) %>%
+      DT::formatStyle(columns = 'uid', fontWeight = 'bold')
+  })
+
+  # Store pending role data for confirmation
+  pending_role <- reactiveVal(NULL)
+
+  # Event handler for showing confirmation modal
+  observeEvent(input$add_custom_role, {
+    # 1. Get and clean inputs
+    uid <- trimws(input$new_role_uid)
+    role_name <- trimws(input$new_role_name)
+    description <- trimws(input$new_role_description)
+    type_val <- "custom"
+    article_val <- input$new_role_article
+
+    # 2. Validation Checks
+    current_uids <- roles_data()$uid
+
+    # UID Check
+    if (nchar(uid) != 3 || !grepl("^[a-zA-Z0-9]+$", uid)) {
+      showNotification(
+        "Error: UID must be exactly 3 alphanumeric characters.",
+        type = "error",
+        duration = 5
+      )
+      return()
+    }
+    if (uid %in% current_uids) {
+      showNotification(
+        "Error: UID already exists. Please choose a unique 3-character ID.",
+        type = "error",
+        duration = 5
+      )
+      return()
+    }
+
+    # Role Name Check (max 10 chars, letters/hyphens only)
+    if (nchar(role_name) == 0 ||
+        nchar(role_name) > 10 || !grepl("^[a-zA-Z-]+$", role_name)) {
+      showNotification(
+        "Error: Role Name must be 1-10 characters, containing only letters and hyphens.",
+        type = "error",
+        duration = 7
+      )
+      return()
+    }
+
+    # Description Check (max 25 words, letters/hyphens and spaces only)
+    word_count <- length(unlist(strsplit(description, "\\s+")))
+    if (word_count > 25) {
+      showNotification(
+        paste("Error: Description exceeds the 25-word limit. Current count:", word_count),
+        type = "error",
+        duration = 7
+      )
+      return()
+    }
+
+    # Check for invalid characters
+    if (!grepl("^[a-zA-Z, -]+$", description)) {
+      showNotification(
+        "Error: Description contains invalid special characters. Only letters, spaces, hyphens, and commas are allowed.",
+        type = "error",
+        duration = 7
+      )
+      return()
+    }
+
+    # 3. Store the pending role and show confirmation modal
+    pending_role(list(
+      uid = uid,
+      type = type_val,
+      article = article_val,
+      role = role_name,
+      description = description
+    ))
+
+    # Generate preview text for modal
+    template_text <- sprintf(
+      'Answer the following prompts as <b>%s</b> <b>%s</b>, who <b>%s</b>.',
+      article_val,
+      role_name,
+      description
+    )
+
+    showModal(modalDialog(
+      title = "Confirm New Role",
+      HTML(paste0("<p><strong>Please review the role template:</strong></p>",
+                  "<div style='padding: 15px; background-color: #f0f0f0; border-radius: 5px; margin: 10px 0;'>",
+                  template_text,
+                  "</div>",
+                  "<p>Do you want to add this role?</p>")),
+      footer = tagList(
+        modalButton("Cancel"),
+        actionButton("confirm_add_role", "Accept", class = "btn-success")
+      ),
+      easyClose = FALSE
+    ))
+  })
+
+  # Event handler for confirming role addition
+  observeEvent(input$confirm_add_role, {
+    role_data <- pending_role()
+
+    if (!is.null(role_data)) {
+      # Create new row and append
+      new_role <- data.frame(
+        uid = role_data$uid,
+        type = role_data$type,
+        article = role_data$article,
+        role = role_data$role,
+        description = role_data$description,
+        stringsAsFactors = FALSE
+      )
+
+      # Append to reactive value
+      updated_roles <- bind_rows(roles_data(), new_role)
+      roles_data(updated_roles)
+
+      # Save to custom_roles.csv
+      tryCatch({
+        custom_roles <- updated_roles %>% filter(type == "custom")
+        write_csv(custom_roles, "custom_roles.csv")
+      }, error = function(e) {
+        showNotification(
+          paste("Warning: Could not save custom roles:", conditionMessage(e)),
+          type = "warning"
+        )
+      })
+
+      # Success feedback and clear form
+      showNotification(paste("Role", role_data$uid, "added successfully!"),
+                       type = "message")
+
+      # Clear form fields
+      updateTextInput(session, "new_role_uid", value = "")
+      updateTextInput(session, "new_role_name", value = "")
+      updateTextAreaInput(session, "new_role_description", value = "")
+
+      # Clear pending role
+      pending_role(NULL)
+    }
+
+    removeModal()
+  })
+
+  # --- Logic for Downloading Custom Roles ---
+  output$download_custom_roles <- downloadHandler(
+    filename = function() {
+      "custom_roles.csv"
+    },
+    content = function(file) {
+      custom_roles <- roles_data() %>% filter(type == "custom")
+
+      if (nrow(custom_roles) == 0) {
+        # Create empty file with headers
+        empty_df <- data.frame(
+          uid = character(),
+          type = character(),
+          article = character(),
+          role = character(),
+          description = character(),
+          stringsAsFactors = FALSE
+        )
+        write_csv(empty_df, file)
+      } else {
+        write_csv(custom_roles, file)
+      }
+    }
+  )
+
+  # --- Logic for Uploading Custom Roles ---
+  observeEvent(input$upload_custom_roles, {
+    req(input$upload_custom_roles)
+
+    file_path <- input$upload_custom_roles$datapath
+
+    id <- showNotification("Uploading and parsing custom roles...",
+                           type = "default",
+                           duration = NULL)
+
+    tryCatch({
+      uploaded_roles <- read_csv(file_path, show_col_types = FALSE)
+
+      # Validate structure
+      required_cols <- c("uid", "type", "article", "role", "description")
+      if (!all(required_cols %in% names(uploaded_roles))) {
+        removeNotification(id = id)
+        showNotification(
+          "Error: Uploaded file must contain columns: uid, type, article, role, description",
+          type = "error",
+          duration = 10
+        )
+        return()
+      }
+
+      # Ensure type is set to "custom"
+      uploaded_roles <- uploaded_roles %>% mutate(type = "custom")
+
+      # Check for UID conflicts with existing roles
+      current_uids <- roles_data()$uid
+      conflicting_uids <- uploaded_roles$uid[uploaded_roles$uid %in% current_uids]
+
+      if (length(conflicting_uids) > 0) {
+        removeNotification(id = id)
+        showNotification(
+          paste("Error: The following UIDs already exist:", paste(conflicting_uids, collapse = ", ")),
+          type = "error",
+          duration = 10
+        )
+        return()
+      }
+
+      # Append uploaded roles
+      updated_roles <- bind_rows(roles_data(), uploaded_roles)
+      roles_data(updated_roles)
+
+      # Save to custom_roles.csv
+      custom_roles <- updated_roles %>% filter(type == "custom")
+      write_csv(custom_roles, "custom_roles.csv")
+
+      removeNotification(id = id)
+      showNotification(
+        paste("Successfully uploaded", nrow(uploaded_roles), "custom role(s)."),
+        type = "message"
+      )
+
+    }, error = function(e) {
+      removeNotification(id = id)
+      showNotification(
+        paste("Error reading/processing file:", conditionMessage(e)),
+        type = "error",
+        duration = 10
+      )
+    })
+  })
+
+  # Update the roles table rendering to highlight custom roles
+  output$roles_table <- DT::renderDataTable({
+    data_to_display <- roles_data()
+
+    DT::datatable(
+      data_to_display,
+      options = list(
+        pageLength = 10,
+        lengthMenu = c(5, 10, 20),
+        autoWidth = TRUE,
+        scrollX = TRUE
+      ),
+      rownames = FALSE,
+      filter = 'top',
+      class = 'cell-border stripe hover'
+    ) %>%
+      DT::formatStyle(columns = 'uid', fontWeight = 'bold') %>%
+      DT::formatStyle(
+        columns = 'type',
+        target = 'row',
+        backgroundColor = DT::styleEqual('custom', '#fff3cd') # Light yellow for custom roles
+      )
+  })
+
+  # --- End LLM Roles Management Logic ---
+
 
   # --- Existing Reactive Data Generation for Table ---
   reactive_case_dri_df <- reactive({
@@ -302,12 +613,15 @@ function(input, output, session) {
                     detail = paste("Iteration", i, "of", n_iterations))
 
         tryCatch({
+          # 0. Get role_info from uid
+          role_info <- roles_data()[roles_data()$uid == input$role_uid, ]
+
           # 1. Generate one response
           # input$model_id now comes from the dropdown, which correctly passes the "provider/model" string
           new_data <- deliberr::get_dri_llm_response(
             model_id = input$model_id,
             survey_name = input$survey_name,
-            role_uid = input$role_uid
+            role_info = role_info
           )
 
           # Check for required metadata columns and if data was returned
@@ -354,20 +668,13 @@ function(input, output, session) {
     # --- DEFERRED SAVING: Save all collected data only if any new data was successfully collected ---
     if (nrow(iterations_to_save) > 0) {
       # Determine if we need a header (i.e., if the persistent file does not exist yet)
-      append_to_file <- file.exists("llm_data.csv")
+      # append_to_file <- file.exists("llm_data.csv")
 
       # Write all accumulated new data rows to the file at once
       # FIX: Use write.csv to ensure proper handling of commas/special characters in string fields
-      write_csv(iterations_to_save, "llm_data.csv", append = append_to_file)
+      # write_csv(iterations_to_save, "llm_data.csv", append = append_to_file)
 
-      showNotification(
-        paste(
-          "LLM Generation Complete! Added and saved",
-          nrow(iterations_to_save),
-          "iterations to llm_data.csv."
-        ),
-        type = "message"
-      )
+      showNotification("LLM Generation Complete!", type = "message")
     } else {
       showNotification("LLM Generation Complete, but no valid data was generated or saved.",
                        type = "warning")
@@ -386,7 +693,7 @@ function(input, output, session) {
 
     # Clears in-app data only, preserving llm_data.csv
     showNotification(
-      "In-app LLM data cleared. The 'llm_data.csv' file remains on disk for future loading.",
+      "In-app LLM data cleared.",
       type = "warning"
     )
   })
@@ -516,14 +823,16 @@ function(input, output, session) {
                         "llm_survey_filter",
                         choices = character(0),
                         selected = NULL)
+      # The llm_role_filter is updated by the main roles_data observer.
+      updateSelectizeInput(session,
+                           "llm_model_filter",
+                           choices = "all",
+                           selected = "all")
+
       updateSelectizeInput(session,
                            "llm_role_filter",
-                           choices = "All",
-                           selected = "All") # Updated to use updateSelectizeInput
-      updateSelectInput(session,
-                        "llm_model_filter",
-                        choices = "All",
-                        selected = "All")
+                           choices = "all",
+                           selected = "all")
       return()
     }
 
@@ -541,19 +850,16 @@ function(input, output, session) {
                       choices = survey_choices,
                       selected = selected_survey)
 
-    # 2. Update Model choices (Including "All")
+    # 2. Update Model choices (Including "all")
     # We should use the unique models that are actually in the results data, not the full list
-    model_choices <- c("All", sort(unique(current_data$model)))
-    updateSelectInput(session, "llm_model_filter", choices = model_choices)
+    model_choices <- c(sort(unique(current_data[current_data$survey == selected_survey, ]$model)))
+    updateSelectizeInput(session, "llm_model_filter", choices = model_choices)
 
-    # 3. Update Role choices (Keeping "All") - using updateSelectizeInput
-    role_choices <- c("All", sort(unique(current_data$role_uid)))
-    updateSelectizeInput(
-      session,
-      "llm_role_filter",
-      choices = role_choices,
-      selected = input$llm_role_filter
-    )
+    # 3. Update Role choices (Keeping "all")
+    role_choices <- c(sort(unique(current_data[current_data$survey == selected_survey &
+                                                 current_data$model %in% model_choices, ]$role_uid)))
+    updateSelectizeInput(session, "llm_role_filter", choices = role_choices)
+
   })
 
   # Reactive expression to filter, calculate IC and DRI for plotting
@@ -575,16 +881,45 @@ function(input, output, session) {
     data_filtered <- data_filtered %>% filter(survey == input$llm_survey_filter)
 
     # 3. Filter by model
-    if (input$llm_model_filter != "All") {
-      model_to_filter <- basename(input$llm_model_filter) # Extract model name from provider/model
-      data_filtered <- data_filtered %>% filter(model == model_to_filter)
+    selected_models <- input$llm_model_filter
+    if (!is.null(selected_models) && !"all" %in% selected_models) {
+      data_filtered <- data_filtered %>% filter(model %in% selected_models)
     }
 
     # 4. Filter by role (Updated to handle multi-select input: NULL, "All", or a vector of UIDs)
     selected_roles <- input$llm_role_filter
-    if (!is.null(selected_roles) && !"All" %in% selected_roles) {
+    if (!is.null(selected_roles) && !"all" %in% selected_roles) {
       data_filtered <- data_filtered %>% filter(role_uid %in% selected_roles)
     }
+
+
+
+    # # --- START: New Human Data Inclusion Logic ---
+    # human_append_type <- input$include_human_data
+    #
+    # if (human_append_type != "none") {
+    #   # Determine target stage_id and the label for the plot
+    #   stage_id <- if (human_append_type == "pre") 1 else 2
+    #
+    #   source_label <- if (stage_id == 1) "Human (Pre-Deliberation)" else "Human (Post-Deliberation)"
+    #
+    #   # Filter and standardize human data from the deliberr package
+    #   human_subset_standardized <- deliberr::human_data %>%
+    #     filter(
+    #       survey == input$llm_survey_filter,
+    #       stage_id == stage_id
+    #     ) %>%
+    #     mutate(
+    #       is_valid = TRUE
+    #     )
+    #
+    #   # Append the human data to the LLM data
+    #   data_filtered <- bind_rows(data, human_subset_standardized) %>%
+    #     select(-pnum)
+    # }
+    # # --- END: New Human Data Inclusion Logic ---
+
+
 
     # Defensive check: return NULL if data is filtered down to empty set
     if (nrow(data_filtered) == 0) {
@@ -633,6 +968,7 @@ function(input, output, session) {
     # Calculate metrics
     total_cost <- sum(data_filtered$est_cost_usd, na.rm = TRUE)
     total_time <- sum(data_filtered$time_s, na.rm = TRUE)
+    cronbach_alpha <- get_dri_alpha(data_filtered)
 
     # Success rate calculation: Valid / Total (as requested in the prompt)
     success_rate <- valid_iterations / total_iterations
@@ -644,14 +980,18 @@ function(input, output, session) {
         "Valid Iterations",
         "Success Rate (Valid / Total)",
         "Total Cost (USD)",
-        "Total Time (s)"
+        "Total Time (s)",
+        "Cronbach alpha (considerations)",
+        "Cronbach alpha (policies)"
       ),
       Value = c(
         as.character(total_iterations),
         as.character(valid_iterations),
         paste0(round(success_rate * 100, 2), "%"),
         paste0("$", round(total_cost, 5)),
-        round(total_time, 2)
+        round(total_time, 2),
+        round(cronbach_alpha$alpha_c, 3),
+        round(cronbach_alpha$alpha_p, 3)
       ),
       stringsAsFactors = FALSE
     )

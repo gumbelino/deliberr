@@ -3,7 +3,7 @@
 #' Creates the prompts for generating LLM DRI data.
 #'
 #' @param survey_info A list generated using get_dri_survey_info().
-#' @param role_uid The unique identifier of a role (optional).
+#' @param role_info Information about a specific role.
 #'
 #' @returns A list of lists with four variables: \code{system},
 #' \code{considerations}, \code{policies}, and \code{reason}.
@@ -11,8 +11,20 @@
 #'
 #' @examples
 #' survey_info <- get_dri_survey_info("ccps")
-#' make_dri_llm_prompts(survey_info[[1]], "csk")
-make_dri_llm_prompts <- function(survey_info, role_uid = NA_character_) {
+#' role_info <- list(
+#'   uid = "sur",
+#'   role = "surfer",
+#'   article = "a",
+#'   description = "likes the ocean"
+#' )
+#' make_dri_llm_prompts(survey_info[[1]], role_info)
+make_dri_llm_prompts <- function(survey_info,
+                                 role_info = list(
+                                   uid = NA_character_,
+                                   role = NA_character_,
+                                   article = NA_character_,
+                                   description = NA_character_
+                                 )) {
 
   ## get prompt templates
   prompt_c_template <- prompts[prompts$type == "considerations",]$prompt
@@ -46,13 +58,13 @@ make_dri_llm_prompts <- function(survey_info, role_uid = NA_character_) {
            p_statements)
 
   ## make system prompt
-  if (is.na(role_uid)) {
-    prompt_s <- "You are a helpful assistant." # generic role
+  if (is.na(role_info$uid)) {
+    prompt_s <- NA_character_
   } else {
     # get roles
-    s_article <- roles[roles$uid == role_uid,]$article
-    s_role <- roles[roles$uid == role_uid,]$role
-    s_description <- roles[roles$uid == role_uid,]$description
+    s_article <- role_info$article
+    s_role <- role_info$role
+    s_description <- role_info$description
 
     # build prompt
     prompt_s <- sprintf(prompt_s_template, s_article, s_role, s_description)

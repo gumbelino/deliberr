@@ -7,7 +7,7 @@
 get_llm_response(
   user_prompt,
   model_id = "x-ai/grok-3-mini",
-  system_prompt = "You are a helpful assistant.",
+  system_prompt = NA_character_,
   context = NULL,
   temperature = 0,
   enable_reasoning = FALSE,

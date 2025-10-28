@@ -17,7 +17,7 @@ if (!exists("surveys")) {
   surveys <- data.frame(name = unique(deliberr::human_data$survey))
 }
 if (!exists("roles")) {
-  roles <- data.frame(uid = unique(deliberr::human_data$role_uid))
+  roles <- deliberr::roles # Use the initial roles dataframe from deliberr
 }
 
 # --- User Interface (UI) Definition ---
@@ -90,7 +90,63 @@ fluidPage(
     )),
     # End of TabPanel "Case Plot View"
 
-    # Tab 3: LLM Data Generation (Updated with Clear Data button and Refresh)
+    # NEW Tab: LLM Roles Management
+    tabPanel("LLM Roles", sidebarLayout(
+      sidebarPanel(
+        h3("Create Custom Role"),
+
+        p("Define a new role for LLM simulations. Here is the template the system
+      will use as instruction to the LLM:"),
+        htmlOutput("role_template_preview"),
+        hr(),
+
+        # Custom Role Input Form
+        textInput("new_role_uid", "UID (3 characters, unique):", value = ""),
+        selectInput("new_role_article", "Article:", choices = NULL), # Choices updated in server
+        textInput(
+          "new_role_name",
+          "Role Name (max 10 chars, letters/hyphens only):",
+          value = ""
+        ),
+        textAreaInput(
+          "new_role_description",
+          "Description (max 25 words, letters/hyphens only):",
+          value = "",
+          rows = 3
+        ),
+
+        actionButton("add_custom_role", "Add Role", class = "btn-success"),
+
+        hr(),
+
+        # Custom Roles Management
+        h4("Custom Roles Management"),
+        fileInput(
+          "upload_custom_roles",
+          "Upload Custom Roles (CSV)",
+          accept = c("text/csv", "text/comma-separated-values", ".csv")
+        ),
+        downloadButton("download_custom_roles", "Download Custom Roles", class = "btn-info"),
+        br(),
+        br(),
+        p(
+          style = "font-size: 0.9em; color: #666;",
+          "Note: Only custom roles (type='custom') will be downloaded. Custom roles are highlighted in yellow in the table."
+        )
+      ),
+
+      mainPanel(
+        width = 8,
+        h3("Existing and Custom Roles"),
+        p("Visualization of all available roles for LLM simulation. Custom roles are highlighted in yellow."),
+        hr(),
+        # Output for the reactive roles table
+        DT::dataTableOutput("roles_table")
+      )
+    )),
+    # End of TabPanel "LLM Roles"
+
+    # Tab 3: LLM Data Generation (Modified for dynamic role choices)
     tabPanel("LLM Data", sidebarLayout(
       sidebarPanel(
         h3("LLM Data Generation Controls"),
@@ -115,7 +171,8 @@ fluidPage(
         selectInput("survey_name", "Survey Name", choices = sort(unique(
           deliberr::surveys$name
         ))),
-        selectInput("role_uid", "Role UID", choices = sort(deliberr::roles$uid)),
+        # MODIFIED: Initial choices set to NULL, populated by server's reactive_roles
+        selectInput("role_uid", "Role UID", choices = NULL),
         numericInput(
           "n_iterations",
           "Number of Iterations (n)",
@@ -138,8 +195,7 @@ fluidPage(
         downloadButton("download_llm_data", "Save LLM Data", class = "btn-info"),
         # Button to clear all LLM data
         actionButton("clear_llm_data", "Clear All LLM Data", class = "btn-danger"),
-        # NEW: Button to refresh all LLM data from CSV
-        actionButton("refresh_llm_data", "Refresh", class = "btn-warning")
+
       ),
 
       mainPanel(
@@ -164,16 +220,18 @@ fluidPage(
         selectInput("llm_survey_filter", "Filter by Survey:", choices = sort(unique(
           deliberr::surveys$name
         ))),
-        selectInput(
+        selectizeInput(
           "llm_model_filter",
           "Filter by Model ID:",
-          choices = c("All") # Initial choice; dynamically updated in server
+          choices = c("all"), # Initial choice; dynamically updated in server
+          multiple = TRUE,
+          options = list(placeholder = 'Select one or more models')
         ),
         # CHANGED: selectizeInput for multi-select
         selectizeInput(
           "llm_role_filter",
           "Filter by Role UID:",
-          choices = c("All", sort(deliberr::roles$uid)),
+          choices = c("all", sort(deliberr::roles$uid)),
           multiple = TRUE,
           # Allow multiple selections
           options = list(placeholder = 'Select one or more roles')
@@ -191,7 +249,22 @@ fluidPage(
           "llm_plot_suffix",
           "Suffix for Plot Labels (e.g., 'LLM')",
           value = "LLM" # Default value
-        )
+        ),
+
+        # # NEW: Human Data Inclusion Options
+        # hr(),
+        # h4("Human Data"),
+        # selectInput(
+        #   "include_human_data",
+        #   "Include human data:",
+        #   choices = c(
+        #     "none" = "none",
+        #     "pre-deliberation" = "pre",
+        #     "post-deliberation" = "post"
+        #   ),
+        #   selected = "none" # Default
+        # ),
+
       ),
 
       mainPanel(

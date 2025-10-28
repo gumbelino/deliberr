@@ -4,16 +4,23 @@
 \alias{get_dri_llm_response}
 \title{Get DRI LLM response}
 \usage{
-get_dri_llm_response(model_id, survey_name, role_uid = NA_character_, n = 1)
+get_dri_llm_response(
+  model_id,
+  survey_name,
+  api_key = Sys.getenv("OPENROUTER_API_KEY"),
+  role_info = list(uid = NA_character_, role = NA_character_, article = NA_character_,
+    description = NA_character_),
+  n = 1
+)
 }
 \arguments{
 \item{model_id}{The model_id from openrounter.ai}
 
 \item{survey_name}{The name of the survey}
 
-\item{role_uid}{The unique identifier of a role (optional)}
-
 \item{n}{The number of responses requested (dafault = 1)}
+
+\item{role_uid}{The unique identifier of a role (optional)}
 }
 \value{
 A data frame with one row of data.
