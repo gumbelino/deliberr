@@ -10,6 +10,7 @@
 #' @param alternative a character string specifying the alternative hypothesis,
 #' must be one of "greater" (default), "two.sided" or "less".
 #' You can specify just the initial letter.
+#' @param data the dataset to extract data from
 #'
 #' @returns a tibble with with the following components: \code{case}, \code{pre},
 #' \code{post}, \code{delta}, \code{p_value}, and \code{significance}.
@@ -26,11 +27,14 @@
 #' get_dri_case("Activate")
 #'
 #'
-get_dri_case <- function(case, adjusted = TRUE, method = "wilcox", alternative = "greater") {
+get_dri_case <- function(case, adjusted = TRUE, method = "wilcox",
+                         alternative = "greater", data = NULL) {
+
+  if (is.null(data)) data <- deliberr::human_data
 
   # get pre/post data
-  data_pre <- deliberr::human_data %>% filter(case == !!case, .data$stage_id == 1)
-  data_post <- deliberr::human_data %>% filter(case == !!case, .data$stage_id == 2)
+  data_pre <- data %>% filter(case == !!case, .data$stage_id == 1)
+  data_post <- data %>% filter(case == !!case, .data$stage_id == 2)
 
   # get ic
   ic_pre <- get_dri_ic(data_pre)

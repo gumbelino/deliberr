@@ -1,2 +1,3 @@
-uid,type,article,role,description
-cra,custom,a,crazy,does not have a consistent point of view and does not know what they want
+uid,type,role,description
+eur,custom,european,hates the rest of the world except Europe
+doc,custom,doctor,saves lives for a living

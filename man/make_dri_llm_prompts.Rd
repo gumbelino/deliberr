@@ -6,8 +6,8 @@
 \usage{
 make_dri_llm_prompts(
   survey_info,
-  role_info = list(uid = NA_character_, role = NA_character_, article = NA_character_,
-    description = NA_character_)
+  role_info = list(uid = NA_character_, role = NA_character_, description =
+    NA_character_)
 )
 }
 \arguments{
@@ -27,7 +27,6 @@ survey_info <- get_dri_survey_info("ccps")
 role_info <- list(
   uid = "sur",
   role = "surfer",
-  article = "a",
   description = "likes the ocean"
 )
 make_dri_llm_prompts(survey_info[[1]], role_info)

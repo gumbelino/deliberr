@@ -28,7 +28,6 @@ get_dri_llm_response <- function(model_id,
                                  role_info = list(
                                    uid = NA_character_,
                                    role = NA_character_,
-                                   article = NA_character_,
                                    description = NA_character_
                                  ),
                                  n = 1) {
@@ -62,7 +61,7 @@ get_dri_llm_response <- function(model_id,
       provider = split_parts[1],
       model = split_parts[2],
       survey = survey_name,
-      role_uid = role_info$uid,
+      role_uid = if (length(role_info$uid) == 0) NA else role_info$uid,
     )
 
 

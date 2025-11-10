@@ -14,7 +14,6 @@
 #' role_info <- list(
 #'   uid = "sur",
 #'   role = "surfer",
-#'   article = "a",
 #'   description = "likes the ocean"
 #' )
 #' make_dri_llm_prompts(survey_info[[1]], role_info)
@@ -22,7 +21,6 @@ make_dri_llm_prompts <- function(survey_info,
                                  role_info = list(
                                    uid = NA_character_,
                                    role = NA_character_,
-                                   article = NA_character_,
                                    description = NA_character_
                                  )) {
 
@@ -58,16 +56,15 @@ make_dri_llm_prompts <- function(survey_info,
            p_statements)
 
   ## make system prompt
-  if (is.na(role_info$uid)) {
+  if (length(role_info$uid) == 0) {
     prompt_s <- NA_character_
   } else {
     # get roles
-    s_article <- role_info$article
     s_role <- role_info$role
     s_description <- role_info$description
 
     # build prompt
-    prompt_s <- sprintf(prompt_s_template, s_article, s_role, s_description)
+    prompt_s <- sprintf(prompt_s_template, s_role, s_description)
   }
 
   return(list(

@@ -6,6 +6,9 @@
 #
 #    https://shiny.posit.co/
 #
+# Here's how to deploy local packages:
+# https://stackoverflow.com/questions/54536664/deploy-app-to-shinyapps-io-that-depends-on-custom-package-which-itself-has-depen
+#
 
 # Load necessary libraries
 library(shiny)
@@ -19,6 +22,9 @@ library(gridExtra)
 # --- Data Preparation for Model Dropdown (using deliberr::get_model_ids) ---
 # NOTE: get_model_ids is called outside the server function for one-time initialization.
 model_df <- deliberr::get_model_ids()
+
+# a human-readable label for roles: name (uid)
+ROLE_LABEL <- "%s (%s)"
 
 # 1. Create the full model ID string ("provider/model")
 model_df <- model_df %>%
@@ -47,6 +53,9 @@ function(input, output, session) {
   # 2. Reactive value to store all roles (initial deliberr roles + custom roles)
   roles_data <- reactiveVal(deliberr::roles)
 
+  # 3. NEW: Reactive value to store uploaded human data (combined with deliberr default)
+  human_data_combined <- reactiveVal(deliberr::human_data)
+
   # Initialize the model dropdown with the prepared choices
   observe({
     updateSelectInput(session,
@@ -59,11 +68,7 @@ function(input, output, session) {
     updateSelectInput(session,
                       "new_role_type",
                       choices = sort(unique(current_roles$type)))
-    updateSelectInput(
-      session,
-      "new_role_article",
-      choices = sort(unique(current_roles$article))
-    )
+
   }) # Run only once on startup
 
 
@@ -71,30 +76,33 @@ function(input, output, session) {
 
   # Dynamic Updates for Role Creation and LLM Data Generation Tabs
   observe({
-    current_roles <- roles_data()
+    current_roles <- roles_data() %>%
+      bind_rows(tibble( # add default role
+        role = "default"
+      ))
+    # %>%
+    #   mutate(label = sprintf(ROLE_LABEL, role, uid)) # create label
+
 
     # 1. Update Role UID dropdown in the "LLM Data" tab
-    role_choices <- sort(current_roles$uid)
+    # roles are values, uid is key
+    role_choices <- current_roles %>%
+      select(role, uid) %>%
+      arrange(role) %>%
+      deframe()
     updateSelectInput(session, "role_uid", choices = role_choices)
 
-    # 2. Update Role UID filter in the "LLM Analysis" tab
-    # role_filter_choices <- c("all", role_choices)
-    # updateSelectizeInput(
-    #   session,
-    #   "llm_role_filter",
-    #   choices = role_filter_choices,
-    #   selected = input$llm_role_filter
-    # )
+
   })
 
   # Reactive expression to generate the template text preview
   output$role_template_preview <- renderUI({
     # Combine inputs for the template. Use placeholders if inputs are empty.
-    article <- ifelse(
-      is.null(input$new_role_article) || input$new_role_article == "",
-      "[article]",
-      input$new_role_article
-    )
+    # article <- ifelse(
+    #   is.null(input$new_role_article) || input$new_role_article == "",
+    #   "[article]",
+    #   input$new_role_article
+    # )
     role_name <- ifelse(
       is.null(input$new_role_name) || input$new_role_name == "",
       "[role]",
@@ -108,8 +116,8 @@ function(input, output, session) {
 
     # Construct the final HTML string
     template_text <- sprintf(
-      '<span>Answer the following prompts as <b>%s</b> <b>%s</b>, who <b>%s</b>.</span>',
-      article,
+      '<span>Answer the following prompts as: <b>%s</b>, who <b>%s</b>.</span>',
+      # article,
       role_name,
       description
     )
@@ -147,7 +155,7 @@ function(input, output, session) {
     role_name <- trimws(input$new_role_name)
     description <- trimws(input$new_role_description)
     type_val <- "custom"
-    article_val <- input$new_role_article
+    # article_val <- input$new_role_article
 
     # 2. Validation Checks
     current_uids <- roles_data()$uid
@@ -181,11 +189,11 @@ function(input, output, session) {
       return()
     }
 
-    # Description Check (max 25 words, letters/hyphens and spaces only)
+    # Description Check (max 100 words, letters/hyphens and spaces only)
     word_count <- length(unlist(strsplit(description, "\\s+")))
-    if (word_count > 25) {
+    if (word_count > 100) {
       showNotification(
-        paste("Error: Description exceeds the 25-word limit. Current count:", word_count),
+        paste("Error: Description exceeds the 100-word limit. Current count:", word_count),
         type = "error",
         duration = 7
       )
@@ -206,15 +214,15 @@ function(input, output, session) {
     pending_role(list(
       uid = uid,
       type = type_val,
-      article = article_val,
+      # article = article_val,
       role = role_name,
       description = description
     ))
 
     # Generate preview text for modal
     template_text <- sprintf(
-      'Answer the following prompts as <b>%s</b> <b>%s</b>, who <b>%s</b>.',
-      article_val,
+      'Answer the following prompts as: <b>%s</b>, who <b>%s</b>.',
+      # article_val,
       role_name,
       description
     )
@@ -243,7 +251,7 @@ function(input, output, session) {
       new_role <- data.frame(
         uid = role_data$uid,
         type = role_data$type,
-        article = role_data$article,
+        # article = role_data$article,
         role = role_data$role,
         description = role_data$description,
         stringsAsFactors = FALSE
@@ -293,7 +301,7 @@ function(input, output, session) {
         empty_df <- data.frame(
           uid = character(),
           type = character(),
-          article = character(),
+          # article = character(),
           role = character(),
           description = character(),
           stringsAsFactors = FALSE
@@ -319,11 +327,11 @@ function(input, output, session) {
       uploaded_roles <- read_csv(file_path, show_col_types = FALSE)
 
       # Validate structure
-      required_cols <- c("uid", "type", "article", "role", "description")
+      required_cols <- c("uid", "type", "role", "description")
       if (!all(required_cols %in% names(uploaded_roles))) {
         removeNotification(id = id)
         showNotification(
-          "Error: Uploaded file must contain columns: uid, type, article, role, description",
+          "Error: Uploaded file must contain columns: uid, type, role, description",
           type = "error",
           duration = 10
         )
@@ -398,18 +406,71 @@ function(input, output, session) {
   # --- End LLM Roles Management Logic ---
 
 
+  # --- NEW: Logic for Uploading Custom Human Data ---
+  observeEvent(input$upload_human_data, {
+    req(input$upload_human_data)
+
+    file_path <- input$upload_human_data$datapath
+
+    id <- showNotification("Uploading and parsing human data...",
+                           type = "default",
+                           duration = NULL)
+
+    tryCatch({
+      # Read the CSV file
+      uploaded_data <- read_csv(file_path, show_col_types = FALSE)
+
+      # Validate required columns
+      required_cols <- c("survey", "case", "stage_id", "pnum",
+                         paste0("C", 1:50), paste0("P", 1:10))
+      if (!all(required_cols %in% names(uploaded_data))) {
+        removeNotification(id = id)
+        missing_cols <- setdiff(required_cols, names(uploaded_data))
+        showNotification(
+          paste("Error: Uploaded file must contain all required columns.",
+                "Missing:", paste(missing_cols, collapse = ", ")),
+          type = "error",
+          duration = 10
+        )
+        return()
+      }
+
+      # Append uploaded data to existing human_data
+      updated_human_data <- bind_rows(human_data_combined(), uploaded_data)
+      human_data_combined(updated_human_data)
+
+      removeNotification(id = id)
+      showNotification(
+        paste("Successfully uploaded", nrow(uploaded_data), "data point(s)."),
+        type = "message"
+      )
+
+    }, error = function(e) {
+      removeNotification(id = id)
+      showNotification(
+        paste("Error reading/processing file:", conditionMessage(e)),
+        type = "error",
+        duration = 10
+      )
+    })
+  })
+
+  # --- End Logic for Uploading Custom Human Data ---
+
+
   # --- Existing Reactive Data Generation for Table ---
   reactive_case_dri_df <- reactive({
     # Initialize an empty list to store results for each case
     case_dri_list <- list()
 
-    # Loop through each unique case and apply the selected parameters
-    for (case in unique(deliberr::human_data$case)) {
-      case_dri_list[[length(case_dri_list) + 1]] <- get_dri_case(
+    # Loop through each unique case in the combined human data
+    for (case in unique(human_data_combined()$case)) {
+      case_dri_list[[length(case_dri_list) + 1]] <- deliberr::get_dri_case(
         case,
         method = input$method,
         adjusted = input$adjusted,
-        alternative = input$alternative
+        alternative = input$alternative,
+        data = human_data_combined()  # Pass the combined data
       )
     }
 
@@ -458,32 +519,45 @@ function(input, output, session) {
     return(datatable_obj)
   })
 
+  # --- NEW: Dynamic Update for Case Selector in Case Plot View ---
+  observe({
+    updated_cases <- unique(human_data_combined()$case)
+    selected_case <- if (input$case_select %in% updated_cases)
+      input$case_select
+    else
+      updated_cases[1]
+
+    updateSelectInput(session, "case_select",
+                      choices = updated_cases,
+                      selected = selected_case)
+  })
+
   # --- Existing Reactive Plot Generation ---
   reactive_case_plot <- reactive({
     # Ensure a case is selected
     req(input$case_select)
 
-    # Filter data for the selected case
-    data_pre <- human_data %>% filter(case == input$case_select, stage_id == 1)
+    # Filter data for the selected case using combined human data
+    data_pre <- human_data_combined() %>% filter(case == input$case_select, stage_id == 1)
     # FIX: Corrected assignment operator (=) to equality operator (==)
-    data_post <- human_data %>% filter(case == input$case_select, stage_id == 2)
+    data_post <- human_data_combined() %>% filter(case == input$case_select, stage_id == 2)
 
     # Calculate indices
-    ic_pre <- get_dri_ic(data_pre)
-    ic_post <- get_dri_ic(data_post)
+    ic_pre <- deliberr::get_dri_ic(data_pre)
+    ic_post <- deliberr::get_dri_ic(data_post)
 
     # Calculate DRI
-    dri_pre <- get_dri(ic_pre)
-    dri_post <- get_dri(ic_post)
+    dri_pre <- deliberr::get_dri(ic_pre)
+    dri_post <- deliberr::get_dri(ic_post)
 
     # Generate plots
-    plot_pre <- plot_dri_ic(
+    plot_pre <- deliberr::plot_dri_ic(
       ic_pre,
       title = input$case_select,
       suffix = "pre",
       dri = dri_pre
     )
-    plot_post <- plot_dri_ic(
+    plot_post <- deliberr::plot_dri_ic(
       ic_post,
       title = input$case_select,
       suffix = "post",
@@ -855,9 +929,20 @@ function(input, output, session) {
     model_choices <- c(sort(unique(current_data[current_data$survey == selected_survey, ]$model)))
     updateSelectizeInput(session, "llm_model_filter", choices = model_choices)
 
-    # 3. Update Role choices (Keeping "all")
-    role_choices <- c(sort(unique(current_data[current_data$survey == selected_survey &
-                                                 current_data$model %in% model_choices, ]$role_uid)))
+    # 3. Update Role choices
+    role_choices <- current_data %>%
+      filter(survey == selected_survey, model %in% model_choices) %>%
+      group_by(role_uid) %>%
+      left_join(roles_data() %>%
+                  mutate(role_uid = uid), join_by(role_uid)) %>%
+      select(role, role_uid) %>%
+      unique() %>%
+      mutate(role = case_when(
+        is.na(role_uid) ~ "default",
+        is.na(role) ~ paste(role_uid, "(missing)"),
+        .default = role)) %>%
+      deframe()
+
     updateSelectizeInput(session, "llm_role_filter", choices = role_choices)
 
   })
@@ -889,7 +974,14 @@ function(input, output, session) {
     # 4. Filter by role (Updated to handle multi-select input: NULL, "All", or a vector of UIDs)
     selected_roles <- input$llm_role_filter
     if (!is.null(selected_roles) && !"all" %in% selected_roles) {
-      data_filtered <- data_filtered %>% filter(role_uid %in% selected_roles)
+      # check if the default role is in the selection
+      if ("NA" %in% selected_roles) {
+        data_filtered <- data_filtered %>%
+          filter(role_uid %in% selected_roles | is.na(role_uid))
+      } else {
+        data_filtered <- data_filtered %>%
+          filter(role_uid %in% selected_roles)
+      }
     }
 
 
@@ -967,8 +1059,8 @@ function(input, output, session) {
 
     # Calculate metrics
     total_cost <- sum(data_filtered$est_cost_usd, na.rm = TRUE)
-    total_time <- sum(data_filtered$time_s, na.rm = TRUE)
-    cronbach_alpha <- get_dri_alpha(data_filtered)
+    average_time <- sum(data_filtered$time_s, na.rm = TRUE) / total_iterations
+    cronbach_alpha <- deliberr::get_dri_alpha(data_filtered)
 
     # Success rate calculation: Valid / Total (as requested in the prompt)
     success_rate <- valid_iterations / total_iterations
@@ -976,11 +1068,11 @@ function(input, output, session) {
     # Create the summary data frame
     summary_df <- data.frame(
       Metric = c(
-        "Total Iterations",
-        "Valid Iterations",
-        "Success Rate (Valid / Total)",
-        "Total Cost (USD)",
-        "Total Time (s)",
+        "Total iterations",
+        "Valid iterations",
+        "Success rate (valid / total)",
+        "Total cost (USD)",
+        "Average time per iteration (s)",
         "Cronbach alpha (considerations)",
         "Cronbach alpha (policies)"
       ),
@@ -989,7 +1081,7 @@ function(input, output, session) {
         as.character(valid_iterations),
         paste0(round(success_rate * 100, 2), "%"),
         paste0("$", round(total_cost, 5)),
-        round(total_time, 2),
+        round(average_time, 2),
         round(cronbach_alpha$alpha_c, 3),
         round(cronbach_alpha$alpha_p, 3)
       ),
@@ -998,6 +1090,270 @@ function(input, output, session) {
 
     return(summary_df)
   })
+
+
+  # --- Human+LLM Analysis Tab Logic (NEW) ---
+
+  # Dynamic updates for case selector in Human+LLM Analysis
+  observe({
+    updated_cases <- human_data_combined() %>%
+      mutate(label = paste0(case, " (", survey, ")")) %>%
+      select(label, case) %>%
+      arrange(label) %>%
+      unique() %>%
+      deframe()
+    # (nrow(llm_results()) > 0)
+    selected_case <- if (length(updated_cases) > 0 && input$hlm_case_select %in% updated_cases)
+      input$hlm_case_select
+    else if (length(updated_cases) > 0)
+      updated_cases[1]
+    else
+      NULL
+
+    updateSelectInput(session, "hlm_case_select",
+                      choices = updated_cases,
+                      selected = selected_case)
+  })
+
+  # # Display survey for selected case
+  # output$hlm_survey_display <- renderText({
+  #   req(input$hlm_case_select)
+  #
+  #   survey_value <- human_data_combined() %>%
+  #     filter(case == input$hlm_case_select) %>%
+  #     pull(survey) %>%
+  #     unique() %>%
+  #     first()
+  #
+  #   if (is.na(survey_value)) {
+  #     return("No survey found")
+  #   }
+  #
+  #   survey_value
+  # })
+
+  # Dynamic updates for model and role selectors
+  observe({
+    req(input$hlm_case_select)
+
+    # Get survey for selected case
+    survey_value <- human_data_combined() %>%
+      filter(case == input$hlm_case_select) %>%
+      pull(survey) %>%
+      unique() %>%
+      first()
+
+    # Ensure LLM results exist
+    if (nrow(llm_results()) == 0) {
+      updateSelectInput(session, "hlm_model_select", choices = character(0))
+      updateSelectizeInput(session, "hlm_role_select", choices = character(0))
+      return()
+    }
+
+    # Get unique models from llm_results that match the survey
+    available_models <- llm_results() %>%
+      filter(survey == survey_value) %>%
+      pull(model) %>%
+      unique() %>%
+      sort()
+
+    selected_model <- if (input$hlm_model_select %in% available_models)
+      input$hlm_model_select
+    else if (length(available_models) > 0)
+      available_models[1]
+    else
+      NULL
+
+    updateSelectInput(session, "hlm_model_select",
+                      choices = available_models,
+                      selected = selected_model)
+
+    # Get unique roles for selected model
+    if (!is.null(selected_model) && selected_model != "") {
+      available_roles <- llm_results() %>%
+        filter(survey == survey_value, model == selected_model) %>%
+        pull(role_uid) %>%
+        unique()
+
+      # Create mapping from uid to role name
+      role_mapping <- roles_data() %>%
+        filter(uid %in% available_roles) %>%
+        select(role, uid) %>%
+        deframe()
+
+      # Add any role_uid values not found in roles_data
+      missing_roles <- setdiff(available_roles, role_mapping)
+      for (uid in missing_roles) {
+        if (is.na(uid)) role_mapping["default"] <- uid
+        else role_mapping[paste(uid, "(missing)")] <- uid
+      }
+
+      updateSelectizeInput(session, "hlm_role_select",
+                           choices = role_mapping)
+    }
+  })
+
+  # Display human and LLM data counts
+  output$hlm_human_count <- renderText({
+    req(input$hlm_case_select, input$hlm_stage_select)
+
+    human_count <- human_data_combined() %>%
+      filter(case == input$hlm_case_select, stage_id == as.numeric(input$hlm_stage_select)) %>%
+      nrow()
+
+    paste0("Human data rows: ", human_count)
+  })
+
+  output$hlm_llm_count <- renderText({
+    req(input$hlm_case_select, input$hlm_model_select, input$hlm_role_select)
+
+    if (is.null(input$hlm_role_select) || length(input$hlm_role_select) == 0) {
+      return("LLM data rows: 0")
+    }
+
+    llm_count <- if ("NA" %in% input$hlm_role_select) llm_results() %>%
+      filter(
+        model == input$hlm_model_select,
+        role_uid %in% input$hlm_role_select | is.na(role_uid),
+        is_valid == TRUE
+      ) %>%
+      nrow() else llm_results() %>%
+      filter(
+        model == input$hlm_model_select,
+        role_uid %in% input$hlm_role_select,
+        is_valid == TRUE
+      ) %>%
+      nrow()
+
+    paste0("LLM data rows: ", llm_count)
+  })
+
+  # Reactive expression to generate human-only plot
+  reactive_hlm_plot <- reactive({
+    req(input$hlm_case_select, input$hlm_stage_select, input$hlm_model_select, input$hlm_role_select)
+
+    # Ensure role selection is not empty
+    if (is.null(input$hlm_role_select) || length(input$hlm_role_select) == 0) {
+      return(
+        ggplot() +
+          annotate(
+            "text",
+            x = 0.5,
+            y = 0.5,
+            label = "Please select at least one role."
+          ) +
+          theme_void()
+      )
+    }
+
+    tryCatch({
+      # 1. Get human data for selected case and stage
+      human_subset <- human_data_combined() %>%
+        filter(case == input$hlm_case_select, stage_id == as.numeric(input$hlm_stage_select)) %>%
+        mutate(is_valid = TRUE)
+
+      # 2. Get LLM data for selected model and role(s)
+      llm_subset <- if ("NA" %in% input$hlm_role_select) llm_results() %>%
+        filter(
+          model == input$hlm_model_select,
+          role_uid %in% input$hlm_role_select | is.na(role_uid),
+          is_valid == TRUE
+        ) else llm_results() %>%
+        filter(
+          model == input$hlm_model_select,
+          role_uid %in% input$hlm_role_select,
+          is_valid == TRUE
+        )
+
+      # 3. Check if there's any human data
+      if (nrow(human_subset) == 0) {
+        return(
+          ggplot() +
+            annotate(
+              "text",
+              x = 0.5,
+              y = 0.5,
+              label = "No human data found for selected case and stage."
+            ) +
+            theme_void()
+        )
+      }
+
+      # 4. Calculate IC and DRI for human-only data
+      ic_human <- deliberr::get_dri_ic(human_subset)
+      dri_human <- deliberr::get_dri(ic_human)
+
+      # 5. Generate human-only plot
+      plot_human <- deliberr::plot_dri_ic(
+        ic_human,
+        title = input$hlm_plot_title_human,
+        suffix = "human",
+        dri = dri_human
+      )
+
+      # 6. Combine data for second plot
+      common_cols <- intersect(names(human_subset), names(llm_subset))
+
+      combined_data <- bind_rows(
+        human_subset %>% select(all_of(common_cols)),
+        llm_subset %>% select(all_of(common_cols))
+      )
+
+      # 7. Calculate IC and DRI for combined data
+      if (nrow(combined_data) == 0) {
+        plot_combined <- ggplot() +
+          annotate(
+            "text",
+            x = 0.5,
+            y = 0.5,
+            label = "No valid LLM data found for selected filters."
+          ) +
+          theme_void()
+      } else {
+        ic_combined <- deliberr::get_dri_ic(combined_data)
+        dri_combined <- deliberr::get_dri(ic_combined)
+
+        plot_combined <- deliberr::plot_dri_ic(
+          ic_combined,
+          title = input$hlm_plot_title_combined,
+          suffix = "combined",
+          dri = dri_combined
+        )
+      }
+
+      # 8. Arrange both plots side by side
+      grid.arrange(
+        plot_human,
+        plot_combined,
+        ncol = 2
+      )
+
+    }, error = function(e) {
+      ggplot() +
+        annotate(
+          "text",
+          x = 0.5,
+          y = 0.5,
+          label = paste("Plotting Failed (R Error):", conditionMessage(e)),
+          color = "red",
+          size = 4
+        ) +
+        theme_void() +
+        labs(title = "Plot Generation Error")
+    })
+  })
+
+  # Render the comparison plot with dynamic sizing
+  output$hlm_comparison_plot <- renderPlot({
+    reactive_hlm_plot()
+  }, height = function() {
+    session$clientData$output_hlm_comparison_plot_width / 2
+  }, width = function() {
+    session$clientData$output_hlm_comparison_plot_width
+  })
+
+  # --- End Human+LLM Analysis Tab Logic ---
+
 
   # Render the LLM Analysis Summary Table
   output$llm_summary_table <- DT::renderDataTable({
@@ -1083,6 +1439,4 @@ function(input, output, session) {
     # FIX: Set height dynamically to match the width, maintaining a square aspect ratio.
   }, height = function()
     session$clientData$output_llm_plot_width)
-
-  # Removed the observe block for loading llm_data.csv on startup.
 }

@@ -32,4 +32,4 @@ reason,"## Instructions:
 - Do not include any additional formatting, such as bullets or special characters.
 - Do not include more than one space in a row."
 q_method,"- Using the Q Methodology, rate the statements following a Fixed Quasi-Normal Distribution between 1 and %d."
-system,"Answer the following prompts as %s %s, who %s."
+system,"Answer the following prompts as: %s, who %s."

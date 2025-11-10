@@ -8,8 +8,8 @@ get_dri_llm_response(
   model_id,
   survey_name,
   api_key = Sys.getenv("OPENROUTER_API_KEY"),
-  role_info = list(uid = NA_character_, role = NA_character_, article = NA_character_,
-    description = NA_character_),
+  role_info = list(uid = NA_character_, role = NA_character_, description =
+    NA_character_),
   n = 1
 )
 }

@@ -46,7 +46,21 @@ fluidPage(
           selected = "greater"
         ),
         # Checkbox for using adjusted p-values
-        checkboxInput("adjusted", "Use adjusted DRI?", value = TRUE)
+        checkboxInput("adjusted", "Use adjusted DRI?", value = TRUE),
+
+        hr(),
+
+        # NEW: Upload Custom Human Data
+        h4("Upload Custom Data"),
+        p(
+          style = "font-size: 0.9em;",
+          "Upload a CSV file with columns: survey, case, stage_id, pnum, C1:C50, P1:P10"
+        ),
+        fileInput(
+          "upload_human_data",
+          "Upload Human Data (CSV)",
+          accept = c("text/csv", "text/comma-separated-values", ".csv")
+        )
       ),
 
       # Main panel for displaying the output
@@ -102,7 +116,7 @@ fluidPage(
 
         # Custom Role Input Form
         textInput("new_role_uid", "UID (3 characters, unique):", value = ""),
-        selectInput("new_role_article", "Article:", choices = NULL), # Choices updated in server
+        # selectInput("new_role_article", "Article:", choices = NULL), # Choices updated in server
         textInput(
           "new_role_name",
           "Role Name (max 10 chars, letters/hyphens only):",
@@ -110,7 +124,7 @@ fluidPage(
         ),
         textAreaInput(
           "new_role_description",
-          "Description (max 25 words, letters/hyphens only):",
+          "Description (max 100 words, letters/hyphens only):",
           value = "",
           rows = 3
         ),
@@ -168,14 +182,14 @@ fluidPage(
           # Choices will be dynamically set in server.R
           selected = "openai/gpt-3.5-turbo"
         ),
-        selectInput("survey_name", "Survey Name", choices = sort(unique(
+        selectInput("survey_name", "Survey", choices = sort(unique(
           deliberr::surveys$name
         ))),
         # MODIFIED: Initial choices set to NULL, populated by server's reactive_roles
-        selectInput("role_uid", "Role UID", choices = NULL),
+        selectInput("role_uid", "Role", choices = NULL),
         numericInput(
           "n_iterations",
-          "Number of Iterations (n)",
+          "Number of iterations (n)",
           value = 5,
           min = 1,
           max = 20
@@ -217,12 +231,12 @@ fluidPage(
         h3("LLM Data Visualization Filters"),
 
         # Filters (Choices dynamically set in server.R)
-        selectInput("llm_survey_filter", "Filter by Survey:", choices = sort(unique(
+        selectInput("llm_survey_filter", "Filter by survey:", choices = sort(unique(
           deliberr::surveys$name
         ))),
         selectizeInput(
           "llm_model_filter",
-          "Filter by Model ID:",
+          "Filter by model:",
           choices = c("all"), # Initial choice; dynamically updated in server
           multiple = TRUE,
           options = list(placeholder = 'Select one or more models')
@@ -230,7 +244,7 @@ fluidPage(
         # CHANGED: selectizeInput for multi-select
         selectizeInput(
           "llm_role_filter",
-          "Filter by Role UID:",
+          "Filter by role",
           choices = c("all", sort(deliberr::roles$uid)),
           multiple = TRUE,
           # Allow multiple selections
@@ -290,6 +304,80 @@ fluidPage(
           )
         )
       )
-    )) # End of TabPanel "LLM Analysis"
+    )), # End of TabPanel "LLM Analysis"
+
+    # Tab 5: Human+LLM Analysis (NEW)
+    tabPanel("Human+LLM Analysis", sidebarLayout(
+      sidebarPanel(
+        h3("Combine Human and LLM Data"),
+
+        # 1. Case Selection
+        h4("Human Data Options"),
+        selectInput(
+          "hlm_case_select",
+          "Case (survey)",
+          choices = NULL # Dynamically populated in server
+        ),
+
+        # 2b. Stage Selection
+        selectInput(
+          "hlm_stage_select",
+          "Survey stage",
+          choices = c("pre-deliberation" = 1, "post-deliberation" = 2),
+          selected = 1
+        ),
+        textOutput("hlm_human_count"),
+
+        hr(),
+
+        # 3. Model Selection
+        h4("LLM Data Options"),
+        selectInput(
+          "hlm_model_select",
+          "Model",
+          choices = NULL # Dynamically populated in server
+        ),
+
+        # 4. Role Selection (multi-select)
+        selectizeInput(
+          "hlm_role_select",
+          "Role(s):",
+          choices = NULL, # Dynamically populated in server
+          multiple = TRUE,
+          options = list(placeholder = 'Select one or more roles')
+        ),
+        textOutput("hlm_llm_count"),
+
+
+        hr(),
+
+        # 5. Plot options
+        h4("Plot Options"),
+        textInput(
+          "hlm_plot_title_human",
+          "Human-Only Plot Title",
+          value = "Human Data" # Default value
+        ),
+        textInput(
+          "hlm_plot_title_combined",
+          "Human+LLM Plot Title",
+          value = "Human + LLM Data" # Default value
+        ),
+
+      ),
+
+      mainPanel(
+        width = 8,
+        h3("Human vs. Human+LLM Analysis"),
+        p(
+          "This view displays the Deliberation Reasoning Index (DRI) for the selected case comparing human-only data with combined human+LLM data."
+        ),
+        hr(),
+        # Output for the plots
+        plotOutput("hlm_comparison_plot", height = "700px")
+      )
+    ))
+    # End of TabPanel "Human+LLM Analysis"
+
   ) # End of tabsetPanel
 )

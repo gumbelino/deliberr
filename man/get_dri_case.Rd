@@ -4,7 +4,13 @@
 \alias{get_dri_case}
 \title{Get DRI Case}
 \usage{
-get_dri_case(case, adjusted = TRUE, method = "wilcox", alternative = "greater")
+get_dri_case(
+  case,
+  adjusted = TRUE,
+  method = "wilcox",
+  alternative = "greater",
+  data = NULL
+)
 }
 \arguments{
 \item{case}{a character string specifying the name of the case in human_data}
@@ -18,6 +24,8 @@ must be one of "wilcox" (default) or "t.test"}
 \item{alternative}{a character string specifying the alternative hypothesis,
 must be one of "greater" (default), "two.sided" or "less".
 You can specify just the initial letter.}
+
+\item{data}{the dataset to extract data from}
 }
 \value{
 a tibble with with the following components: \code{case}, \code{pre},
