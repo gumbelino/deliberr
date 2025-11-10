@@ -18,6 +18,7 @@ library(ggplot2)
 library(DT)
 library(readr)
 library(gridExtra)
+library(tibble)
 
 # --- Data Preparation for Model Dropdown (using deliberr::get_model_ids) ---
 # NOTE: get_model_ids is called outside the server function for one-time initialization.
