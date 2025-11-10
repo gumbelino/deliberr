@@ -56,7 +56,7 @@ make_dri_llm_prompts <- function(survey_info,
            p_statements)
 
   ## make system prompt
-  if (length(role_info$uid) == 0) {
+  if (length(role_info$uid) == 0 || is.na(role_info$uid)) {
     prompt_s <- NA_character_
   } else {
     # get roles
