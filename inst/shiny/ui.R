@@ -27,6 +27,189 @@ fluidPage(
 
   # Main area now uses a tabsetPanel for different views
   tabsetPanel(
+
+    # Add this as the FIRST tabPanel in your tabsetPanel() in ui.R
+    # Place it before the "Case Analysis" tab
+
+    tabPanel("Home",
+             fluidPage(
+               style = "background-color: #f8f9fa; padding-top: 20px;",
+
+               # Header Section
+               div(
+                 style = "text-align: center; padding: 40px 20px; background-color: white; border-radius: 8px; margin-bottom: 30px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);",
+                 h1("Welcome to deliberr", style = "color: #2c3e50; margin-bottom: 10px;"),
+                 p("Analyze human, LLM, and combined deliberation data through the Deliberation Reasoning Index (DRI)",
+                   style = "font-size: 18px; color: #555; margin: 0;")
+               ),
+
+               # Quick Start Section
+               div(
+                 style = "background-color: #e8f4f8; padding: 20px; border-left: 4px solid #0288d1; border-radius: 4px; margin-bottom: 30px;",
+                 h3("Quick Start", style = "margin-top: 0;"),
+                 p("To get started with LLM data generation, you'll need an OpenRouter API key:"),
+                 tags$ol(
+                   tags$li("Visit ", a(href="https://openrouter.ai/", target="_blank", "openrouter.ai"), " and create an account"),
+                   tags$li("Generate an API key from your account settings"),
+                   tags$li("Use the API key in the ", strong("LLM Data"), " tab to generate LLM responses"),
+                   tags$li("Analyze results in the ", strong("LLM Analysis"), " or ", strong("Human+LLM Analysis"), " tabs")
+                 )
+               ),
+
+               # Main Features Grid
+               h2("Features", style = "color: #2c3e50; margin-bottom: 20px;"),
+
+               fluidRow(
+                 # Feature 1: Case Analysis
+                 column(6,
+                        div(
+                          style = "background-color: white; padding: 25px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height: 100%;",
+                          h3("Case Analysis", style = "margin-top: 0; margin-bottom: 10px; color: #2c3e50;"),
+                          p(style = "margin-bottom: 12px;", "Analyze human deliberation data collected from case studies."),
+                          tags$ul(style = "margin-bottom: 12px;",
+                                  tags$li("View pre- and post-deliberation DRI scores for each case"),
+                                  tags$li("Statistical testing (Wilcoxon or t-test) to compare conditions"),
+                                  tags$li("Calculate pre/post differences (delta) and significance"),
+                                  tags$li("Upload custom human data with standardized columns"),
+                                  tags$li("Filter by statistical method and adjustment options")
+                          ),
+                          p(style = "font-size: 0.9em; color: #666; margin: 0;",
+                            "Requires CSV with: survey, case, stage_id, pnum, C1:C50, P1:P10")
+                        )
+                 ),
+
+                 # Feature 2: Case Plot View
+                 column(6,
+                        div(
+                          style = "background-color: white; padding: 25px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height: 100%;",
+                          h3("Case Plot View", style = "margin-top: 0; margin-bottom: 10px; color: #2c3e50;"),
+                          p(style = "margin-bottom: 12px;", "Visualize individual case data and deliberation changes."),
+                          tags$ul(style = "margin-bottom: 12px;",
+                                  tags$li("View side-by-side pre/post DRI scatter plots"),
+                                  tags$li("See aggregated DRI change visualization"),
+                                  tags$li("Select specific cases to inspect"),
+                                  tags$li("Color-coded delta values (green for increase, red for decrease)")
+                          )
+                        )
+                 )
+               ),
+
+               fluidRow(
+                 # Feature 3: LLM Roles
+                 column(6,
+                        div(
+                          style = "background-color: white; padding: 25px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height: 100%;",
+                          h3("LLM Roles", style = "margin-top: 0; margin-bottom: 10px; color: #2c3e50;"),
+                          p(style = "margin-bottom: 12px;", "Create and manage custom roles for LLM simulations."),
+                          tags$ul(style = "margin-bottom: 12px;",
+                                  tags$li("Define custom roles with descriptions (max 100 words)"),
+                                  tags$li("View all available default and custom roles"),
+                                  tags$li("Upload roles from CSV files"),
+                                  tags$li("Download custom roles for sharing"),
+                                  tags$li("Each role includes: UID, name, description, and type")
+                          ),
+                          p(style = "font-size: 0.9em; color: #666; margin: 0;",
+                            "Custom roles are highlighted in yellow and saved locally")
+                        )
+                 ),
+
+                 # Feature 4: LLM Data
+                 column(6,
+                        div(
+                          style = "background-color: white; padding: 25px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height: 100%;",
+                          h3("LLM Data Generation", style = "margin-top: 0; margin-bottom: 10px; color: #2c3e50;"),
+                          p(style = "margin-bottom: 12px;", "Generate LLM responses using OpenRouter API."),
+                          tags$ul(style = "margin-bottom: 12px;",
+                                  tags$li("Select from multiple LLM models (OpenAI, Anthropic, etc.)"),
+                                  tags$li("Choose survey and custom role for LLM"),
+                                  tags$li("Run 1-20 iterations per session"),
+                                  tags$li("Track cost and generation time"),
+                                  tags$li("Upload, download, and clear LLM data"),
+                                  tags$li("View validity status and error messages")
+                          ),
+                          p(style = "font-size: 0.9em; color: #666; margin: 0;",
+                            "Requires OpenRouter API key")
+                        )
+                 )
+               ),
+
+               fluidRow(
+                 # Feature 5: LLM Analysis
+                 column(6,
+                        div(
+                          style = "background-color: white; padding: 25px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height: 100%;",
+                          h3("LLM Analysis", style = "margin-top: 0; margin-bottom: 10px; color: #2c3e50;"),
+                          p(style = "margin-bottom: 12px;", "Analyze and visualize aggregated LLM-generated data."),
+                          tags$ul(style = "margin-bottom: 12px;",
+                                  tags$li("Filter by survey, model, and role"),
+                                  tags$li("View aggregated DRI plot for LLM responses"),
+                                  tags$li("Summary statistics: total iterations, success rate, cost, time"),
+                                  tags$li("Calculate Cronbach's alpha for reliability"),
+                                  tags$li("Customize plot titles and labels")
+                          )
+                        )
+                 ),
+
+                 # Feature 6: Human+LLM Analysis
+                 column(6,
+                        div(
+                          style = "background-color: white; padding: 25px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height: 100%;",
+                          h3("Human+LLM Analysis", style = "margin-top: 0; margin-bottom: 10px; color: #2c3e50;"),
+                          p(style = "margin-bottom: 12px;", "Compare human data with LLM-generated responses."),
+                          tags$ul(style = "margin-bottom: 12px;",
+                                  tags$li("Select specific cases and deliberation stages"),
+                                  tags$li("Choose LLM model and role(s) for comparison"),
+                                  tags$li("View human-only DRI plot"),
+                                  tags$li("View combined human+LLM DRI plot"),
+                                  tags$li("Analyze differences between human and LLM reasoning")
+                          )
+                        )
+                 )
+               ),
+
+               # Workflow Section
+               h2("Typical Workflow", style = "color: #2c3e50; margin-bottom: 20px;"),
+               div(
+                 style = "background-color: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);",
+                 tags$ol(
+                   tags$li(strong("Start with Case Analysis:"), " Explore existing human deliberation data"),
+                   tags$li(strong("Create Roles:"), " Define custom roles in the LLM Roles tab if needed"),
+                   tags$li(strong("Generate LLM Data:"), " Use the LLM Data tab to generate responses from your chosen model and role"),
+                   tags$li(strong("Analyze LLM Results:"), " Use LLM Analysis to visualize and evaluate the generated data"),
+                   tags$li(strong("Compare Human+LLM:"), " Use Human+LLM Analysis to compare human responses with LLM-generated data"),
+                   tags$li(strong("Export & Share:"), " Download data and roles for further analysis or sharing")
+                 )
+               ),
+
+               # Data Requirements Section
+               h2("Data Format Requirements", style = "color: #2c3e50; margin-bottom: 20px;"),
+               fluidRow(
+                 column(6,
+                        div(
+                          style = "background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);",
+                          h4("Human Data (CSV)", style = "margin-top: 0;"),
+                          p(style = "font-size: 0.9em;", strong("Required columns:")),
+                          code(style = "display: block; padding: 10px; background-color: #f5f5f5; margin: 10px 0; border-radius: 4px;",
+                               "survey, case, stage_id, pnum, C1:C50, P1:P10")
+                        )
+                 ),
+                 column(6,
+                        div(
+                          style = "background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);",
+                          h4("Custom Roles (CSV)", style = "margin-top: 0;"),
+                          p(style = "font-size: 0.9em;", strong("Required columns:")),
+                          code(style = "display: block; padding: 10px; background-color: #f5f5f5; margin: 10px 0; border-radius: 4px;",
+                               "uid, type, role, description")
+                        )
+                 )
+               ),
+
+               br(),
+               br()
+             )
+    ),
+
+
     # Tab 1: Case Analysis (Existing content)
     tabPanel("Case Analysis", sidebarLayout(
       sidebarPanel(
@@ -231,12 +414,12 @@ fluidPage(
         h3("LLM Data Visualization Filters"),
 
         # Filters (Choices dynamically set in server.R)
-        selectInput("llm_survey_filter", "Filter by survey:", choices = sort(unique(
+        selectInput("llm_survey_filter", "Filter by survey", choices = sort(unique(
           deliberr::surveys$name
         ))),
         selectizeInput(
           "llm_model_filter",
-          "Filter by model:",
+          "Filter by model",
           choices = c("all"), # Initial choice; dynamically updated in server
           multiple = TRUE,
           options = list(placeholder = 'Select one or more models')
@@ -330,18 +513,20 @@ fluidPage(
 
         hr(),
 
-        # 3. Model Selection
+        # 3. Model Selection (multi-select)
         h4("LLM Data Options"),
-        selectInput(
+        selectizeInput(
           "hlm_model_select",
           "Model",
-          choices = NULL # Dynamically populated in server
+          choices = NULL, # Dynamically populated in server
+          multiple = TRUE,
+          options = list(placeholder = 'Select one or more models')
         ),
 
         # 4. Role Selection (multi-select)
         selectizeInput(
           "hlm_role_select",
-          "Role(s):",
+          "Role(s)",
           choices = NULL, # Dynamically populated in server
           multiple = TRUE,
           options = list(placeholder = 'Select one or more roles')

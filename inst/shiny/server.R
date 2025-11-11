@@ -464,15 +464,31 @@ function(input, output, session) {
     # Initialize an empty list to store results for each case
     case_dri_list <- list()
 
+    human_data_summary <- human_data_combined() %>%
+      group_by(case, survey) %>%
+      summarise(N = n()/2, .groups = "drop") # account for pre/post surveys
+
     # Loop through each unique case in the combined human data
-    for (case in unique(human_data_combined()$case)) {
-      case_dri_list[[length(case_dri_list) + 1]] <- deliberr::get_dri_case(
+    for (i in 1:nrow(human_data_summary)) {
+
+      case <- human_data_summary[i,]$case
+      survey <- human_data_summary[i,]$survey
+      N <- human_data_summary[i,]$N
+
+      dri_case <- deliberr::get_dri_case(
         case,
         method = input$method,
         adjusted = input$adjusted,
         alternative = input$alternative,
         data = human_data_combined()  # Pass the combined data
       )
+
+      case_dri_list[[length(case_dri_list) + 1]] <- tibble(
+        dri_case,
+        survey,
+        N
+      )
+
     }
 
     # Combine the list of data frames into a single data frame
@@ -481,7 +497,9 @@ function(input, output, session) {
 
   # Existing Render the interactive data table
   output$case_table <- DT::renderDataTable({
-    data_to_display <- reactive_case_dri_df()
+    data_to_display <- reactive_case_dri_df() %>%
+      select(case, survey, N, pre, post, delta, p_value, significance) %>%
+      arrange(case, survey)
 
     datatable_obj <- DT::datatable(
       data_to_display,
@@ -501,7 +519,7 @@ function(input, output, session) {
       class = 'cell-border stripe'
     ) %>%
       # 1. Apply fixed-point rounding to 2 decimal places
-      DT::formatSignif(columns = which(sapply(data_to_display, is.numeric)), digits = 2) %>%
+      DT::formatSignif(columns = c("pre", "post", "delta", "p_value"), digits = 2) %>%
       # 2. Apply conditional text coloring based on the 'delta' column
       DT::formatStyle(
         columns = 'delta',
@@ -1146,7 +1164,7 @@ function(input, output, session) {
 
     # Ensure LLM results exist
     if (nrow(llm_results()) == 0) {
-      updateSelectInput(session, "hlm_model_select", choices = character(0))
+      updateSelectizeInput(session, "hlm_model_select", choices = character(0))
       updateSelectizeInput(session, "hlm_role_select", choices = character(0))
       return()
     }
@@ -1158,21 +1176,18 @@ function(input, output, session) {
       unique() %>%
       sort()
 
-    selected_model <- if (input$hlm_model_select %in% available_models)
-      input$hlm_model_select
-    else if (length(available_models) > 0)
-      available_models[1]
-    else
-      NULL
+    # FIXME
+    selected_models <- if (length(available_models) > 0)
+      available_models else input$hlm_model_select
 
     updateSelectInput(session, "hlm_model_select",
                       choices = available_models,
-                      selected = selected_model)
+                      selected = selected_models)
 
     # Get unique roles for selected model
-    if (!is.null(selected_model) && selected_model != "") {
+    if (!is.null(selected_models) && length(selected_models) > 0) {
       available_roles <- llm_results() %>%
-        filter(survey == survey_value, model == selected_model) %>%
+        filter(survey == survey_value, model %in% selected_models) %>%
         pull(role_uid) %>%
         unique()
 
@@ -1214,13 +1229,13 @@ function(input, output, session) {
 
     llm_count <- if ("NA" %in% input$hlm_role_select) llm_results() %>%
       filter(
-        model == input$hlm_model_select,
+        model %in% input$hlm_model_select,
         role_uid %in% input$hlm_role_select | is.na(role_uid),
         is_valid == TRUE
       ) %>%
       nrow() else llm_results() %>%
       filter(
-        model == input$hlm_model_select,
+        model %in% input$hlm_model_select,
         role_uid %in% input$hlm_role_select,
         is_valid == TRUE
       ) %>%
@@ -1256,12 +1271,12 @@ function(input, output, session) {
       # 2. Get LLM data for selected model and role(s)
       llm_subset <- if ("NA" %in% input$hlm_role_select) llm_results() %>%
         filter(
-          model == input$hlm_model_select,
+          model %in% input$hlm_model_select,
           role_uid %in% input$hlm_role_select | is.na(role_uid),
           is_valid == TRUE
         ) else llm_results() %>%
         filter(
-          model == input$hlm_model_select,
+          model %in% input$hlm_model_select,
           role_uid %in% input$hlm_role_select,
           is_valid == TRUE
         )
@@ -1291,6 +1306,10 @@ function(input, output, session) {
         suffix = "human",
         dri = dri_human
       )
+
+      # FIXME
+      human_subset$pnum <- as.integer(rownames(human_subset))
+      llm_subset$pnum <- -as.integer(rownames(llm_subset))
 
       # 6. Combine data for second plot
       common_cols <- intersect(names(human_subset), names(llm_subset))

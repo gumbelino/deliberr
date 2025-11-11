@@ -26,8 +26,9 @@
 get_dri_ic <- function(data) {
 
   # create sequential participant numbers if the original data doesn't have it
+  # make it negative to differentiate from real pnums
   if (!"pnum" %in% colnames(data)) {
-    data$pnum <- rownames(data)
+    data$pnum <- -as.integer(rownames(data))
   }
 
   # create separate dataframes for C and P columns

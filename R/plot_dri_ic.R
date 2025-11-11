@@ -34,6 +34,10 @@ plot_dri_ic <- function(ic,
                      dri = NA_real_,
                      caption = NULL) {
 
+  # assume llm pnum is negative and set palette
+  ic$llm <- ic$pnum1 < 0 | ic$pnum2 < 0
+  pal <- c("black", "blue")
+
   # create title
   plot_title <- if (!is.na(title)) title else "Intersubjective Correlations (IC) Plot"
   plot_title <- if (!is.na(suffix)) paste0(plot_title, ": ", suffix) else plot_title
@@ -70,8 +74,9 @@ plot_dri_ic <- function(ic,
       width = 0.02,
       height = 0.02,
       show.legend = TRUE,
-      col = "black"
+      aes(colour = llm)
     ) +
+    scale_colour_manual(values = pal) +
     xlim(-1.1, 1.1) + ylim(-1.1, 1.1) +
     # theme(panel.grid.major = element_blank(),
     #       panel.grid.minor = element_blank()) +
