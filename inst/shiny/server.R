@@ -436,6 +436,21 @@ function(input, output, session) {
         return()
       }
 
+      # Check if case already exists
+      uploaded_cases <- unique(uploaded_data$case)
+      existing_cases <- unique(human_data_combined()$case)
+      if (any(uploaded_cases %in% existing_cases)) {
+        removeNotification(id = id)
+        cases_overlap <- intersect(existing_cases, uploaded_cases)
+        showNotification(
+          paste("Error: Uploaded file contains existing cases.",
+                "Existing:", paste(cases_overlap, collapse = ", ")),
+          type = "error",
+          duration = 10
+        )
+        return()
+      }
+
       # Append uploaded data to existing human_data
       updated_human_data <- bind_rows(human_data_combined(), uploaded_data)
       human_data_combined(updated_human_data)
@@ -768,6 +783,20 @@ function(input, output, session) {
       # write_csv(iterations_to_save, "llm_data.csv", append = append_to_file)
 
       showNotification("LLM Generation Complete!", type = "message")
+
+      showModal(modalDialog(
+        title = "Reminder: Download LLM Data",
+        HTML(paste0("<p><strong>Please remember to download your data, otherwise
+                    it will be lost once the session ends.</strong></p>",
+                    "<p>Do you want to download your LLM data now?</p>")),
+        footer = tagList(
+          modalButton("Cancel"),
+          downloadButton("download_llm_data", "Download", class = "btn-success")
+        ),
+        easyClose = FALSE
+      ))
+
+
     } else {
       showNotification("LLM Generation Complete, but no valid data was generated or saved.",
                        type = "warning")
@@ -900,6 +929,7 @@ function(input, output, session) {
         write_csv(llm_results(), file)
       }
 
+      removeModal()
 
     }
   )
