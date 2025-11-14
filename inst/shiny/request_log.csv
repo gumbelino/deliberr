@@ -15843,3 +15843,673 @@ dad4a22e-1e59-46e1-a330-7501267982b5,2025-11-11T13:33:51Z,openai,gpt-3.5-turbo,a
 - In a single line, explain your ratings above within 100 characters or less.
 - Do not include any additional formatting, such as bullets or special characters.
 - Do not include more than one space in a row.","I support policies promoting equal influence for all, reject special benefits for minorities."
+7dca958b-17cc-4122-9265-b5685220df29,2025-11-11T14:43:41Z,openai,gpt-3.5-turbo,acp,ana,considerations,1305,239,"## Instructions:
+- Rate each of the 48 [Considerations] below from 1 to 11, where 1 is strongly disagree and 11 is strongly agree.
+- In your response, return an ordered list of 48 ratings as integers, one rating per line following the format in the [Example output].
+- Your response must have exactly 48 lines in total.
+- Do NOT include any additional text in your response.
+
+## [Example output]:
+1. 1
+2. 4
+3. 6
+4. 3
+
+## [Considerations]:
+1. Concluding that some races/cultures are better than others must be avoided.
+2. There's a dollar democracy that runs through our supposed democracy.
+3. People get the government they deserve
+4. Republicanism is a smokescreen for democratic treachery, incompetence and lunacy.
+5. The people we elect are loyal not to we dumb bunnies who elected them, but the agenda and dogma of their party.
+6. Democracy means that all policy is exposed to open discussion and debate in a public political space of all citizens before being put to a transparent, accountable vote.
+7. It would be a great thing if voters could vote on specific issues, not only on a whole party program at election time.
+8. We live in a great democracy.
+9. In the Senate there should be elected representatives who are not from the major parties but from smaller interest groups.
+10. Until women are equally represented in Australian parliaments, we will not have a genuine representative democracy.
+11. I don't think there's anything wrong with people voting for their self-interest.
+12. Sometimes I get a bit worried that there's a lot of small minority groups that tend to get a lot of the say
+13. I don't want to be in a place where only a minority's viewpoint gets the right to say what's going to happen.
+14. There is no real difference in ideological terms between the major parties and preference distributions are problematic.
+15. Proportional Representation also forces parties to coalesce and moderates out the extreme political views.
+16. Our community and nation should invoke a spirit that you are important, that you do have a way of influencing things.
+17. We should strengthen protections of the free press in order to facilitate a more open and publicly accountable government.
+18. A lot of people may be politically ignorant, but they believe what they see and hear on television, and that makes them vote the way they do. They have been brainwashed by the clever advertising people.
+19. Our political system's strength is that it can change to meet changing circumstances.
+20. The fundamental dynamic of Australian society is that it is one of evolution, not revolution.
+21. Not voting is a form of expression. It's a way of telling parties that no one is offering policies that appeal to you.
+22. I'm always cynical about government processes.
+23. The true function of government is to maintain peace and justice. This does not include interfering in private transactions of its electors.
+24. Democracy means we, the people, are responsible for what government does, or fails to do.
+25. Democracy is a term which has lost much of its original meaning.
+26. I don't think we have a lot of input into legislation and a lot of things that are important.
+27. Free markets work because individual people, cooperating peacefully and voluntarily through markets, can achieve much that politicians and bureaucrats cannot achieve using compulsion and direction.
+28. People are quite capable of processing and thinking about the vast majority of issues facing our society but as long as we are subjected to 'news lite' the level of political debate will remain facile.
+29. I don't know too much about democracy. I feel ridiculous voting.
+30. The only time we are all equal is when we vote in the ballot box.
+31. We are a democratic country.
+32. Low female participation rates compound the domination of the public realm by males.
+33. We as individuals have a right, that's what democracy means to me
+34. There is a lot of consultation by govt – but who is listening?  And what power do they have to make changes?
+35. In Australia the rich have virtually unlimited access to the legal system and the capacity to use it to achieve their own ends.
+36. Too few people have a lot of sway in the system.  Corporate lobbyists, vested interests, pork barrelling and contributions to political parties are all problematic.
+37. We should not be afraid of disagreement. Indeed, an important feature of a liberal democracy is respect for conflicting ideas; difference is part of the human condition.
+38. The party system is the main obstruction to accountable politics.
+39. The political system is remote and closed and the connection with elected representatives is difficult, they are often faceless.
+40. The last thing we need is a Canberra 'Big Brother' telling us what we should read and hear.
+41. You don't have to wait three years to say 'I'm not happy with the job you did.' You can apply pressure, and enough people writing to the local member can turn the situation around.
+42. If Australia is to recover from the horrible mess we are in at present, we will need leaders of high principles, who will govern with honesty, justice, and righteousness, fearlessly putting into practice the principles of the Bible.
+43. We suffer a Parliamentary Democracy and an archaic and conflict oriented, ""two party system"" where one of two main parties will manipulate us for the next few years.
+44. I suppose we do have an upper class and a lower class.
+45. The true believers are about decency in life, about a capacity to debate the issues and to receive different views.
+46. If you want your vote to count for anything, then you need to not vote in ignorance, you need to know something about what you're being offered.
+47. Our government is attempting to mould our society to the needs of a profit-oriented market
+48. Governments can talk a great game about 'democracy'. They fall down, in practice, because they cannot accept any sharing of the power to influence decisions with those who might have different motives and ideas.","1. 11
+2. 11
+3. 11
+4. 11
+5. 11
+6. 11
+7. 11
+8. 1
+9. 11
+10. 11
+11. 11
+12. 11
+13. 11
+14. 11
+15. 11
+16. 11
+17. 11
+18. 11
+19. 11
+20. 11
+21. 11
+22. 11
+23. 11
+24. 11
+25. 11
+26. 11
+27. 11
+28. 11
+29. 1
+30. 11
+31. 1
+32. 11
+33. 11
+34. 11
+35. 11
+36. 11
+37. 11
+38. 11
+39. 11
+40. 11
+41. 11
+42. 11
+43. 11
+44. 11
+45. 11
+46. 11
+47. 11
+48. 11"
+7dca958b-17cc-4122-9265-b5685220df29,2025-11-11T14:43:41Z,openai,gpt-3.5-turbo,acp,ana,policies,1792,24,"## Instructions:
+- Based on your previous ratings, rank the 5 [Policies] listed below from 1 to 5, where 1 represents the option you support the most and 5 the option you support the least.
+- In your response, return an ordered list of 5 ranks as integers, one rank per line following the format in the [Example output].
+- Your response must have exactly 5 lines in total.
+- Do NOT include any additional text in your response.
+
+## [Example output]:
+1. 4
+2. 1
+3. 3
+4. 2
+
+## [Policies]:
+1. A government with constitutional rules specifying its main task is to ensure that economic markets work well, and that government intervenes as little in society beyond that
+2. The kind of government that we have, with no major changes
+3. Government with strong leaders and legislation that ensures that proper moral principles are observed in society.
+4. Government that abolishes all policies that give special benefits to minority groups, and instead ensures equal influence for all Australians
+5. Government with guaranteed involvement by all social groups, especially those representing disadvantaged minorities, in policy making","1. 4
+2. 5
+3. 3
+4. 1
+5. 2"
+7dca958b-17cc-4122-9265-b5685220df29,2025-11-11T14:43:41Z,openai,gpt-3.5-turbo,acp,ana,reason,1871,19,"## Instructions:
+- In a single line, explain your ratings above within 100 characters or less.
+- Do not include any additional formatting, such as bullets or special characters.
+- Do not include more than one space in a row.","I support minimal government intervention in economic markets, equal influence for all, and inclusive policy making."
+92480d57-d733-476c-b068-1f391812a28a,2025-11-11T14:43:45Z,openai,gpt-3.5-turbo,acp,ana,considerations,1305,239,"## Instructions:
+- Rate each of the 48 [Considerations] below from 1 to 11, where 1 is strongly disagree and 11 is strongly agree.
+- In your response, return an ordered list of 48 ratings as integers, one rating per line following the format in the [Example output].
+- Your response must have exactly 48 lines in total.
+- Do NOT include any additional text in your response.
+
+## [Example output]:
+1. 1
+2. 4
+3. 6
+4. 3
+
+## [Considerations]:
+1. Too few people have a lot of sway in the system.  Corporate lobbyists, vested interests, pork barrelling and contributions to political parties are all problematic.
+2. Democracy means that all policy is exposed to open discussion and debate in a public political space of all citizens before being put to a transparent, accountable vote.
+3. Democracy means we, the people, are responsible for what government does, or fails to do.
+4. Our political system's strength is that it can change to meet changing circumstances.
+5. There is a lot of consultation by govt – but who is listening?  And what power do they have to make changes?
+6. People get the government they deserve
+7. People are quite capable of processing and thinking about the vast majority of issues facing our society but as long as we are subjected to 'news lite' the level of political debate will remain facile.
+8. Low female participation rates compound the domination of the public realm by males.
+9. Our community and nation should invoke a spirit that you are important, that you do have a way of influencing things.
+10. The party system is the main obstruction to accountable politics.
+11. Democracy is a term which has lost much of its original meaning.
+12. The only time we are all equal is when we vote in the ballot box.
+13. Proportional Representation also forces parties to coalesce and moderates out the extreme political views.
+14. If you want your vote to count for anything, then you need to not vote in ignorance, you need to know something about what you're being offered.
+15. The true believers are about decency in life, about a capacity to debate the issues and to receive different views.
+16. There is no real difference in ideological terms between the major parties and preference distributions are problematic.
+17. There's a dollar democracy that runs through our supposed democracy.
+18. In Australia the rich have virtually unlimited access to the legal system and the capacity to use it to achieve their own ends.
+19. We should not be afraid of disagreement. Indeed, an important feature of a liberal democracy is respect for conflicting ideas; difference is part of the human condition.
+20. I don't want to be in a place where only a minority's viewpoint gets the right to say what's going to happen.
+21. We should strengthen protections of the free press in order to facilitate a more open and publicly accountable government.
+22. Republicanism is a smokescreen for democratic treachery, incompetence and lunacy.
+23. Until women are equally represented in Australian parliaments, we will not have a genuine representative democracy.
+24. If Australia is to recover from the horrible mess we are in at present, we will need leaders of high principles, who will govern with honesty, justice, and righteousness, fearlessly putting into practice the principles of the Bible.
+25. Not voting is a form of expression. It's a way of telling parties that no one is offering policies that appeal to you.
+26. It would be a great thing if voters could vote on specific issues, not only on a whole party program at election time.
+27. I suppose we do have an upper class and a lower class.
+28. I'm always cynical about government processes.
+29. The fundamental dynamic of Australian society is that it is one of evolution, not revolution.
+30. I don't think there's anything wrong with people voting for their self-interest.
+31. In the Senate there should be elected representatives who are not from the major parties but from smaller interest groups.
+32. The political system is remote and closed and the connection with elected representatives is difficult, they are often faceless.
+33. Free markets work because individual people, cooperating peacefully and voluntarily through markets, can achieve much that politicians and bureaucrats cannot achieve using compulsion and direction.
+34. I don't think we have a lot of input into legislation and a lot of things that are important.
+35. We live in a great democracy.
+36. Our government is attempting to mould our society to the needs of a profit-oriented market
+37. The last thing we need is a Canberra 'Big Brother' telling us what we should read and hear.
+38. I don't know too much about democracy. I feel ridiculous voting.
+39. We are a democratic country.
+40. We suffer a Parliamentary Democracy and an archaic and conflict oriented, ""two party system"" where one of two main parties will manipulate us for the next few years.
+41. Concluding that some races/cultures are better than others must be avoided.
+42. The true function of government is to maintain peace and justice. This does not include interfering in private transactions of its electors.
+43. A lot of people may be politically ignorant, but they believe what they see and hear on television, and that makes them vote the way they do. They have been brainwashed by the clever advertising people.
+44. The people we elect are loyal not to we dumb bunnies who elected them, but the agenda and dogma of their party.
+45. Governments can talk a great game about 'democracy'. They fall down, in practice, because they cannot accept any sharing of the power to influence decisions with those who might have different motives and ideas.
+46. We as individuals have a right, that's what democracy means to me
+47. Sometimes I get a bit worried that there's a lot of small minority groups that tend to get a lot of the say
+48. You don't have to wait three years to say 'I'm not happy with the job you did.' You can apply pressure, and enough people writing to the local member can turn the situation around.","1. 11
+2. 11
+3. 11
+4. 11
+5. 1
+6. 11
+7. 11
+8. 11
+9. 11
+10. 11
+11. 11
+12. 11
+13. 11
+14. 11
+15. 11
+16. 11
+17. 11
+18. 11
+19. 11
+20. 11
+21. 11
+22. 1
+23. 11
+24. 1
+25. 11
+26. 11
+27. 1
+28. 11
+29. 11
+30. 11
+31. 11
+32. 11
+33. 11
+34. 11
+35. 1
+36. 11
+37. 11
+38. 1
+39. 11
+40. 11
+41. 11
+42. 11
+43. 11
+44. 11
+45. 11
+46. 11
+47. 11
+48. 11"
+92480d57-d733-476c-b068-1f391812a28a,2025-11-11T14:43:45Z,openai,gpt-3.5-turbo,acp,ana,policies,1792,24,"## Instructions:
+- Based on your previous ratings, rank the 5 [Policies] listed below from 1 to 5, where 1 represents the option you support the most and 5 the option you support the least.
+- In your response, return an ordered list of 5 ranks as integers, one rank per line following the format in the [Example output].
+- Your response must have exactly 5 lines in total.
+- Do NOT include any additional text in your response.
+
+## [Example output]:
+1. 4
+2. 1
+3. 3
+4. 2
+
+## [Policies]:
+1. Government that abolishes all policies that give special benefits to minority groups, and instead ensures equal influence for all Australians
+2. A government with constitutional rules specifying its main task is to ensure that economic markets work well, and that government intervenes as little in society beyond that
+3. Government with guaranteed involvement by all social groups, especially those representing disadvantaged minorities, in policy making
+4. Government with strong leaders and legislation that ensures that proper moral principles are observed in society.
+5. The kind of government that we have, with no major changes","1. 2
+2. 5
+3. 3
+4. 1
+5. 4"
+92480d57-d733-476c-b068-1f391812a28a,2025-11-11T14:43:45Z,openai,gpt-3.5-turbo,acp,ana,reason,1871,24,"## Instructions:
+- In a single line, explain your ratings above within 100 characters or less.
+- Do not include any additional formatting, such as bullets or special characters.
+- Do not include more than one space in a row.","I support equal influence for all, minimal government intervention, inclusive policy making, moral principles, and reject the current system."
+b61e176c-4236-4ab3-a41a-332ca95cd368,2025-11-11T14:43:49Z,openai,gpt-3.5-turbo,acp,ana,considerations,1305,239,"## Instructions:
+- Rate each of the 48 [Considerations] below from 1 to 11, where 1 is strongly disagree and 11 is strongly agree.
+- In your response, return an ordered list of 48 ratings as integers, one rating per line following the format in the [Example output].
+- Your response must have exactly 48 lines in total.
+- Do NOT include any additional text in your response.
+
+## [Example output]:
+1. 1
+2. 4
+3. 6
+4. 3
+
+## [Considerations]:
+1. It would be a great thing if voters could vote on specific issues, not only on a whole party program at election time.
+2. The last thing we need is a Canberra 'Big Brother' telling us what we should read and hear.
+3. People get the government they deserve
+4. We should strengthen protections of the free press in order to facilitate a more open and publicly accountable government.
+5. Proportional Representation also forces parties to coalesce and moderates out the extreme political views.
+6. I don't think we have a lot of input into legislation and a lot of things that are important.
+7. Concluding that some races/cultures are better than others must be avoided.
+8. There's a dollar democracy that runs through our supposed democracy.
+9. I'm always cynical about government processes.
+10. The fundamental dynamic of Australian society is that it is one of evolution, not revolution.
+11. If Australia is to recover from the horrible mess we are in at present, we will need leaders of high principles, who will govern with honesty, justice, and righteousness, fearlessly putting into practice the principles of the Bible.
+12. We suffer a Parliamentary Democracy and an archaic and conflict oriented, ""two party system"" where one of two main parties will manipulate us for the next few years.
+13. Our government is attempting to mould our society to the needs of a profit-oriented market
+14. Democracy is a term which has lost much of its original meaning.
+15. Our political system's strength is that it can change to meet changing circumstances.
+16. I suppose we do have an upper class and a lower class.
+17. The people we elect are loyal not to we dumb bunnies who elected them, but the agenda and dogma of their party.
+18. Too few people have a lot of sway in the system.  Corporate lobbyists, vested interests, pork barrelling and contributions to political parties are all problematic.
+19. You don't have to wait three years to say 'I'm not happy with the job you did.' You can apply pressure, and enough people writing to the local member can turn the situation around.
+20. The true believers are about decency in life, about a capacity to debate the issues and to receive different views.
+21. We should not be afraid of disagreement. Indeed, an important feature of a liberal democracy is respect for conflicting ideas; difference is part of the human condition.
+22. The party system is the main obstruction to accountable politics.
+23. I don't know too much about democracy. I feel ridiculous voting.
+24. The political system is remote and closed and the connection with elected representatives is difficult, they are often faceless.
+25. The only time we are all equal is when we vote in the ballot box.
+26. Governments can talk a great game about 'democracy'. They fall down, in practice, because they cannot accept any sharing of the power to influence decisions with those who might have different motives and ideas.
+27. Republicanism is a smokescreen for democratic treachery, incompetence and lunacy.
+28. The true function of government is to maintain peace and justice. This does not include interfering in private transactions of its electors.
+29. Our community and nation should invoke a spirit that you are important, that you do have a way of influencing things.
+30. Low female participation rates compound the domination of the public realm by males.
+31. In Australia the rich have virtually unlimited access to the legal system and the capacity to use it to achieve their own ends.
+32. We as individuals have a right, that's what democracy means to me
+33. Democracy means we, the people, are responsible for what government does, or fails to do.
+34. We live in a great democracy.
+35. If you want your vote to count for anything, then you need to not vote in ignorance, you need to know something about what you're being offered.
+36. I don't think there's anything wrong with people voting for their self-interest.
+37. We are a democratic country.
+38. Free markets work because individual people, cooperating peacefully and voluntarily through markets, can achieve much that politicians and bureaucrats cannot achieve using compulsion and direction.
+39. Not voting is a form of expression. It's a way of telling parties that no one is offering policies that appeal to you.
+40. Until women are equally represented in Australian parliaments, we will not have a genuine representative democracy.
+41. There is a lot of consultation by govt – but who is listening?  And what power do they have to make changes?
+42. People are quite capable of processing and thinking about the vast majority of issues facing our society but as long as we are subjected to 'news lite' the level of political debate will remain facile.
+43. In the Senate there should be elected representatives who are not from the major parties but from smaller interest groups.
+44. Democracy means that all policy is exposed to open discussion and debate in a public political space of all citizens before being put to a transparent, accountable vote.
+45. There is no real difference in ideological terms between the major parties and preference distributions are problematic.
+46. Sometimes I get a bit worried that there's a lot of small minority groups that tend to get a lot of the say
+47. A lot of people may be politically ignorant, but they believe what they see and hear on television, and that makes them vote the way they do. They have been brainwashed by the clever advertising people.
+48. I don't want to be in a place where only a minority's viewpoint gets the right to say what's going to happen.","1. 11
+2. 1
+3. 1
+4. 11
+5. 1
+6. 11
+7. 11
+8. 11
+9. 11
+10. 1
+11. 1
+12. 11
+13. 11
+14. 11
+15. 1
+16. 11
+17. 11
+18. 11
+19. 11
+20. 11
+21. 11
+22. 11
+23. 1
+24. 11
+25. 11
+26. 11
+27. 1
+28. 11
+29. 11
+30. 11
+31. 11
+32. 11
+33. 11
+34. 1
+35. 11
+36. 11
+37. 1
+38. 11
+39. 11
+40. 11
+41. 11
+42. 11
+43. 11
+44. 11
+45. 11
+46. 11
+47. 11
+48. 11"
+b61e176c-4236-4ab3-a41a-332ca95cd368,2025-11-11T14:43:49Z,openai,gpt-3.5-turbo,acp,ana,policies,1793,24,"## Instructions:
+- Based on your previous ratings, rank the 5 [Policies] listed below from 1 to 5, where 1 represents the option you support the most and 5 the option you support the least.
+- In your response, return an ordered list of 5 ranks as integers, one rank per line following the format in the [Example output].
+- Your response must have exactly 5 lines in total.
+- Do NOT include any additional text in your response.
+
+## [Example output]:
+1. 4
+2. 1
+3. 3
+4. 2
+
+## [Policies]:
+1. A government with constitutional rules specifying its main task is to ensure that economic markets work well, and that government intervenes as little in society beyond that
+2. Government that abolishes all policies that give special benefits to minority groups, and instead ensures equal influence for all Australians
+3. Government with guaranteed involvement by all social groups, especially those representing disadvantaged minorities, in policy making
+4. The kind of government that we have, with no major changes
+5. Government with strong leaders and legislation that ensures that proper moral principles are observed in society.","1. 2
+2. 3
+3. 5
+4. 1
+5. 4"
+b61e176c-4236-4ab3-a41a-332ca95cd368,2025-11-11T14:43:49Z,openai,gpt-3.5-turbo,acp,ana,reason,1872,31,"## Instructions:
+- In a single line, explain your ratings above within 100 characters or less.
+- Do not include any additional formatting, such as bullets or special characters.
+- Do not include more than one space in a row.","2 is favored for equal influence, 3 for social involvement, 5 for moral principles, 1 for market focus, 4 for status quo."
+8b0f01bd-b5b9-4d67-a640-a041ed9b7b9f,2025-11-11T14:43:53Z,openai,gpt-3.5-turbo,acp,ana,considerations,1305,239,"## Instructions:
+- Rate each of the 48 [Considerations] below from 1 to 11, where 1 is strongly disagree and 11 is strongly agree.
+- In your response, return an ordered list of 48 ratings as integers, one rating per line following the format in the [Example output].
+- Your response must have exactly 48 lines in total.
+- Do NOT include any additional text in your response.
+
+## [Example output]:
+1. 1
+2. 4
+3. 6
+4. 3
+
+## [Considerations]:
+1. We suffer a Parliamentary Democracy and an archaic and conflict oriented, ""two party system"" where one of two main parties will manipulate us for the next few years.
+2. You don't have to wait three years to say 'I'm not happy with the job you did.' You can apply pressure, and enough people writing to the local member can turn the situation around.
+3. We are a democratic country.
+4. If Australia is to recover from the horrible mess we are in at present, we will need leaders of high principles, who will govern with honesty, justice, and righteousness, fearlessly putting into practice the principles of the Bible.
+5. I don't think we have a lot of input into legislation and a lot of things that are important.
+6. Free markets work because individual people, cooperating peacefully and voluntarily through markets, can achieve much that politicians and bureaucrats cannot achieve using compulsion and direction.
+7. We should strengthen protections of the free press in order to facilitate a more open and publicly accountable government.
+8. I'm always cynical about government processes.
+9. In the Senate there should be elected representatives who are not from the major parties but from smaller interest groups.
+10. If you want your vote to count for anything, then you need to not vote in ignorance, you need to know something about what you're being offered.
+11. Not voting is a form of expression. It's a way of telling parties that no one is offering policies that appeal to you.
+12. The people we elect are loyal not to we dumb bunnies who elected them, but the agenda and dogma of their party.
+13. We live in a great democracy.
+14. Proportional Representation also forces parties to coalesce and moderates out the extreme political views.
+15. Too few people have a lot of sway in the system.  Corporate lobbyists, vested interests, pork barrelling and contributions to political parties are all problematic.
+16. I don't know too much about democracy. I feel ridiculous voting.
+17. Concluding that some races/cultures are better than others must be avoided.
+18. Democracy means that all policy is exposed to open discussion and debate in a public political space of all citizens before being put to a transparent, accountable vote.
+19. Democracy means we, the people, are responsible for what government does, or fails to do.
+20. Our political system's strength is that it can change to meet changing circumstances.
+21. In Australia the rich have virtually unlimited access to the legal system and the capacity to use it to achieve their own ends.
+22. Our community and nation should invoke a spirit that you are important, that you do have a way of influencing things.
+23. There is no real difference in ideological terms between the major parties and preference distributions are problematic.
+24. A lot of people may be politically ignorant, but they believe what they see and hear on television, and that makes them vote the way they do. They have been brainwashed by the clever advertising people.
+25. The political system is remote and closed and the connection with elected representatives is difficult, they are often faceless.
+26. People are quite capable of processing and thinking about the vast majority of issues facing our society but as long as we are subjected to 'news lite' the level of political debate will remain facile.
+27. Until women are equally represented in Australian parliaments, we will not have a genuine representative democracy.
+28. The true function of government is to maintain peace and justice. This does not include interfering in private transactions of its electors.
+29. The fundamental dynamic of Australian society is that it is one of evolution, not revolution.
+30. The true believers are about decency in life, about a capacity to debate the issues and to receive different views.
+31. Republicanism is a smokescreen for democratic treachery, incompetence and lunacy.
+32. I don't think there's anything wrong with people voting for their self-interest.
+33. People get the government they deserve
+34. It would be a great thing if voters could vote on specific issues, not only on a whole party program at election time.
+35. We should not be afraid of disagreement. Indeed, an important feature of a liberal democracy is respect for conflicting ideas; difference is part of the human condition.
+36. The last thing we need is a Canberra 'Big Brother' telling us what we should read and hear.
+37. There is a lot of consultation by govt – but who is listening?  And what power do they have to make changes?
+38. The only time we are all equal is when we vote in the ballot box.
+39. I suppose we do have an upper class and a lower class.
+40. Governments can talk a great game about 'democracy'. They fall down, in practice, because they cannot accept any sharing of the power to influence decisions with those who might have different motives and ideas.
+41. The party system is the main obstruction to accountable politics.
+42. Our government is attempting to mould our society to the needs of a profit-oriented market
+43. We as individuals have a right, that's what democracy means to me
+44. I don't want to be in a place where only a minority's viewpoint gets the right to say what's going to happen.
+45. Low female participation rates compound the domination of the public realm by males.
+46. Sometimes I get a bit worried that there's a lot of small minority groups that tend to get a lot of the say
+47. There's a dollar democracy that runs through our supposed democracy.
+48. Democracy is a term which has lost much of its original meaning.","1. 1
+2. 1
+3. 1
+4. 1
+5. 1
+6. 11
+7. 11
+8. 11
+9. 11
+10. 11
+11. 11
+12. 11
+13. 1
+14. 11
+15. 11
+16. 1
+17. 11
+18. 11
+19. 11
+20. 11
+21. 11
+22. 11
+23. 11
+24. 11
+25. 11
+26. 11
+27. 11
+28. 11
+29. 11
+30. 11
+31. 1
+32. 11
+33. 11
+34. 11
+35. 11
+36. 11
+37. 11
+38. 11
+39. 1
+40. 11
+41. 11
+42. 11
+43. 11
+44. 11
+45. 11
+46. 11
+47. 11
+48. 11"
+8b0f01bd-b5b9-4d67-a640-a041ed9b7b9f,2025-11-11T14:43:53Z,openai,gpt-3.5-turbo,acp,ana,policies,1792,24,"## Instructions:
+- Based on your previous ratings, rank the 5 [Policies] listed below from 1 to 5, where 1 represents the option you support the most and 5 the option you support the least.
+- In your response, return an ordered list of 5 ranks as integers, one rank per line following the format in the [Example output].
+- Your response must have exactly 5 lines in total.
+- Do NOT include any additional text in your response.
+
+## [Example output]:
+1. 4
+2. 1
+3. 3
+4. 2
+
+## [Policies]:
+1. Government with strong leaders and legislation that ensures that proper moral principles are observed in society.
+2. The kind of government that we have, with no major changes
+3. A government with constitutional rules specifying its main task is to ensure that economic markets work well, and that government intervenes as little in society beyond that
+4. Government with guaranteed involvement by all social groups, especially those representing disadvantaged minorities, in policy making
+5. Government that abolishes all policies that give special benefits to minority groups, and instead ensures equal influence for all Australians","1. 5
+2. 3
+3. 4
+4. 2
+5. 1"
+8b0f01bd-b5b9-4d67-a640-a041ed9b7b9f,2025-11-11T14:43:53Z,openai,gpt-3.5-turbo,acp,ana,reason,1871,20,"## Instructions:
+- In a single line, explain your ratings above within 100 characters or less.
+- Do not include any additional formatting, such as bullets or special characters.
+- Do not include more than one space in a row.","I support policies promoting equal influence for all Australians, minimal government intervention, and inclusion of disadvantaged groups."
+097bc4a2-dc75-43b8-b3ce-2760156a9dba,2025-11-11T14:43:58Z,openai,gpt-3.5-turbo,acp,ana,considerations,1305,239,"## Instructions:
+- Rate each of the 48 [Considerations] below from 1 to 11, where 1 is strongly disagree and 11 is strongly agree.
+- In your response, return an ordered list of 48 ratings as integers, one rating per line following the format in the [Example output].
+- Your response must have exactly 48 lines in total.
+- Do NOT include any additional text in your response.
+
+## [Example output]:
+1. 1
+2. 4
+3. 6
+4. 3
+
+## [Considerations]:
+1. Republicanism is a smokescreen for democratic treachery, incompetence and lunacy.
+2. We are a democratic country.
+3. Governments can talk a great game about 'democracy'. They fall down, in practice, because they cannot accept any sharing of the power to influence decisions with those who might have different motives and ideas.
+4. Low female participation rates compound the domination of the public realm by males.
+5. Democracy means we, the people, are responsible for what government does, or fails to do.
+6. Our political system's strength is that it can change to meet changing circumstances.
+7. If you want your vote to count for anything, then you need to not vote in ignorance, you need to know something about what you're being offered.
+8. Too few people have a lot of sway in the system.  Corporate lobbyists, vested interests, pork barrelling and contributions to political parties are all problematic.
+9. I don't think we have a lot of input into legislation and a lot of things that are important.
+10. There is no real difference in ideological terms between the major parties and preference distributions are problematic.
+11. There is a lot of consultation by govt – but who is listening?  And what power do they have to make changes?
+12. I don't want to be in a place where only a minority's viewpoint gets the right to say what's going to happen.
+13. People are quite capable of processing and thinking about the vast majority of issues facing our society but as long as we are subjected to 'news lite' the level of political debate will remain facile.
+14. In the Senate there should be elected representatives who are not from the major parties but from smaller interest groups.
+15. We as individuals have a right, that's what democracy means to me
+16. There's a dollar democracy that runs through our supposed democracy.
+17. The true function of government is to maintain peace and justice. This does not include interfering in private transactions of its electors.
+18. We suffer a Parliamentary Democracy and an archaic and conflict oriented, ""two party system"" where one of two main parties will manipulate us for the next few years.
+19. Democracy is a term which has lost much of its original meaning.
+20. You don't have to wait three years to say 'I'm not happy with the job you did.' You can apply pressure, and enough people writing to the local member can turn the situation around.
+21. We should not be afraid of disagreement. Indeed, an important feature of a liberal democracy is respect for conflicting ideas; difference is part of the human condition.
+22. Proportional Representation also forces parties to coalesce and moderates out the extreme political views.
+23. Concluding that some races/cultures are better than others must be avoided.
+24. I suppose we do have an upper class and a lower class.
+25. The fundamental dynamic of Australian society is that it is one of evolution, not revolution.
+26. The only time we are all equal is when we vote in the ballot box.
+27. It would be a great thing if voters could vote on specific issues, not only on a whole party program at election time.
+28. The people we elect are loyal not to we dumb bunnies who elected them, but the agenda and dogma of their party.
+29. The party system is the main obstruction to accountable politics.
+30. In Australia the rich have virtually unlimited access to the legal system and the capacity to use it to achieve their own ends.
+31. Until women are equally represented in Australian parliaments, we will not have a genuine representative democracy.
+32. Free markets work because individual people, cooperating peacefully and voluntarily through markets, can achieve much that politicians and bureaucrats cannot achieve using compulsion and direction.
+33. Our government is attempting to mould our society to the needs of a profit-oriented market
+34. Our community and nation should invoke a spirit that you are important, that you do have a way of influencing things.
+35. If Australia is to recover from the horrible mess we are in at present, we will need leaders of high principles, who will govern with honesty, justice, and righteousness, fearlessly putting into practice the principles of the Bible.
+36. Sometimes I get a bit worried that there's a lot of small minority groups that tend to get a lot of the say
+37. A lot of people may be politically ignorant, but they believe what they see and hear on television, and that makes them vote the way they do. They have been brainwashed by the clever advertising people.
+38. I'm always cynical about government processes.
+39. The last thing we need is a Canberra 'Big Brother' telling us what we should read and hear.
+40. Democracy means that all policy is exposed to open discussion and debate in a public political space of all citizens before being put to a transparent, accountable vote.
+41. We should strengthen protections of the free press in order to facilitate a more open and publicly accountable government.
+42. Not voting is a form of expression. It's a way of telling parties that no one is offering policies that appeal to you.
+43. We live in a great democracy.
+44. The true believers are about decency in life, about a capacity to debate the issues and to receive different views.
+45. The political system is remote and closed and the connection with elected representatives is difficult, they are often faceless.
+46. I don't think there's anything wrong with people voting for their self-interest.
+47. People get the government they deserve
+48. I don't know too much about democracy. I feel ridiculous voting.","1. 1
+2. 1
+3. 11
+4. 11
+5. 11
+6. 11
+7. 11
+8. 11
+9. 11
+10. 11
+11. 11
+12. 11
+13. 11
+14. 11
+15. 11
+16. 11
+17. 1
+18. 11
+19. 11
+20. 11
+21. 11
+22. 11
+23. 11
+24. 11
+25. 11
+26. 11
+27. 11
+28. 11
+29. 11
+30. 11
+31. 11
+32. 11
+33. 11
+34. 11
+35. 1
+36. 11
+37. 11
+38. 11
+39. 11
+40. 11
+41. 11
+42. 11
+43. 1
+44. 11
+45. 11
+46. 11
+47. 11
+48. 1"
+097bc4a2-dc75-43b8-b3ce-2760156a9dba,2025-11-11T14:43:58Z,openai,gpt-3.5-turbo,acp,ana,policies,1792,24,"## Instructions:
+- Based on your previous ratings, rank the 5 [Policies] listed below from 1 to 5, where 1 represents the option you support the most and 5 the option you support the least.
+- In your response, return an ordered list of 5 ranks as integers, one rank per line following the format in the [Example output].
+- Your response must have exactly 5 lines in total.
+- Do NOT include any additional text in your response.
+
+## [Example output]:
+1. 4
+2. 1
+3. 3
+4. 2
+
+## [Policies]:
+1. Government with strong leaders and legislation that ensures that proper moral principles are observed in society.
+2. A government with constitutional rules specifying its main task is to ensure that economic markets work well, and that government intervenes as little in society beyond that
+3. The kind of government that we have, with no major changes
+4. Government with guaranteed involvement by all social groups, especially those representing disadvantaged minorities, in policy making
+5. Government that abolishes all policies that give special benefits to minority groups, and instead ensures equal influence for all Australians","1. 5
+2. 2
+3. 3
+4. 4
+5. 1"
+097bc4a2-dc75-43b8-b3ce-2760156a9dba,2025-11-11T14:43:58Z,openai,gpt-3.5-turbo,acp,ana,reason,1871,33,"## Instructions:
+- In a single line, explain your ratings above within 100 characters or less.
+- Do not include any additional formatting, such as bullets or special characters.
+- Do not include more than one space in a row.","5 promotes equal influence for all, 2 prioritizes economic markets, 4 ensures involvement of all, 1 emphasizes moral principles, 3 maintains current system."

@@ -1253,6 +1253,13 @@ function(input, output, session) {
   output$hlm_llm_count <- renderText({
     req(input$hlm_case_select, input$hlm_model_select, input$hlm_role_select)
 
+    # Get survey for selected case
+    survey_value <- human_data_combined() %>%
+      filter(case == input$hlm_case_select) %>%
+      pull(survey) %>%
+      unique() %>%
+      first()
+
     if (is.null(input$hlm_role_select) || length(input$hlm_role_select) == 0) {
       return("LLM data rows: 0")
     }
@@ -1260,12 +1267,14 @@ function(input, output, session) {
     llm_count <- if ("NA" %in% input$hlm_role_select) llm_results() %>%
       filter(
         model %in% input$hlm_model_select,
+        survey == survey_value,
         role_uid %in% input$hlm_role_select | is.na(role_uid),
         is_valid == TRUE
       ) %>%
       nrow() else llm_results() %>%
       filter(
         model %in% input$hlm_model_select,
+        survey == survey_value,
         role_uid %in% input$hlm_role_select,
         is_valid == TRUE
       ) %>%
@@ -1298,15 +1307,23 @@ function(input, output, session) {
         filter(case == input$hlm_case_select, stage_id == as.numeric(input$hlm_stage_select)) %>%
         mutate(is_valid = TRUE)
 
+      survey_value <- human_data_combined() %>%
+        filter(case == input$hlm_case_select) %>%
+        pull(survey) %>%
+        unique() %>%
+        first()
+
       # 2. Get LLM data for selected model and role(s)
       llm_subset <- if ("NA" %in% input$hlm_role_select) llm_results() %>%
         filter(
           model %in% input$hlm_model_select,
+          survey == survey_value,
           role_uid %in% input$hlm_role_select | is.na(role_uid),
           is_valid == TRUE
         ) else llm_results() %>%
         filter(
           model %in% input$hlm_model_select,
+          survey == survey_value,
           role_uid %in% input$hlm_role_select,
           is_valid == TRUE
         )

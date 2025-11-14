@@ -1,3 +1,5 @@
 uid,type,role,description
-cra,custom,crazy,does not know what they want and is inconsistent about their responses
-doc,custom,doctor,who saves lives for a living and does not care about the price of care for the patient
+CL1,custom,OptProg,"Strongly support genome editing if is safe, low ethical concern, have a rational and optimistic view of science, with little concern about social risks or environmental impact"
+CL2,custom,CautMod,"Moderate acceptance of genome editing with residual caution, as sufficient scientific evidence, acknowledging socio-ethical concerns, but not interested in cultural or moral implications"
+CL3,custom,ReflProg,"Supportive but emphasises moral responsibility, emphasis on ethics,  and expresses significant concern about social risks"
+CL4,custom,MoraOpp,"See gene editing as wrong or dangerous, reject its use, deeply concerned about human identity risks and view gene editing as a quick fix"
