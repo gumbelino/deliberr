@@ -5,13 +5,13 @@
 \title{Make DRI LLM prompts}
 \usage{
 make_dri_llm_prompts(
-  survey_info,
+  dri_survey,
   role_info = list(uid = NA_character_, role = NA_character_, description =
     NA_character_)
 )
 }
 \arguments{
-\item{survey_info}{A list generated using get_dri_survey_info().}
+\item{dri_survey}{A list generated using format_dri_survey(...).}
 
 \item{role_info}{Information about a specific role.}
 }
@@ -23,11 +23,11 @@ A list of lists with four variables: \code{system},
 Creates the prompts for generating LLM DRI data.
 }
 \examples{
-survey_info <- get_dri_survey_info("ccps")
+dri_survey <- format_dri_survey(deliberr::surveys[surveys$name == "ccps",])
 role_info <- list(
   uid = "sur",
   role = "surfer",
   description = "likes the ocean"
 )
-make_dri_llm_prompts(survey_info[[1]], role_info)
+make_dri_llm_prompts(dri_survey, role_info)
 }

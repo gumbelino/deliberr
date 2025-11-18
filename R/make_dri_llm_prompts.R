@@ -2,7 +2,7 @@
 #'
 #' Creates the prompts for generating LLM DRI data.
 #'
-#' @param survey_info A list generated using get_dri_survey_info().
+#' @param dri_survey A list generated using format_dri_survey(...).
 #' @param role_info Information about a specific role.
 #'
 #' @returns A list of lists with four variables: \code{system},
@@ -10,14 +10,14 @@
 #' @export
 #'
 #' @examples
-#' survey_info <- get_dri_survey_info("ccps")
+#' dri_survey <- format_dri_survey(deliberr::surveys[surveys$name == "ccps",])
 #' role_info <- list(
 #'   uid = "sur",
 #'   role = "surfer",
 #'   description = "likes the ocean"
 #' )
-#' make_dri_llm_prompts(survey_info[[1]], role_info)
-make_dri_llm_prompts <- function(survey_info,
+#' make_dri_llm_prompts(dri_survey, role_info)
+make_dri_llm_prompts <- function(dri_survey,
                                  role_info = list(
                                    uid = NA_character_,
                                    role = NA_character_,
@@ -32,12 +32,12 @@ make_dri_llm_prompts <- function(survey_info,
   prompt_s_template <- prompts[prompts$type == "system",]$prompt
 
   ## extract survey info
-  scale_max <- survey_info$scale_max
-  q_method <- if (survey_info$q_method) prompt_q else ""
+  scale_max <- dri_survey$scale_max
+  q_method <- if (dri_survey$q_method) prompt_q else ""
 
   # ensure statements are shuffled
-  c_df <- survey_info$considerations
-  p_df <- survey_info$policies
+  c_df <- dri_survey$considerations
+  p_df <- dri_survey$policies
 
   n_c <- nrow(c_df)
   n_p <- nrow(p_df)

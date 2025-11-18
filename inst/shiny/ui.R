@@ -95,7 +95,25 @@ fluidPage(
                ),
 
                fluidRow(
-                 # Feature 3: LLM Roles
+                 # Feature 3: Surveys
+                 column(6,
+                        div(
+                          style = "background-color: white; padding: 25px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height: 100%;",
+                          h3("Surveys", style = "margin-top: 0; margin-bottom: 10px; color: #2c3e50;"),
+                          p(style = "margin-bottom: 12px;", "Upload and manage survey data for deliberation studies."),
+                          tags$ul(style = "margin-bottom: 12px;",
+                                  tags$li("Upload custom surveys in CSV format"),
+                                  tags$li("View all available surveys in an organized table"),
+                                  tags$li("Newly uploaded surveys are highlighted for easy identification"),
+                                  tags$li("Surveys automatically appear in all dropdown menus across the app"),
+                                  tags$li("Support for statement-based surveys with configurable scales")
+                          ),
+                          p(style = "font-size: 0.9em; color: #666; margin: 0;",
+                            "Requires CSV with: type, order, statement, name, scale_max, q_method")
+                        )
+                 ),
+
+                 # Feature 4: LLM Roles
                  column(6,
                         div(
                           style = "background-color: white; padding: 25px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height: 100%;",
@@ -111,9 +129,11 @@ fluidPage(
                           p(style = "font-size: 0.9em; color: #666; margin: 0;",
                             "Custom roles are highlighted in yellow and saved locally")
                         )
-                 ),
+                 )
+               ),
 
-                 # Feature 4: LLM Data
+               fluidRow(
+                 # Feature 5: LLM Data
                  column(6,
                         div(
                           style = "background-color: white; padding: 25px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height: 100%;",
@@ -130,11 +150,9 @@ fluidPage(
                           p(style = "font-size: 0.9em; color: #666; margin: 0;",
                             "Requires OpenRouter API key")
                         )
-                 )
-               ),
+                 ),
 
-               fluidRow(
-                 # Feature 5: LLM Analysis
+                 # Feature 6: LLM Analysis
                  column(6,
                         div(
                           style = "background-color: white; padding: 25px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height: 100%;",
@@ -148,9 +166,11 @@ fluidPage(
                                   tags$li("Customize plot titles and labels")
                           )
                         )
-                 ),
+                 )
+               ),
 
-                 # Feature 6: Human+LLM Analysis
+               fluidRow(
+                 # Feature 7: Human+LLM Analysis
                  column(6,
                         div(
                           style = "background-color: white; padding: 25px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); height: 100%;",
@@ -174,6 +194,7 @@ fluidPage(
                  tags$ol(
                    tags$li(strong("Start with Case Analysis:"), " Explore existing human deliberation data"),
                    tags$li(strong("Create Roles:"), " Define custom roles in the LLM Roles tab if needed"),
+                   tags$li(strong("Upload Surveys:"), " Add custom surveys using the Surveys tab if needed"),
                    tags$li(strong("Generate LLM Data:"), " Use the LLM Data tab to generate responses from your chosen model and role"),
                    tags$li(strong("Analyze LLM Results:"), " Use LLM Analysis to visualize and evaluate the generated data"),
                    tags$li(strong("Compare Human+LLM:"), " Use Human+LLM Analysis to compare human responses with LLM-generated data"),
@@ -184,22 +205,34 @@ fluidPage(
                # Data Requirements Section
                h2("Data Format Requirements", style = "color: #2c3e50; margin-bottom: 20px;"),
                fluidRow(
-                 column(6,
+                 column(4,
                         div(
                           style = "background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);",
                           h4("Human Data (CSV)", style = "margin-top: 0;"),
                           p(style = "font-size: 0.9em;", strong("Required columns:")),
-                          code(style = "display: block; padding: 10px; background-color: #f5f5f5; margin: 10px 0; border-radius: 4px;",
-                               "survey, case, stage_id, pnum, C1:C50, P1:P10")
+                          code(style = "display: block; padding: 10px; background-color: #f5f5f5; margin: 10px 0; border-radius: 4px; font-size: 0.85em;",
+                               "survey, case, stage_id,
+pnum, C1:C50, P1:P10")
                         )
                  ),
-                 column(6,
+                 column(4,
+                        div(
+                          style = "background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);",
+                          h4("Surveys (CSV)", style = "margin-top: 0;"),
+                          p(style = "font-size: 0.9em;", strong("Required columns:")),
+                          code(style = "display: block; padding: 10px; background-color: #f5f5f5; margin: 10px 0; border-radius: 4px; font-size: 0.85em;",
+                               "type, order, statement,
+name, scale_max, q_method")
+                        )
+                 ),
+                 column(4,
                         div(
                           style = "background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);",
                           h4("Custom Roles (CSV)", style = "margin-top: 0;"),
                           p(style = "font-size: 0.9em;", strong("Required columns:")),
-                          code(style = "display: block; padding: 10px; background-color: #f5f5f5; margin: 10px 0; border-radius: 4px;",
-                               "uid, type, role, description")
+                          code(style = "display: block; padding: 10px; background-color: #f5f5f5; margin: 10px 0; border-radius: 4px; font-size: 0.85em;",
+                               "uid, type, role,
+description")
                         )
                  )
                ),
@@ -287,6 +320,45 @@ fluidPage(
     )),
     # End of TabPanel "Case Plot View"
 
+    tabPanel("Surveys", sidebarLayout(
+      sidebarPanel(
+        h3("Upload New Survey"),
+
+        p("Upload a CSV file with survey questions. The file must include these required columns:",
+          style = "font-size: 0.9em;"),
+        code(
+          style = "display: block; padding: 10px; background-color: #f5f5f5; margin: 10px 0; border-radius: 4px;",
+          "type, order, statement, name, scale_max, q_method"
+        ),
+
+        p("Survey names in the 'name' column should be unique and will be used to identify the survey across the app.",
+          style = "font-size: 0.9em;"),
+
+        hr(),
+
+        fileInput(
+          "upload_survey_file",
+          "Upload Survey (CSV)",
+          accept = c("text/csv", "text/comma-separated-values", ".csv")
+        ),
+
+        p(
+          style = "font-size: 0.85em; color: #666;",
+          "Once uploaded, new surveys will be available in all survey dropdowns across the app."
+        )
+      ),
+
+      mainPanel(
+        width = 8,
+        h3("Available Surveys"),
+        p(
+          "This table shows all available survey questions."
+        ),
+        hr(),
+        DT::dataTableOutput("surveys_table")
+      )
+    )),
+
     # NEW Tab: LLM Roles Management
     tabPanel("LLM Roles", sidebarLayout(
       sidebarPanel(
@@ -298,16 +370,16 @@ fluidPage(
         hr(),
 
         # Custom Role Input Form
-        textInput("new_role_uid", "UID (3 characters, unique):", value = ""),
+        textInput("new_role_uid", "UID (3-10 chars, unique identifier):", value = ""),
         # selectInput("new_role_article", "Article:", choices = NULL), # Choices updated in server
         textInput(
           "new_role_name",
-          "Role Name (max 10 chars, letters/hyphens only):",
+          "Role name (3-20 chars, letters/hyphens/spaces only):",
           value = ""
         ),
         textAreaInput(
           "new_role_description",
-          "Description (max 100 words, letters/hyphens only):",
+          "Description (max 100 words, letters/hyphens/spaces only):",
           value = "",
           rows = 3
         ),

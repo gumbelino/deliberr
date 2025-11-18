@@ -162,9 +162,9 @@ function(input, output, session) {
     current_uids <- roles_data()$uid
 
     # UID Check
-    if (nchar(uid) != 3 || !grepl("^[a-zA-Z0-9]+$", uid)) {
+    if (nchar(uid) < 3 || nchar(uid) > 10 || !grepl("^[a-zA-Z0-9-]+$", uid)) {
       showNotification(
-        "Error: UID must be exactly 3 alphanumeric characters.",
+        "Error: UID length must be between 3-10 alphanumeric characters.",
         type = "error",
         duration = 5
       )
@@ -172,7 +172,7 @@ function(input, output, session) {
     }
     if (uid %in% current_uids) {
       showNotification(
-        "Error: UID already exists. Please choose a unique 3-character ID.",
+        "Error: UID already exists. Please choose a unique ID.",
         type = "error",
         duration = 5
       )
@@ -180,10 +180,10 @@ function(input, output, session) {
     }
 
     # Role Name Check (max 10 chars, letters/hyphens only)
-    if (nchar(role_name) == 0 ||
-        nchar(role_name) > 10 || !grepl("^[a-zA-Z-]+$", role_name)) {
+    if (nchar(role_name) < 3 ||
+        nchar(role_name) > 20 || !grepl("^[a-zA-Z -]+$", role_name)) {
       showNotification(
-        "Error: Role Name must be 1-10 characters, containing only letters and hyphens.",
+        "Error: Role name must be 3-20 characters, containing only letters, hyphens, and spaces.",
         type = "error",
         duration = 7
       )
@@ -724,11 +724,14 @@ function(input, output, session) {
           # 0. Get role_info from uid
           role_info <- roles_data()[roles_data()$uid == input$role_uid, ]
 
+          # 0. Get survey_info from name
+          survey_info <- surveys_data()[surveys_data()$name == input$survey_name, ]
+
           # 1. Generate one response
           # input$model_id now comes from the dropdown, which correctly passes the "provider/model" string
           new_data <- deliberr::get_dri_llm_response(
             model_id = input$model_id,
-            survey_name = input$survey_name,
+            survey_info = survey_info,
             role_info = role_info
           )
 
@@ -935,6 +938,30 @@ function(input, output, session) {
   )
   # --- End Logic for Downloading LLM Data ---
 
+  observe({
+    # Update survey dropdown in "LLM Data" tab
+    updated_surveys <- sort(unique(surveys_data()$name))
+
+    current_selection <- input$survey_name
+    selected_survey <- if (!is.null(current_selection) && current_selection %in% updated_surveys)
+      current_selection
+    else if (length(updated_surveys) > 0)
+      updated_surveys[1]
+    else
+      NULL
+
+    updateSelectInput(session,
+                      "survey_name",
+                      choices = updated_surveys,
+                      selected = selected_survey)
+
+    # Update survey dropdown in "LLM Analysis" tab
+    updateSelectInput(session,
+                      "llm_survey_filter",
+                      choices = updated_surveys,
+                      selected = selected_survey)
+  })
+
   # --- LLM Analysis Plotting & Summary Logic ---
 
   # Dynamic Filter Updates for LLM Analysis Tab
@@ -942,10 +969,10 @@ function(input, output, session) {
     # Defensive check: ensure llm_results() is not empty before filtering
     if (nrow(llm_results()) == 0) {
       # When no data is present, set survey choices to empty and role/model choices to only "All"
-      updateSelectInput(session,
-                        "llm_survey_filter",
-                        choices = character(0),
-                        selected = NULL)
+      # updateSelectInput(session,
+      #                   "llm_survey_filter",
+      #                   choices = character(0),
+      #                   selected = NULL)
       # The llm_role_filter is updated by the main roles_data observer.
       updateSelectizeInput(session,
                            "llm_model_filter",
@@ -1138,6 +1165,119 @@ function(input, output, session) {
     )
 
     return(summary_df)
+  })
+
+
+
+  # --- NEW: Reactive value to store uploaded surveys ---
+  surveys_data <- reactiveVal(deliberr::surveys)
+
+  # --- NEW: Observer for uploading custom surveys ---
+  observeEvent(input$upload_survey_file, {
+    req(input$upload_survey_file)
+
+    file_path <- input$upload_survey_file$datapath
+
+    id <- showNotification("Uploading and parsing survey...",
+                           type = "default",
+                           duration = NULL)
+
+    tryCatch({
+      # Read the CSV file
+      uploaded_surveys <- read_csv(file_path, show_col_types = FALSE)
+
+      # Validate required columns
+      required_cols <- c("type", "order", "statement", "name", "scale_max", "q_method")
+      if (!all(required_cols %in% names(uploaded_surveys))) {
+        removeNotification(id = id)
+        missing_cols <- setdiff(required_cols, names(uploaded_surveys))
+        showNotification(
+          paste("Error: Uploaded file must contain all required columns.",
+                "Missing:", paste(missing_cols, collapse = ", ")),
+          type = "error",
+          duration = 10
+        )
+        return()
+      }
+
+      # Check for duplicate survey names within the upload
+      survey_names_upload <- unique(uploaded_surveys$name)
+      if (length(survey_names_upload) != length(unique(uploaded_surveys$name))) {
+        removeNotification(id = id)
+        showNotification(
+          "Error: Survey names must be unique within the uploaded file.",
+          type = "error",
+          duration = 10
+        )
+        return()
+      }
+
+      # Check if any survey names already exist in the combined data
+      existing_surveys <- unique(surveys_data()$name)
+      conflicting_surveys <- survey_names_upload[survey_names_upload %in% existing_surveys]
+
+      if (length(conflicting_surveys) > 0) {
+        removeNotification(id = id)
+        showNotification(
+          paste("Error: The following survey names already exist:", paste(conflicting_surveys, collapse = ", ")),
+          type = "error",
+          duration = 10
+        )
+        return()
+      }
+
+      # Mark uploaded surveys for highlighting
+      uploaded_surveys <- uploaded_surveys %>%
+        mutate(is_uploaded = TRUE)
+
+      # Append uploaded surveys to existing surveys
+      updated_surveys <- bind_rows(
+        surveys_data() %>% mutate(is_uploaded = FALSE),
+        uploaded_surveys
+      )
+      surveys_data(updated_surveys)
+
+      removeNotification(id = id)
+      showNotification(
+        paste("Successfully uploaded", nrow(uploaded_surveys), "survey(s) with",
+              nrow(uploaded_surveys), "question(s) total."),
+        type = "message"
+      )
+
+    }, error = function(e) {
+      removeNotification(id = id)
+      showNotification(
+        paste("Error reading/processing file:", conditionMessage(e)),
+        type = "error",
+        duration = 10
+      )
+    })
+  })
+
+  # --- NEW: Render surveys table with highlighting ---
+  output$surveys_table <- DT::renderDataTable({
+    data_to_display <- surveys_data() %>%
+      select(type, order, statement, name, scale_max, q_method)
+
+    DT::datatable(
+      data_to_display,
+      options = list(
+        pageLength = 10,
+        lengthMenu = c(5, 10, 20, 50),
+        autoWidth = TRUE,
+        scrollX = TRUE,
+        columnDefs = list(
+          list(width = '300px', targets = 2) # Make 'statement' column wider
+        )
+      ),
+      rownames = FALSE,
+      filter = 'top',
+      class = 'cell-border stripe hover'
+    ) %>%
+      DT::formatStyle(
+        columns = 'name',
+        target = 'row'
+      )
   })
 
 
