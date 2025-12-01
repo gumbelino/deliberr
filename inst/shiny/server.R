@@ -1226,20 +1226,101 @@ function(input, output, session) {
         return()
       }
 
-      # Mark uploaded surveys for highlighting
+      # Check if uploaded surveys contains consideration and policy statements
+      for (name in unique(uploaded_surveys$name)) {
+
+        survey_to_check <- uploaded_surveys %>%
+          filter(name == !!name)
+
+        statement_types <- survey_to_check %>%
+          select(type) %>%
+          deframe()
+
+        ## check statement types
+        if (!all("C" %in% statement_types, "P" %in% statement_types)) {
+          removeNotification(id = id)
+          showNotification(
+            paste("Error: Survey", paste0("'", name,"'") ,"must contain statements of type C and P."),
+            type = "error",
+            duration = 10
+          )
+          return()
+        }
+
+        if (sum(statement_types == "C") < 2) {
+          removeNotification(id = id)
+          showNotification(
+            paste("Error: Survey", paste0("'", name,"'") ,"must contain at least 2 consideration statements (type = 'C')."),
+            type = "error",
+            duration = 10
+          )
+          return()
+        }
+
+        if (sum(statement_types == "P") < 2) {
+          removeNotification(id = id)
+          showNotification(
+            paste("Error: Survey", paste0("'", name,"'") ,"must contain at least 2 policy statements (type = 'P')."),
+            type = "error",
+            duration = 10
+          )
+          return()
+        }
+
+        # check statement orders
+        o_c <- survey_to_check %>%
+          filter(type == "C") %>%
+          select(order) %>%
+          deframe()
+
+        if (!setequal(o_c, 1:length(o_c))) {
+          removeNotification(id = id)
+          showNotification(
+            paste("Error: Survey", paste0("'", name,"'") ,"has considerations
+                  statements with missing order:",
+                  setdiff(1:length(o_c), o_c)),
+            type = "error",
+            duration = 10
+          )
+          return()
+        }
+
+        o_p <- survey_to_check %>%
+          filter(type == "P") %>%
+          select(order) %>%
+          deframe()
+
+        if (!setequal(o_p, 1:length(o_p))) {
+          removeNotification(id = id)
+          showNotification(
+            paste("Error: Survey", paste0("'", name,"'") ,"has policy statements
+                  with missing order:",
+                  setdiff(1:length(o_p), o_p)),
+            type = "error",
+            duration = 10
+          )
+          return()
+        }
+
+      }
+
+      # clean uploaded survey
       uploaded_surveys <- uploaded_surveys %>%
-        mutate(is_uploaded = TRUE)
+        filter(type == "C" | type == "P")
+
+      uploaded_surveys[uploaded_surveys$type == "P", ]$scale_max <- NA
+      uploaded_surveys[uploaded_surveys$type == "P", ]$q_method <- NA
 
       # Append uploaded surveys to existing surveys
       updated_surveys <- bind_rows(
-        surveys_data() %>% mutate(is_uploaded = FALSE),
+        surveys_data(),
         uploaded_surveys
       )
       surveys_data(updated_surveys)
 
       removeNotification(id = id)
       showNotification(
-        paste("Successfully uploaded", nrow(uploaded_surveys), "survey(s) with",
+        paste("Successfully uploaded", length(unique(uploaded_surveys$name)), "survey(s) with",
               nrow(uploaded_surveys), "question(s) total."),
         type = "message"
       )

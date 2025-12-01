@@ -5,9 +5,8 @@ account: gumbelin
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 15648737
-bundleId: 11177747
+bundleId: 11195084
 url: https://gumbelin.shinyapps.io/deliberr/
 version: 1
 asMultiple: FALSE
 asStatic: FALSE
-ignoredFiles: custom_roles.csv|request_log.csv

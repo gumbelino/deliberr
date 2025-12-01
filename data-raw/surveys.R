@@ -62,8 +62,13 @@ for (name in survey_names) {
 
   survey <- bind_rows(c_df, p_df)
   survey$name <- name
+
   survey$scale_max <- scale_max
   survey$q_method <- q_method
+
+  # only set scale and q_method flag for considerations
+  survey[survey$type == "P", ]$scale_max <- NA
+  survey[survey$type == "P", ]$q_method <- NA
 
   surveys[[length(surveys)+1]] <- survey
 
