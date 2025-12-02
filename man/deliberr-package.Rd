@@ -6,10 +6,29 @@
 \alias{deliberr-package}
 \title{deliberr: Deliberation in R}
 \description{
-This package includes functions for analyzing deliberation data, including Deliberative Reasoning Index (DRI).
+An implementation of deliberative reasoning index (DRI) and related tools for analysis of deliberation survey data. Calculation of DRI, plot of intersubjective correlations (IC), generation of large-language model (LLM) survey data, and permutation tests are supported. Example datasets and a graphical user interface (GUI) are also available to support analysis.
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/gumbelino/deliberr}
+  \item \url{https://gumbelin.shinyapps.io/deliberr}
+  \item Report bugs at \url{https://github.com/gumbelino/deliberr/issues}
+}
+
 }
 \author{
-\strong{Maintainer}: Gustavo Kreia Umbelino \email{gumbelin@gmail.com}
+\strong{Maintainer}: Gustavo Kreia Umbelino \email{gustavo.kreiaumbelino@zda.uzh.ch} (\href{https://orcid.org/0000-0001-7754-9606}{ORCID})
+
+Authors:
+\itemize{
+  \item Francesco Veri \email{francesco.veri@zda.uzh.ch} (\href{https://orcid.org/0000-0002-9295-6776}{ORCID})
+}
+
+Other contributors:
+\itemize{
+  \item Swiss National Science Foundation (SNSF) [funder]
+}
 
 }
 \keyword{internal}

@@ -1,16 +1,32 @@
 Package: deliberr
 Type: Package
 Title: Deliberation in R
-Version: 0.2.1
+Version: 1.0.0
 Authors@R: c(
     person(
       "Gustavo", "Kreia Umbelino",
-      email = "gumbelin@gmail.com",
-      role = c("aut", "cre")
+      email = "gustavo.kreiaumbelino@zda.uzh.ch",
+      role = c("aut", "cre"),
+      comment = c(ORCID = "0000-0001-7754-9606")
+    ),
+    person(
+      "Francesco", "Veri",
+      email = "francesco.veri@zda.uzh.ch",
+      role = "aut",
+      comment = c(ORCID = "0000-0002-9295-6776")
+    ),
+    person(
+      "Swiss National Science Foundation (SNSF)",
+      role = "fnd"
     )
   )
-Description: This package includes functions for analyzing
-    deliberation data, including Deliberative Reasoning Index (DRI).
+URL: https://github.com/gumbelino/deliberr, https://gumbelin.shinyapps.io/deliberr
+BugReports: https://github.com/gumbelino/deliberr/issues
+Description: An implementation of deliberative reasoning index (DRI) and related 
+    tools for analysis of deliberation survey data. Calculation of DRI, plot of 
+    intersubjective correlations (IC), generation of large-language model (LLM)
+    survey data, and permutation tests are supported. Example datasets and a
+    graphical user interface (GUI) are also available to support analysis.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
