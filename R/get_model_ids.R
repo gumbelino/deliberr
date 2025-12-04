@@ -5,6 +5,7 @@
 #'
 #' @importFrom tidyr separate_wider_delim
 #' @importFrom purrr map
+#' @importFrom rlang .data
 #'
 #' @returns A dataframe with columns \code{provider} and \code{model}
 #' @export
@@ -29,10 +30,8 @@ get_model_ids <- function() {
   # Find the specific model in the cached data
   model_ids <- .openrouter_cache$models %>%
     map(function(m) m$id) %>%
-    tibble(
-      model_id = .
-    ) %>%
-    tidyr::separate_wider_delim(model_id, delim = "/", names = c("provider", "model"))
+    enframe(name = NULL, value = "model_id") %>%
+    tidyr::separate_wider_delim(.data$model_id, delim = "/", names = c("provider", "model"))
 
 
   return(model_ids)

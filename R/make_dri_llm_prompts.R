@@ -24,6 +24,9 @@ make_dri_llm_prompts <- function(dri_survey,
                                    description = NA_character_
                                  )) {
 
+  # make explicit where prompts is imported from
+  prompts <- deliberr::prompts
+
   ## get prompt templates
   prompt_c_template <- prompts[prompts$type == "considerations",]$prompt
   prompt_p_template <- prompts[prompts$type == "policies",]$prompt

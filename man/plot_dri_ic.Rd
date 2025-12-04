@@ -33,7 +33,7 @@ Plot DRI IC
 
 library(tibble)
 data <- tibble(
-  pnum = c(1,2,3,4),
+  pnum = c(1,2,-3,-4),
   C1 = c(1,2,3,4),
   C2 = c(2,3,4,3),
   C3 = c(3,2,4,2),

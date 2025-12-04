@@ -1,8 +1,14 @@
 library(readr)
-library(readxl)
 library(dplyr)
 
 SURVEY_FILE <- "data-raw/surveys.xlsx"
+
+# check for other necessary packages
+if (!rlang::is_installed("readxl")) {
+  install.packages("readxl")
+}
+
+library(readxl)
 
 
 # read the sheet names of the Excel file

@@ -16,7 +16,7 @@
 #'
 #' library(tibble)
 #' data <- tibble(
-#'   pnum = c(1,2,3,4),
+#'   pnum = c(1,2,-3,-4),
 #'   C1 = c(1,2,3,4),
 #'   C2 = c(2,3,4,3),
 #'   C3 = c(3,2,4,2),
@@ -74,7 +74,7 @@ plot_dri_ic <- function(ic,
       width = 0.02,
       height = 0.02,
       show.legend = TRUE,
-      aes(colour = llm)
+      aes(colour = .data$llm)
     ) +
     scale_colour_manual(values = pal) +
     xlim(-1.1, 1.1) + ylim(-1.1, 1.1) +

@@ -3,6 +3,7 @@
 #' @param survey_info survey information needed to format dri survey.
 #'
 #' @returns A list of survey info.
+#' @importFrom rlang .data
 #' @export
 #'
 #' @examples
@@ -15,7 +16,7 @@ format_dri_survey <- function(survey_info = list(
   statement = NA_character_,
   name = NA_character_,
   scale_max = NA_integer_,
-  q_method = NA,
+  q_method = NA
 )) {
 
   name <- survey_info$name[1]
@@ -23,14 +24,14 @@ format_dri_survey <- function(survey_info = list(
   q_method <- survey_info$q_method[1]
 
   c_df <- survey_info %>%
-    filter(name == !!name, type == "C") %>%
-    select(order, statement) %>%
-    arrange(order)
+    filter(.data$name == !!name, .data$type == "C") %>%
+    select(.data$order, .data$statement) %>%
+    arrange(.data$order)
 
   p_df <- survey_info %>%
-    filter(name == !!name, type == "P") %>%
-    select(order, statement) %>%
-    arrange(order)
+    filter(.data$name == !!name, .data$type == "P") %>%
+    select(.data$order, .data$statement) %>%
+    arrange(.data$order)
 
   list(
     name = name,

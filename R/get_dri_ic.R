@@ -33,9 +33,9 @@ get_dri_ic <- function(data) {
 
   # create separate dataframes for C and P columns
   df_c <- data %>% select(.data$pnum, matches("^C\\d+$") &
-                            where(~ !all(is.na(.))))
+                            where(~ !all(is.na(.x))))
   df_p <- data %>% select(.data$pnum, matches("^P\\d+$") &
-                            where(~ !all(is.na(.))))
+                            where(~ !all(is.na(.x))))
 
   # transpose the data and make pnum the row names for correlation calculation
   df_c_t <- df_c %>% column_to_rownames("pnum") %>% t()
@@ -47,10 +47,12 @@ get_dri_ic <- function(data) {
 
   # convert matrices to dataframes and add a column for pnum
   df_corr_c <- as.data.frame(corr_c) %>%
-    mutate(pnum1 = as.numeric(rownames(.)))
+    rownames_to_column(var = "pnum1") %>%
+    mutate(pnum1 = as.numeric(.data$pnum1))
 
   df_corr_p <- as.data.frame(corr_p) %>%
-    mutate(pnum1 = as.numeric(rownames(.)))
+    rownames_to_column(var = "pnum1") %>%
+    mutate(pnum1 = as.numeric(.data$pnum1))
 
   # reshape from wide to long format
   long_corr_c <- df_corr_c %>%
@@ -71,7 +73,7 @@ get_dri_ic <- function(data) {
 
   # join the two dataframes, filter for unique pairs, and create the final output
   ic <- long_corr_c %>%
-    inner_join(long_corr_p, join_by(pnum1, pnum2)) %>%
+    inner_join(long_corr_p, by = c("pnum1", "pnum2")) %>%
     filter(.data$pnum1 < .data$pnum2) %>% # filter out duplicate pairs and self-correlations
     mutate(
       pnums = paste0(.data$pnum1, "-", .data$pnum2),

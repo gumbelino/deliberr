@@ -44,16 +44,16 @@ Imports:
     glue,
     httr,
     purrr,
-    readxl,
     readr,
     jsonlite,
     lifecycle,
-    DT,
-    gridExtra,
     uuid,
 RoxygenNote: 7.3.3
 Suggests: 
+    DT,
+    gridExtra,
     knitr,
+    readxl,
     rmarkdown
 VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)

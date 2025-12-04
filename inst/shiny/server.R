@@ -15,10 +15,21 @@ library(shiny)
 library(deliberr)
 library(dplyr)
 library(ggplot2)
-library(DT)
 library(readr)
-library(gridExtra)
 library(tibble)
+
+# check for other necessary packages
+if (!rlang::is_installed("gridExtra")) {
+  install.packages("gridExtra")
+}
+
+if (!rlang::is_installed("DT")) {
+  install.packages("DT")
+}
+
+library(gridExtra)
+library(DT)
+
 
 # --- Data Preparation for Model Dropdown (using deliberr::get_model_ids) ---
 # NOTE: get_model_ids is called outside the server function for one-time initialization.

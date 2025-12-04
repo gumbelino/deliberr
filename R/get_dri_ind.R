@@ -8,6 +8,7 @@
 #' @export
 #' @import dplyr
 #' @import tibble
+#' @importFrom rlang .data
 #' @examples
 #'
 #' library(tibble)
@@ -31,7 +32,7 @@ get_dri_ind <- function(ic, adjusted = TRUE) {
   # iterate through all pnums
   for (pi in union(ic$pnum1, ic$pnum2)) {
     # STEP 1: get data for pnum i
-    pi_ic <- ic %>% filter(pnum1 == pi | pnum2 == pi)
+    pi_ic <- ic %>% filter(.data$pnum1 == pi | .data$pnum2 == pi)
 
     # use DRI formula to calculate DRI
     pi_dri <- get_dri(pi_ic, adjusted)

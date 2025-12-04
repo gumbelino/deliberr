@@ -17,6 +17,8 @@
 #' @importFrom uuid UUIDgenerate
 #' @importFrom tidyr pivot_wider
 #' @importFrom readr write_csv
+#' @importFrom rlang .data
+#' @importFrom stats IQR median
 #'
 #' @examples
 #' survey_info <- surveys[surveys$name == "acp",]
@@ -31,7 +33,7 @@ get_dri_llm_response <- function(model_id,
                                    statement = NA_character_,
                                    name = NA_character_,
                                    scale_max = NA_integer_,
-                                   q_method = NA,
+                                   q_method = NA
                                  ),
                                  api_key = Sys.getenv("OPENROUTER_API_KEY"),
                                  role_info = list(
@@ -187,10 +189,10 @@ get_dri_llm_response <- function(model_id,
 .shuffle_statements <- function(dri_survey) {
   dri_survey$considerations <- dri_survey$considerations %>%
     mutate(shuffle = sample(order)) %>%
-    arrange(shuffle)
+    arrange(.data$shuffle)
   dri_survey$policies <- dri_survey$policies %>%
     mutate(shuffle = sample(order)) %>%
-    arrange(shuffle)
+    arrange(.data$shuffle)
   dri_survey
 }
 
@@ -223,7 +225,7 @@ get_dri_llm_response <- function(model_id,
   df <- df %>%
     arrange(order) %>%
     mutate(sid = paste0(col_prefix, order)) %>%
-    select(sid, value)
+    select(.data$sid, .data$value)
 
   df <- pivot_wider(df, names_from = "sid", values_from = "value")
 

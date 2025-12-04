@@ -6,7 +6,7 @@
 \usage{
 format_dri_survey(
   survey_info = list(type = NA_character_, order = NA_integer_, statement =
-    NA_character_, name = NA_character_, scale_max = NA_integer_, q_method = NA, )
+    NA_character_, name = NA_character_, scale_max = NA_integer_, q_method = NA)
 )
 }
 \arguments{
